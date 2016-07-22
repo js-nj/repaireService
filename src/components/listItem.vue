@@ -45,12 +45,14 @@ export default {
 <style scoped>
 .list-item {
   height: 220px;
-  width: 640px;
+  /*width: 640px;*/
+  width: 100%;
   background-color: #fff;
   border-bottom: 0.5PX solid #E8E9EC;
   padding: 28px 30px;
   & .item-main {
-    width: 580px;
+    /*width: 580px;*/
+    width: 100%;
     & span {
       color: #403F44;
       font-family: PingFang-SC-Bold;
@@ -61,11 +63,13 @@ export default {
     & .message-title {
       overflow: hidden;
       display: block;
-      width: 420px;
+      /*width: 420px;*/
+      width: 70%;
     }
     & .item-main-info {
       padding: 10px 0;
-      width: 580px;
+      /*width: 580px;*/
+      width: 100%;
       float: left;
       & span {
         font-family: PingFang-SC-Medium;
@@ -93,7 +97,8 @@ export default {
       }
     }
     & .item-main-img {
-      width: 420px;
+      /*width: 420px;*/
+      width: 70%;
     }
     & .item-img {
       width: 160px;
