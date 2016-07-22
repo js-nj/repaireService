@@ -2,7 +2,7 @@
   <mt-header fixed title="我的保修" id="repair-mt-header">
     <mt-button v-link="'/'" icon="back" slot="left"></mt-button>
   </mt-header>
-  <div class="main">
+  <div class="nav-header">
     <div class="repair-state">
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.waitProcess }" v-on:click="chooseProcess('waitProcess')">
         <div>
@@ -35,9 +35,14 @@
         <span v-bind:class="{ 'item-tips': (!repairState.commented)&&unreadNum.commented }">{{unreadNum.commented?unreadNum.commented:''}}</span>
       </a> 
     </div>
+  </div>
+  <div class="main">
     <div id="app">
       <router-view></router-view>
     </div>
+    <button class="post" v-on:click="post">
+      H
+    </button>
   </div>
 </template>
 
@@ -52,6 +57,9 @@ function changeState(models, readNumModels, el) {
         models[i] = false;
       }
     }
+}
+function loadView(el) {
+  this.$router.go(el);
 }
 export default {
   data () {
@@ -78,7 +86,11 @@ export default {
   },
   methods: {
     chooseProcess: function(elName) {
+      loadView.call(this,elName);
       changeState(this.repairState, this.unreadNum, elName);
+    },
+    post: function() {
+      this.$router.go('post');
     }
   }
 }
@@ -88,20 +100,26 @@ export default {
 #repair-mt-header {
   background-color: #fff;
   color: #000000;
-  /*height: 45px;*/
+  /*height: 120px;*/
 }
-.main {
+.nav-header {
   margin-top: 65px;
+  height: 60px;
+  top: 0;
+  right: 0;
+  left: 0;
+  position: fixed;
+  z-index: 1;
   & .repair-state {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     text-align: center;
-    height: 45px;
-    line-height: 45px;
+    height: 60px;
+    line-height: 60px;
     background-color: #F5F5F5;
     & .repair-state-item {
-      font-size: 15px;
+      font-size: 26px;
       display: block;
       -webkit-box-flex: 1;
       -ms-flex: 1;
@@ -116,7 +134,8 @@ export default {
         border-radius: 12.5px;
         background-color: #F86262;
         float: right;
-        margin-top: -44px;
+        font-size: 15px;
+        margin-top: -54px;
         /*& span {*/
           line-height: 25px;
           /*height: 25px;*/
@@ -131,5 +150,19 @@ export default {
     }
   }
 }
-
+.main {
+  /*height: 960px;*/
+  margin-top: 125px;
+}
+.post {
+    position: fixed;
+    background: #16162A;
+    height: 80px;
+    width: 80px;
+    border: none;
+    color: #fff;
+    border-radius: 40px;
+    top: 900px;
+    right: 50px;
+}
 </style>
