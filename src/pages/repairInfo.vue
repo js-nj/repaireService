@@ -38,6 +38,7 @@
     </mt-cell>
   </div>
   <div class="modal">
+    <div class="modal-shadow"></div>
     <div class="modal-content">
       <span class="modal-title">报修评价</span>
       <div class="comment-div">
@@ -56,7 +57,6 @@
         <mt-button type="primary" class="save-button" @click="save">提交</mt-button>
       </div>
     </div>
-    <div class="modal-shadow"></div>
   </div>
 </template>
 
@@ -189,25 +189,25 @@ export default {
   }
 }
 .modal {
+  position: fixed;
+  left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
   & .modal-shadow {
-    position: fixed;
-    left: 0;
-    top: 0;
     width: 100%;
-    height: 100%;
+    height: 35%;
     opacity: 0.6;
     z-index: -1;
     background: #666;
   }
   & .modal-content {
     background-color: #fff;
-    height: 680px;
+    height: 65%;
     width: 100%;
     z-index: 1;
-    position: fixed;
-    bottom: 0px;
+    /*position: fixed;*/
+    /*bottom: 0px;*/
     & .modal-title{
       display: block;
       height: 100px;
