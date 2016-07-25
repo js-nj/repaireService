@@ -8,13 +8,13 @@
         <div>
           待处理
         </div> 
-        <span v-bind:class="{ 'item-tips': (!repairState.waitProcess)&&unreadNum.waitProcess }">{{unreadNum.waitProcess?unreadNum.waitProcess:''}}</span>
+        <!-- <span v-bind:class="{ 'item-tips': (!repairState.waitProcess)&&unreadNum.waitProcess }">{{unreadNum.waitProcess?unreadNum.waitProcess:''}}</span> -->
       </a> 
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.waitRepair }" v-on:click="chooseProcess('waitRepair')">
         <div>
           待维修
         </div> 
-        <span v-bind:class="{ 'item-tips': (!repairState.waitRepair)&&unreadNum.waitRepair }">{{unreadNum.waitRepair?unreadNum.waitRepair:''}}</span>
+        <!-- <span v-bind:class="{ 'item-tips': (!repairState.waitRepair)&&unreadNum.waitRepair }">{{unreadNum.waitRepair?unreadNum.waitRepair:''}}</span> -->
       </a> 
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.repaired }" v-on:click="chooseProcess('repaired')">
         <div>
@@ -26,13 +26,13 @@
         <div>
           已驳回
         </div>
-        <span v-bind:class="{ 'item-tips': (!repairState.rejected)&&unreadNum.rejected }">{{unreadNum.rejected?unreadNum.rejected:''}}</span>
+        <!-- <span v-bind:class="{ 'item-tips': (!repairState.rejected)&&unreadNum.rejected }">{{unreadNum.rejected?unreadNum.rejected:''}}</span> -->
       </a> 
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.commented }" v-on:click="chooseProcess('commented')">
         <div>
           已评价
         </div>
-        <span v-bind:class="{ 'item-tips': (!repairState.commented)&&unreadNum.commented }">{{unreadNum.commented?unreadNum.commented:''}}</span>
+        <!-- <span v-bind:class="{ 'item-tips': (!repairState.commented)&&unreadNum.commented }">{{unreadNum.commented?unreadNum.commented:''}}</span> -->
       </a> 
     </div>
   </div>
@@ -70,11 +70,11 @@ export default {
         commented: false
       },
       unreadNum: {
-        waitProcess: 0,
-        waitRepair: 10,
-        repaired: 10,
-        rejected: 10,
-        commented: 10
+        // waitProcess: 0,
+        // waitRepair: 10,
+        repaired: 10
+        // rejected: 10,
+        // commented: 10
       }
     }
   },
