@@ -9,7 +9,7 @@ export default {
     return {
       dataResource: [{
             messagetitle:'等待维修哦',
-            info:'爱上一匹野马，可我的家里',
+            info:'爱上一匹野马，可我的家里没有草原，这让我感到悲伤董小姐',
             timezone: '1小时前',
             // tag:'网络',
             // img: 'http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg'

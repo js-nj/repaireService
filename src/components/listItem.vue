@@ -1,8 +1,8 @@
 <template>
-  <div class="list-item">
+  <div class="list-item" @click="messageInfo">
     <div class="item-main">
       <span class="message-title">{{messagetitle}}</span>
-      <div class="item-main-info  item-main-img">
+      <div class="item-main-info" v-bind:class="{ 'item-main-img': !!(img)}">
         <span>
           {{info}}
         </span>
@@ -22,6 +22,11 @@
 
 <script>
 export default {
+  methods: {
+    messageInfo: function() {
+      this.$router.go({name:'repairInfo', params: {wid:this.messagetitle}})
+    }
+  },
   props: {
     messagetitle:{
       type: String
