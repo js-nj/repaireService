@@ -32,20 +32,38 @@
     <div class="admin-reply">
       <span>管理员回复:</span>
       <span>我知道你我都没有错，只是忘了怎么退后，信誓旦旦给的承诺我知道你我都没有错，只是忘了怎么退后，信誓旦旦给的承诺</span>
+      <tips class="comment-tips"></tips>
     </div>
     <mt-cell class="maintenance-worker" title="派出维修人员" is-link>
       <span>王秋实（13811111111）</span>
     </mt-cell>
+    <mt-button type="primary" class="comment-button" @click="doComment">评价本次报修</mt-button>
   </div>
-  <grade></grade>
+  <grade v-show="showgrade"></grade>
 </template>
 
 <script>
 import { Header, Button, Swipe, SwipeItem, Cell} from 'bh-mint-ui';
 import grade from '../components/grade.vue';
+import tips from '../components/tips.vue';
 export default {
+  data() {
+    return {
+      showgrade: false
+    }
+  },
   ready() {
     console.log(this.$route.params)
+  },
+  methods: {
+    doComment: function() {
+      this.showgrade = true;
+    }
+  },
+  events: {
+    'grade-close': function(notify) {
+      this.showgrade = notify;
+    }
   },
   components: {
     [Header.name]: Header,
@@ -53,7 +71,8 @@ export default {
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
     [Cell.name]: Cell,
-    grade
+    grade,
+    tips
   }
 }
 </script>
@@ -146,9 +165,18 @@ export default {
       display: block;
       margin-top: 10px;
     }
+    & .comment-tips {
+      margin-top: 30px;
+    }
   }
   & .maintenance-worker {
     margin-top: 20px;
+  }
+  & .comment-button {
+    width: 100%;
+    top: 20px;
+    height: 100px;
+    border-radius: 0;
   }
 }
 </style>

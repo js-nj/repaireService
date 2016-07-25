@@ -40,9 +40,7 @@
     <div id="app">
       <router-view></router-view>
     </div>
-    <button class="post" v-on:click="post">
-      H
-    </button>
+    <i class="icon-bordercolor" v-on:click="post"></i>
   </div>
 </template>
 
@@ -154,15 +152,23 @@ export default {
   /*height: 960px;*/
   margin-top: 125px;
 }
-.post {
-    position: fixed;
-    background: #16162A;
-    height: 80px;
-    width: 80px;
-    border: none;
-    color: #fff;
-    border-radius: 40px;
-    top: 900px;
-    right: 50px;
+.icon-bordercolor {
+  position: fixed;
+  background: #16162A;
+  height: 80px;
+  width: 80px;
+  border: none;
+  color: #fff;
+  text-align: center;
+  line-height: 80px;
+  border-radius: 40px;
+  top: 900px;
+  right: 50px;
+  font-family:"iconfont" !important;
+  color: #E8E9EC;
+  font-size:36px;font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
 }
 </style>

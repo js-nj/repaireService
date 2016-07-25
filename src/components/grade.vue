@@ -1,6 +1,6 @@
 <template>
   <div class="modal">
-    <div class="modal-shadow"></div>
+    <div class="modal-shadow" @click="hide"></div>
     <div class="modal-content">
       <span class="modal-title">报修评价</span>
       <div class="comment-div">
@@ -34,6 +34,13 @@ export default {
     [Button.name]: Button,
   },
   methods: {
+    hide: function() {
+      this.$dispatch('grade-close', false)
+    },
+    save: function() {
+      alert(1)
+      this.$dispatch('grade-close', false)
+    },
     gradeFunc: function(index) {
       var gradeArr = [];
       for (var i = 0; i < this.gradeChoosen.length; i++) {
