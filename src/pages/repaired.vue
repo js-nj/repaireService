@@ -14,7 +14,8 @@ export default {
   data() {
     return {
       dataResource: [],
-      pagenum: 1
+      pagenum: 1,
+      allLoaded: false
     }
   },
   methods: {

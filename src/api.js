@@ -25,6 +25,7 @@ function loadData(state, num, app) {
       self.allLoaded = true;
     }
   },function(err) {
+    self.allLoaded = true;
   })  
 }
 function doComment(option) {

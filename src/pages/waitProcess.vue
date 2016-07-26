@@ -14,7 +14,8 @@ export default {
   data() {
     return {
       dataResource: [],
-      pagenum: 1
+      pagenum: 1,
+      allLoaded: false
     }
   },
   methods: {
@@ -26,7 +27,6 @@ export default {
   },
   created() {
     api.loadData.call(this, 'DCL', 1);
-
   },
   components: {
     ListItem,
