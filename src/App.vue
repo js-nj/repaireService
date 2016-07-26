@@ -20,7 +20,8 @@
         <div>
           已维修
         </div>
-        <span v-bind:class="{ 'item-tips': (!repairState.repaired)&&unreadNum.repaired }">{{unreadNum.repaired?unreadNum.repaired:''}}</span>
+        <!-- <span v-bind:class="{ 'item-tips': (!repairState.repaired)&&unreadNum.repaired }">{{unreadNum.repaired?unreadNum.repaired:''}}</span> -->
+        <span v-bind:class="{ 'item-tips': unreadNum.repaired }">{{unreadNum.repaired?unreadNum.repaired:''}}</span>
       </a> 
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.rejected }" v-on:click="chooseProcess('rejected')">
         <div>
@@ -46,10 +47,11 @@
 
 <script>
 import { Header, Button } from 'bh-mint-ui';
+import api from './api.js';
 
 function changeState(models, readNumModels, el) {
     models[el] = true;
-    readNumModels[el] = 0;
+    // readNumModels[el] = 0;
     for(var i in models) {
       if(i != el) {
         models[i] = false;
@@ -60,6 +62,10 @@ function loadView(el) {
   this.$router.go(el);
 }
 export default {
+  created() {
+    var self = this;
+    api.loadData.call(this, 'YWX', 1, 'home');
+  },
   data () {
     return {
       repairState: {
@@ -72,7 +78,7 @@ export default {
       unreadNum: {
         // waitProcess: 0,
         // waitRepair: 10,
-        repaired: 10
+        repaired: ''
         // rejected: 10,
         // commented: 10
       }
@@ -143,7 +149,7 @@ export default {
         /*}*/
       }
     }
-    & .item-selected {
+    & .item-selected div {
       color: #2196F3
     }
   }

@@ -13,7 +13,7 @@
           <i class="icon-grade" v-bind:class="{'grade-choosen':gradeChoosen[4]}" @click="gradeFunc(4)"></i>
         </div>
         <div class="comment-textarea">
-          <textarea class="comment-describe" placeholder="请填写评价" rows="5"></textarea>
+          <textarea class="comment-describe" placeholder="请填写评价" rows="5" v-model="commentinfo"></textarea>
           <span class="comment-describe-holder">100</span>
         </div>
         <mt-button type="primary" class="save-button" @click="save">提交</mt-button>
@@ -24,10 +24,18 @@
 
 <script>
 import { Button } from 'bh-mint-ui';
+import api from '../api.js';
 export default {
   data() {
     return {
-      gradeChoosen: [false,false,false,false,false]
+      gradeChoosen: [false,false,false,false,false],
+      gradepoints:'',
+      commentinfo: ''
+    }
+  },
+  props: {
+    wid:{
+      type: String
     }
   },
   components: {
@@ -38,8 +46,18 @@ export default {
       this.$dispatch('grade-close', false)
     },
     save: function() {
-      alert(1)
-      this.$dispatch('grade-close', false)
+      if(this.gradepoints == '') {
+        return;
+      }
+      if(this.commentinfo == '') {
+        return;
+      }
+      console.log(this.gradepoints,this.commentinfo)
+      api.doComment.call(this,{
+        PF: this.gradepoints,
+        BXRPJ: this.commentinfo,
+        WID: this.wid
+      });
     },
     gradeFunc: function(index) {
       var gradeArr = [];
@@ -52,6 +70,7 @@ export default {
         }
       }
       this.gradeChoosen = gradeArr;
+      this.gradepoints = String(1 + Number(index));
     }
   }
 }

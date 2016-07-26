@@ -42,7 +42,7 @@ export default function(router) {
       name: 'post',
       component: post,
     },
-    '/repairInfo/:wid': {
+    '/repairInfo/:info': {
       name: 'repairInfo',
       component: repairInfo
     }

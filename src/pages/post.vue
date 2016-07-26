@@ -32,6 +32,7 @@
 
 <script>
 import { Header, Button, Cell, Picker, MessageBox } from 'bh-mint-ui';
+import api from '../api.js';
 var errTipsInfo = {
     questioninfo:'请描述您遇到的问题',
     phone:'请输入正确的手机号',
@@ -43,20 +44,21 @@ var errTipsInfo = {
 //根据不同的类型取数据
 function getPickerData(val) {
   var url;
+  this.presentPicker = val;
   switch (val) {
     case 'breaks':
-      url = '111';
+      api.getRepairType.call(this);
       break;
     case 'area':
-      url = '222';
+      api.getRepairLoc.call(this);
       break;
     default:
-      url = '333';
+    console.log('xxxxx',this.repair);
+      api.getRepairlocationinfo.call(this, this.repair.area.val);
       break;
   }
-  this.presentPicker = val;
   //TODO请求数据ajax
-  this.slots[0].values = ['请选择',url];
+  // this.slots[0].values = ['请选择',url];
 }
 function validForm() {
   for(var i in this.form) {
@@ -77,6 +79,11 @@ export default {
         return
       }
       this.form[(this.presentPicker)] = this.changeval;
+      for (var i = 0; i < this.repair[this.presentPicker].map.length; i++) {
+        if(((this.presentPicker == 'loc')?this.repair[this.presentPicker].map[i].label : this.repair[this.presentPicker].map[i].name) == this.form[this.presentPicker]) {
+          this.repair[this.presentPicker].val = (this.presentPicker == 'loc') ? this.repair[this.presentPicker].map[i].value : this.repair[this.presentPicker].map[i].id;
+        }
+      }
       this.changeval = '请选择';
       this.isshowpicker = false;
     },
@@ -92,7 +99,16 @@ export default {
     save: function() {
       var result = validForm.call(this);
       if(result === true) {
-        MessageBox('提示', '提交成功！');
+        console.log('repairtype',this.repair.breaks.val,this.repair.area.val,this.repair.loc.val);
+        var options = {
+          BXRSJ:this.form.phone,
+          GZLX:this.repair.breaks.val,
+          BXQY:this.repair.area.val,
+          BXDD:this.repair.loc.val,
+          XXDD:this.form.locationinfo,
+          MS:this.form.questioninfo
+        }
+        api.saveRepair.call(this,options)
       }else {
         MessageBox('提示', result);
       }
@@ -110,6 +126,23 @@ export default {
         loc: '',
         locationinfo:''
       },
+      repair: {
+        breaks: {
+          map: '',
+          val: ''
+        },
+        area: {
+          map: '',
+          val: ''
+        },
+        loc: {
+          map: '',
+          val: ''
+        }
+      },
+      // repairtypeKeyMap: '',
+      // repairlocKeyMap: '',
+      // repairlocationinfoKeyMap: '',
       slots: [
         {
           flex: 1,

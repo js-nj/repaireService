@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     messageInfo: function() {
-      this.$router.go({name:'repairInfo', params: {wid:this.messagetitle}})
+      this.$router.go({name:'repairInfo', params: {info:JSON.stringify(this.all)}})
     }
   },
   props: {
@@ -46,7 +46,12 @@ export default {
     },
     img: {
       type:String
+    },    
+    all:{
+      type: Object
     }
+  },
+  created() {
   }
 }
 </script>

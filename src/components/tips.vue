@@ -7,18 +7,40 @@
       <i class="icon-grade" v-bind:class="{'grade-show':gradeshow[3]}" @click="gradeShowFunc(3)"></i>
       <i class="icon-grade" v-bind:class="{'grade-show':gradeshow[4]}" @click="gradeShowFunc(4)"></i>
     </div>
-    <span class="points">4.2</span>
+    <span class="points">{{bxcommentpoints}}</span>
     <div class="my-comment">
       <span class="my-comment-title">我的评价：</span>
-      箭头在顶部箭头在顶部箭头在顶部箭头在顶部箭头在顶部箭头在顶
+      <div style="word-wrap: break-word;word-break: normal;padding-top: 5px;">{{bxcomment}}</div>
     </div>
   </div>
 </template>
 <script>
 export default {
+  created() {
+    console.log('this.bxcommentpoints',this.bxcommentpoints)
+    if(this.bxcommentpoints !== '') {
+      var num = []
+      for (var i = 0; i < 5; i++) {
+        if(i<Number(this.bxcommentpoints)) {
+          num[i] = true
+        }else {
+          num[i] = false
+        }
+      }
+      this.gradeshow = num;
+    }
+  },
   data() {
     return {
-      gradeshow:[true,true,true,false,false]
+      gradeshow:[false,false,false,false,false]
+    }
+  },
+  props: {
+    bxcomment:{
+      type: String
+    },
+    bxcommentpoints:{
+      type: String
     }
   }
 }
@@ -29,6 +51,7 @@ export default {
   position: relative;
   background-color: #F6F7F9;
   width: 100%;
+  padding-bottom: 10px;
   /*height: 150px;*/
   /*line-height: 150px;*/
   color: #fff;

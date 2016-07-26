@@ -4,6 +4,7 @@ import VueResource from 'vue-resource';
 import routerconfig from './router'
 Vue.use(VueResource);
 Vue.use(VueRouter);
+Vue.http.options.emulateJSON = true;
 const router = new VueRouter({
 	hashbang: true,
 	history: false,

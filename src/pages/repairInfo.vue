@@ -9,60 +9,125 @@
         <mt-swipe-item class="swipe-view-item"><img class="swipe-view-item" src="http://f.named.cn/f/2a7fd6fd84158d0ec5b99fce2f8d037a.jpg"/></mt-swipe-item>
         <mt-swipe-item class="swipe-view-item"><img class="swipe-view-item" src="http://f.named.cn/f/b6d4d1dbae3ee52fd164f85ab52a584e.t720x482.jpg"/></mt-swipe-item>
       </mt-swipe>
-      <span class="message-title">Fuji Superia 200，很少拍这种城市题材，也几乎没用过柯达以外的胶卷，算是学习吧，各种渣片～～～</span>
+      <span class="message-title">{{ title }}</span>
       <div class="user-info">
         <div class="avatar-name">
           <img class="avatar" src="http://f.named.cn/f/b6d4d1dbae3ee52fd164f85ab52a584e.t720x482.jpg">
           <span>
-            刘俊（1406021）
+            {{bxuser}}（{{bxuserid}}）
           </span>
         </div>
         <span> </span>
-        <span class="time-zone">9小时前</span>
+        <span class="time-zone">{{timezone | fixtime}}</span>
       </div>
     </div>
     <div class="location-phone">
       <div class="phone">
-        <span><i>p</i>15895847445</span>
+        <span><i class="icon-call"></i>{{bxuserphone}}</span>
       </div>
       <div class="location">
-        <span><i>l</i>爱乐学院男生宿舍B座3楼306室</span>
+        <span><i class="icon-locationon"></i>{{bxlocation}}</span>
       </div>
     </div>
-    <div class="admin-reply">
+    <div class="admin-reply" v-show="state.adminreply">
       <span>管理员回复:</span>
-      <span>我知道你我都没有错，只是忘了怎么退后，信誓旦旦给的承诺我知道你我都没有错，只是忘了怎么退后，信誓旦旦给的承诺</span>
-      <tips class="comment-tips"></tips>
+      <span>{{bxadminrply}}</span>
+      <tips class="comment-tips" v-show="state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
     </div>
-    <mt-cell class="maintenance-worker" title="派出维修人员" is-link>
-      <span>王秋实（13811111111）</span>
+    <mt-cell class="maintenance-worker" v-show="state.worker" title="派出维修人员" is-link>
+      <a href="tel:{{wxpersonphone}}">{{wxperson}}</a>
     </mt-cell>
-    <mt-button type="primary" class="comment-button" @click="doComment">评价本次报修</mt-button>
+    <tips class="comment-tips" v-show="state.worker&&state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
+    <mt-button type="primary" class="comment-button" v-show="state.commentbutton" @click="doComment">评价本次报修</mt-button>
   </div>
-  <grade v-show="showgrade"></grade>
+  <grade v-show="state.showgrade" :wid="wid"></grade>
 </template>
 
 <script>
 import { Header, Button, Swipe, SwipeItem, Cell} from 'bh-mint-ui';
 import grade from '../components/grade.vue';
 import tips from '../components/tips.vue';
+import utils from '../utils.js';
+function changeState(starr) {
+  for(var i in this) {
+    console.log(i,starr.indexOf(i))
+    if(starr.indexOf(i) > -1) {
+      this[i] = true;
+    } else {
+      this[i] = false;
+    }
+  }
+}
 export default {
+  filters: {
+    fixtime: utils.fixTime
+  },
   data() {
     return {
-      showgrade: false
+      title: '',
+      timezone: '',
+      bxuser: '',
+      bxuserid: '',
+      bxuserphone:'',
+      bxlocation: '',
+      bxadminrply: '',
+      bxcomment: '',
+      bxcommentpoints: '',
+      wxperson: '',
+      wid:'',
+      state: {
+        adminreply: false,
+        showgrade: false,
+        worker: false,
+        commentbutton:false,
+        adminreplytips: false,
+      }
+
     }
   },
-  ready() {
-    console.log(this.$route.params)
+  created() {
+    var info = JSON.parse(this.$route.params.info);
+    console.log(info);
+    this.title = info.MS;
+    this.timezone = info.BXSJ;
+    this.bxuser = info.BXRXM;
+    this.bxuserid = info.BXRGH;
+    this.bxuserphone = info.BXRSJ;
+    this.bxlocation = info.BXQY_DISPLAY+info.BXDD_DISPLAY;
+    this.bxadminrply = info.BHYJ;
+    this.bxcomment = info.BXRPJ;
+    this.bxcommentpoints = info.PF;
+    this.wxperson = info.WXR_DISPLAY + ' (' + info.WXRSJ + ')';
+    this.wxpersonphone = info.WXRSJ;
+    this.wid = info.WID;
+    switch (info.DQZT) {
+      case '待维修':
+        changeState.apply(this.state,[['worker']]);
+        break;
+      case '已维修':
+        changeState.apply(this.state,[['worker','commentbutton']]);
+        break;
+      case '已驳回':
+        changeState.apply(this.state,[['adminreply','commentbutton']]);
+        break;
+      case '已评价':
+        if(this.bxadminrply){
+          changeState.apply(this.state,[['adminreply','adminreplytips']]);
+        } else {
+          changeState.apply(this.state,[['worker','adminreplytips']]);
+        }
+        break;
+    }
+    console.log(this.state);
   },
   methods: {
     doComment: function() {
-      this.showgrade = true;
+      this.state.showgrade = true;
     }
   },
   events: {
     'grade-close': function(notify) {
-      this.showgrade = notify;
+      this.state.showgrade = notify;
     }
   },
   components: {
@@ -148,10 +213,29 @@ export default {
     }
     & .phone {
       height: 100px;
+      line-height: 100px;
       border-bottom: 1px solid #E8E9EC;
+      & .icon-call {
+        margin-right: 10px;
+        font-family:"iconfont" !important;
+        color: #FF8605;
+        font-size:32px;font-style:normal;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-stroke-width: 0.2px;
+        -moz-osx-font-smoothing: grayscale;
+      }
     }
     & .location {
       height: 100px;
+      & .icon-locationon {
+        margin-right: 10px;
+        font-family:"iconfont" !important;
+        color: #FF8605;
+        font-size:32px;font-style:normal;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-stroke-width: 0.2px;
+        -moz-osx-font-smoothing: grayscale;
+      }
     }
   }
   & .admin-reply {
@@ -171,6 +255,10 @@ export default {
   }
   & .maintenance-worker {
     margin-top: 20px;
+    & a:hover, & a:visited, & a:link, & a:active {
+      text-decoration: none;
+      color:#B4B4B4;
+    }
   }
   & .comment-button {
     width: 100%;
