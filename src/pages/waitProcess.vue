@@ -10,21 +10,21 @@
 import ListItem from '../components/listItem.vue';
 import api from '../api.js';
 import { Loadmore } from 'bh-mint-ui';
-var merge = function() {
-  return Array.prototype.concat.apply([], arguments)
-};
-function loadData(num) {
-  var self = this;
-  api.call(this,'/getMyRepairsPagination.do',{state:'DCL',pageNumber:num,pageSize:10}, function(result) {
-    var data = result.data.datas.bxsscxwdbxjlbg;
-    if(data.rows.length>0) {
-      self.dataResource=merge(self.dataResource,data.rows);
-    }else{
-      this.allLoaded = true;
-    }
-  },function(err) {
-  })  
-}
+// var merge = function() {
+//   return Array.prototype.concat.apply([], arguments)
+// };
+// function loadData(num) {
+//   var self = this;
+//   api.call(this,'/getMyRepairsPagination.do',{state:'DCL',pageNumber:num,pageSize:10}, function(result) {
+//     var data = result.data.datas.bxsscxwdbxjlbg;
+//     if(data.rows.length>0) {
+//       self.dataResource=merge(self.dataResource,data.rows);
+//     }else{
+//       this.allLoaded = true;
+//     }
+//   },function(err) {
+//   })  
+// }
 export default {
   data() {
     return {
@@ -35,7 +35,7 @@ export default {
   methods: {
     loadBottom(id) {
         this.page = this.page + 1;
-        loadData.call(this,this.page,);
+        api.call(this, 'DCL', this.page);
         // this.getCardList(this.page)
         // if(this.page < 880) {
         //   this.allLoaded = true
@@ -45,7 +45,7 @@ export default {
   },
   created() {
     // var self = this;
-    loadData.call(this,1);
+    api.call(this, 'DCL', 1);
     // api.call(this,'/getMyRepairsPagination.do',{state:'DCL',pageNumber:1,pageSize:10}, function(result) {
     //   var data = result.data.datas.bxsscxwdbxjlbg;
     //   self.dataResource = data.rows;
