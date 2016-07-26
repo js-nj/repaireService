@@ -5,6 +5,7 @@ import routerconfig from './router'
 Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.http.options.emulateJSON = true;
+global.HOST = "http://amptest.wisedu.com";
 const router = new VueRouter({
 	hashbang: true,
 	history: false,

@@ -53,12 +53,9 @@ function getPickerData(val) {
       api.getRepairLoc.call(this);
       break;
     default:
-    console.log('xxxxx',this.repair);
       api.getRepairlocationinfo.call(this, this.repair.area.val);
       break;
   }
-  //TODO请求数据ajax
-  // this.slots[0].values = ['请选择',url];
 }
 function validForm() {
   for(var i in this.form) {
@@ -99,7 +96,6 @@ export default {
     save: function() {
       var result = validForm.call(this);
       if(result === true) {
-        console.log('repairtype',this.repair.breaks.val,this.repair.area.val,this.repair.loc.val);
         var options = {
           BXRSJ:this.form.phone,
           GZLX:this.repair.breaks.val,
@@ -140,9 +136,6 @@ export default {
           val: ''
         }
       },
-      // repairtypeKeyMap: '',
-      // repairlocKeyMap: '',
-      // repairlocationinfoKeyMap: '',
       slots: [
         {
           flex: 1,
