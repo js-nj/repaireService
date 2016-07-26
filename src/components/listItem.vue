@@ -11,7 +11,7 @@
             {{tag}}
           </span>
           <span class="time-zone">
-            {{timezone}}
+            {{timezone | fixtime}}
           </span>
         </div>
       </div>
@@ -21,7 +21,11 @@
 </template>
 
 <script>
+import utils from '../utils.js';
 export default {
+  filters: {
+    fixtime: utils.fixTime
+  },
   methods: {
     messageInfo: function() {
       this.$router.go({name:'repairInfo', params: {wid:this.messagetitle}})

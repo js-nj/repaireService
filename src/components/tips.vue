@@ -16,6 +16,11 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      gradeshow:[true,true,true,false,false]
+    }
+  }
 }
 </script>
 
@@ -45,7 +50,7 @@ export default {
       -webkit-text-stroke-width: 0.2px;
       -moz-osx-font-smoothing: grayscale;
     }
-    & .grade-choosen {
+    & .grade-show {
       color: #FF8605;
     }
   }

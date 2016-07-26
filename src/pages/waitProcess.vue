@@ -1,87 +1,70 @@
 <template>
 <div>
-  <list-item v-for="item in dataResource" :messagetitle="item.messagetitle" :info="item.info" :timezone="item.timezone" :img="item.img" :tag="item.tag"></list-item>
+  <mt-loadmore class="mt-loadmore-div" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false">
+    <list-item v-for="item in dataResource" :messagetitle="item.BXQY_DISPLAY+item.BXDD_DISPLAY" :info="item.MS" :timezone="item.BXSJ" img="http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg" :tag="item.tag"></list-item>
+  </mt-loadmore>
 </div>
 </template>
 
 <script>
 import ListItem from '../components/listItem.vue';
+import api from '../api.js';
+import { Loadmore } from 'bh-mint-ui';
+var merge = function() {
+  return Array.prototype.concat.apply([], arguments)
+};
+function loadData(num) {
+  var self = this;
+  api.call(this,'/getMyRepairsPagination.do',{state:'DCL',pageNumber:num,pageSize:10}, function(result) {
+    var data = result.data.datas.bxsscxwdbxjlbg;
+    if(data.rows.length>0) {
+      self.dataResource=merge(self.dataResource,data.rows);
+    }else{
+      this.allLoaded = true;
+    }
+  },function(err) {
+  })  
+}
 export default {
   data() {
     return {
-      dataResource: [{
-            messagetitle:'爱上',
-            info:'爱上一匹野马，可我的家里没有草原，这让我感到忧伤',
-            timezone: '1小时前',
-            tag:'网络',
-            img: 'http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg'
-        
-      },{
-            messagetitle:'呵呵',
-            info:'空调全是坏的',
-            timezone: '1小时前',
-            tag:'网络',
-            img: 'http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg'
-        
-      },{
-            messagetitle:'呵呵',
-            info:'空调全是坏的',
-            timezone: '1小时前',
-            tag:'网络',
-            img: 'http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg'
-        
-      },{
-            messagetitle:'呵呵',
-            info:'空调全是坏的',
-            timezone: '1小时前',
-            tag:'网络',
-            img: 'http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg'
-        
-      },{
-            messagetitle:'呵呵',
-            info:'空调全是坏的',
-            timezone: '1小时前',
-            tag:'网络',
-            img: 'http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg'
-        
-      },{
-            messagetitle:'呵呵',
-            info:'空调全是坏的',
-            timezone: '1小时前',
-            tag:'网络',
-            img: 'http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg'
-        
-      },{
-            messagetitle:'呵呵',
-            info:'空调全是坏的',
-            timezone: '1小时前',
-            tag:'网络',
-            img: 'http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg'
-        
-      },{
-            messagetitle:'呵呵',
-            info:'空调全是坏的',
-            timezone: '1小时前',
-            tag:'网络',
-            img: 'http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg'
-        
-      },{
-            messagetitle:'呵呵',
-            info:'空调全是坏的',
-            timezone: '1小时前',
-            tag:'网络',
-            img: 'http://f.named.cn/f/2fafab7df89d79ff2f5ca1f1e1c379ca.t720x541.jpg'
-        
-      }]
+      dataResource: [],
+      pagenum: 1
     }
   },
+  methods: {
+    loadBottom(id) {
+        this.page = this.page + 1;
+        loadData.call(this,this.page,);
+        // this.getCardList(this.page)
+        // if(this.page < 880) {
+        //   this.allLoaded = true
+        // }
+        this.$broadcast('onBottomLoaded', id)
+    }
+  },
+  created() {
+    // var self = this;
+    loadData.call(this,1);
+    // api.call(this,'/getMyRepairsPagination.do',{state:'DCL',pageNumber:1,pageSize:10}, function(result) {
+    //   var data = result.data.datas.bxsscxwdbxjlbg;
+    //   self.dataResource = data.rows;
+    //   console.log(data)
+    // },function(err) {
+    //   console.log(err)
+    // })
+  },
   components: {
-    ListItem
+    ListItem,
+    [Loadmore.name]:Loadmore
   }
 }
 </script>
 
 <style scoped>
+.mt-loadmore-div {
+  padding-top: 0px;
+}
 /*.post {
     position: fixed;
     background: red;
