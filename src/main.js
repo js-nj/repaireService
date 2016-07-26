@@ -5,13 +5,27 @@ import routerconfig from './router'
 Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.http.options.emulateJSON = true;
+
 global.HOST = "http://amptest.wisedu.com";
 const router = new VueRouter({
 	hashbang: true,
 	history: false,
 	saveScrollPosition: true,
 	suppressTransitionError: true
-});
-routerconfig(router);
-var App = Vue.extend({});
-router.start(App, 'body');
+})
+routerconfig(router)
+
+let Init = () => {
+  var App = Vue.extend({});
+  router.start(App, 'body');
+};
+
+if (process.env.NODE_ENV === 'production') {
+  Hybrid.Init(() => {
+    global.HOST = site_url;
+    Init();
+  });
+} else {
+  global.HOST = 'http://amptest.wisedu.com'
+  Init();
+}

@@ -107,7 +107,7 @@ export default {
   /*height: 120px;*/
 }
 .nav-header {
-  margin-top: 65px;
+  margin-top: 40Px;
   height: 60px;
   top: 0;
   right: 0;
