@@ -2,6 +2,7 @@
   "name": "repairservice",
   "description": "A Vue.js project",
   "author": "Necfol",
+  "packageName": "repairService",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --hot",
