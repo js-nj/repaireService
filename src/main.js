@@ -11,7 +11,7 @@ const router = new VueRouter({
 	history: false,
 	saveScrollPosition: true,
 	suppressTransitionError: true
-})
-routerconfig(router)
-var App = Vue.extend({})
-router.start(App, 'body')
+});
+routerconfig(router);
+var App = Vue.extend({});
+router.start(App, 'body');

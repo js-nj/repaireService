@@ -22,7 +22,7 @@ export default {
     loadBottom(id) {
         this.page = this.page + 1;
         api.loadData.call(this, 'DCL', this.page);
-        this.$broadcast('onBottomLoaded', id)
+        this.$broadcast('onBottomLoaded', id);
     }
   },
   created() {
@@ -30,7 +30,7 @@ export default {
   },
   components: {
     ListItem,
-    [Loadmore.name]:Loadmore
+    [Loadmore.name]: Loadmore
   }
 }
 </script>

@@ -14,7 +14,7 @@
         </div>
         <div class="comment-textarea">
           <textarea class="comment-describe" placeholder="请填写评价" rows="5" v-model="commentinfo"></textarea>
-          <span class="comment-describe-holder">100</span>
+          <span class="comment-describe-holder"><span class="tips" v-show="tipsmessage">{{tipsmessage}}</span>100</span>
         </div>
         <mt-button type="primary" class="save-button" @click="save">提交</mt-button>
       </div>
@@ -23,13 +23,14 @@
 </template>
 
 <script>
-import { Button } from 'bh-mint-ui';
+import { Button, Toast } from 'bh-mint-ui';
 import api from '../api.js';
 export default {
   data() {
     return {
       gradeChoosen: [false,false,false,false,false],
       gradepoints:'',
+      tipsmessage: '',
       commentinfo: ''
     }
   },
@@ -46,13 +47,21 @@ export default {
       this.$dispatch('grade-close', false)
     },
     save: function() {
+      var self = this;
       if(this.gradepoints == '') {
+        this.tipsmessage = '请选择星级';
+        setTimeout(function() {
+          self.tipsmessage = '';
+        }, 2000);
         return;
       }
       if(this.commentinfo == '') {
+        this.tipsmessage = '请选择填写评价';
+        setTimeout(function() {
+          self.tipsmessage = '';
+        }, 2000);
         return;
       }
-      console.log(this.gradepoints,this.commentinfo)
       api.doComment.call(this,{
         PF: this.gradepoints,
         BXRPJ: this.commentinfo,
@@ -150,6 +159,10 @@ export default {
         width: 100%;
         background: #fff;
         text-align: right;
+        & .tips {
+          float: left;
+          color: red;
+        }
       }
       & .save-button {
         width: 100%;
@@ -157,6 +170,6 @@ export default {
         border-radius: 0;
       }
     }
-  } 
+  }
 }
 </style>

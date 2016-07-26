@@ -46,7 +46,7 @@ export default {
     },
     img: {
       type:String
-    },    
+    },
     all:{
       type: Object
     }

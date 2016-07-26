@@ -93,7 +93,7 @@ export default {
     }
   }
 }
- 
+
 .speech-bubble:after {
   content: '';
   position: absolute;
@@ -101,12 +101,12 @@ export default {
   height: 0;
   border: 15px solid;
 }
- 
+
 /* 箭头的位置 */
 .speech-bubble-top:after {
   border-bottom-color: #F6F7F9;
   left: 10%;
   bottom: 100%;
-  margin-left: -15px;  
+  margin-left: -15px;
 }
 </style>

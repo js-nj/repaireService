@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { Header, Button, Cell, Picker, MessageBox } from 'bh-mint-ui';
+import { Header, Button, Cell, Picker, MessageBox, Toast } from 'bh-mint-ui';
 import api from '../api.js';
 var errTipsInfo = {
     questioninfo:'请描述您遇到的问题',
@@ -73,6 +73,7 @@ export default {
     },
     doOk: function() {
       if(this.changeval == '请选择') {
+        Toast('请先选择');
         return
       }
       this.form[(this.presentPicker)] = this.changeval;
@@ -85,8 +86,10 @@ export default {
       this.isshowpicker = false;
     },
     showpicker: function(val) {
-      if(val == 'loc' && this.form.area == '')
+      if(val == 'loc' && this.form.area == '') {
+        Toast('请先选择报修区域');
         return
+      }
       this.isshowpicker = true;
       getPickerData.call(this,val);
     },

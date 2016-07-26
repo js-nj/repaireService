@@ -7,34 +7,34 @@
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.waitProcess }" v-on:click="chooseProcess('waitProcess')">
         <div>
           待处理
-        </div> 
+        </div>
         <!-- <span v-bind:class="{ 'item-tips': (!repairState.waitProcess)&&unreadNum.waitProcess }">{{unreadNum.waitProcess?unreadNum.waitProcess:''}}</span> -->
-      </a> 
+      </a>
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.waitRepair }" v-on:click="chooseProcess('waitRepair')">
         <div>
           待维修
-        </div> 
+        </div>
         <!-- <span v-bind:class="{ 'item-tips': (!repairState.waitRepair)&&unreadNum.waitRepair }">{{unreadNum.waitRepair?unreadNum.waitRepair:''}}</span> -->
-      </a> 
+      </a>
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.repaired }" v-on:click="chooseProcess('repaired')">
         <div>
           已维修
         </div>
         <!-- <span v-bind:class="{ 'item-tips': (!repairState.repaired)&&unreadNum.repaired }">{{unreadNum.repaired?unreadNum.repaired:''}}</span> -->
         <span v-bind:class="{ 'item-tips': unreadNum.repaired }">{{unreadNum.repaired?unreadNum.repaired:''}}</span>
-      </a> 
+      </a>
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.rejected }" v-on:click="chooseProcess('rejected')">
         <div>
           已驳回
         </div>
         <!-- <span v-bind:class="{ 'item-tips': (!repairState.rejected)&&unreadNum.rejected }">{{unreadNum.rejected?unreadNum.rejected:''}}</span> -->
-      </a> 
+      </a>
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.commented }" v-on:click="chooseProcess('commented')">
         <div>
           已评价
         </div>
         <!-- <span v-bind:class="{ 'item-tips': (!repairState.commented)&&unreadNum.commented }">{{unreadNum.commented?unreadNum.commented:''}}</span> -->
-      </a> 
+      </a>
     </div>
   </div>
   <div class="main">

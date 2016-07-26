@@ -16,7 +16,7 @@ function loadData(state, num, app) {
       } else {
         if(data.rows.length > 0) {
           self.dataResource = merge(self.dataResource,data.rows);
-        } 
+        }
         if(data.rows.length < 10) {
           self.allLoaded = true;
         }
@@ -24,16 +24,16 @@ function loadData(state, num, app) {
     } else {
       self.allLoaded = true;
     }
-  },function(err) {
-  })  
+  },function(err) {});
 }
 function doComment(option) {
   var self = this;
   postData.call(self,'/commitCommentById.do',option, function(result) {
-    self.$dispatch('grade-close', false);
-    self.$router.replace('/waitProcess');
-  },function(err) {
-  })
+    if(result.success) {
+      self.$dispatch('grade-close', false);
+      self.$router.replace('/waitProcess');
+    }
+  },function(err) {});
 }
 function getRepairType() {
   var self = this;
@@ -44,8 +44,7 @@ function getRepairType() {
       pickerarr.push(this.repair[this.presentPicker].map[i].name)
     }
     this.slots[0].values = merge(['请选择'],pickerarr)
-  },function(err) {
-  })
+  },function(err) {});
 }
 function getRepairLoc() {
   var self = this;
@@ -56,8 +55,7 @@ function getRepairLoc() {
       pickerarr.push(this.repair[this.presentPicker].map[i].name)
     }
     this.slots[0].values = merge(['请选择'],pickerarr)
-  },function(err) {
-  })
+  },function(err) {});
 }
 function getRepairlocationinfo(val) {
   var self = this;
@@ -68,15 +66,13 @@ function getRepairlocationinfo(val) {
       pickerarr.push(this.repair[this.presentPicker].map[i].label)
     }
     this.slots[0].values = pickerarr
-  },function(err) {
-  })
+  },function(err) {});
 }
 function saveRepair(option) {
   var self = this;
   postData.call(self,'/saveMyRepairInfo.do',option, function(result) {
-    self.$router.replace('/waitProcess');  
-  },function(err) {
-  })
+    self.$router.replace('/waitProcess');
+  },function(err) {});
 }
 module.exports = {
   loadData: loadData,
