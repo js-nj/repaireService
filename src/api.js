@@ -15,7 +15,7 @@ function loadData(state, num, app) {
         self.unreadNum.repaired = data.totalSize;
       } else {
         if(data.rows.length > 0) {
-          self.dataResource=merge(self.dataResource,data.rows);
+          self.dataResource = merge(self.dataResource,data.rows);
         } 
         if(data.rows.length < 10) {
           self.allLoaded = true;
@@ -25,7 +25,6 @@ function loadData(state, num, app) {
       self.allLoaded = true;
     }
   },function(err) {
-    self.allLoaded = true;
   })  
 }
 function doComment(option) {

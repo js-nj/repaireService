@@ -12,7 +12,7 @@ export default {
   data() {
     return {
       dataResource: [],
-      pagenum: 1,
+      page: 1,
       allLoaded: false
     }
   },
