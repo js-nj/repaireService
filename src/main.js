@@ -6,7 +6,6 @@ Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.http.options.emulateJSON = true;
 
-global.HOST = "http://amptest.wisedu.com";
 const router = new VueRouter({
 	hashbang: true,
 	history: false,
@@ -21,6 +20,7 @@ let Init = () => {
 };
 
 if (process.env.NODE_ENV === 'production') {
+  global.HOST = site_url;
   Hybrid.Init(() => {
     global.HOST = site_url;
     Init();
