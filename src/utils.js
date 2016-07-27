@@ -60,7 +60,7 @@ function _fixTime(time, flag, noYear) {
       return (100 + n).toString().substr(1, 2);
   }
   // time = new Date(time);
-  time = new Date(time.replace(/\s+/g, 'T').concat('.000+08:00')).getTime();
+  time = new Date(time.replace(/\s+/g, 'T').concat('.000+08:00'));
   var s = '';
   if (time.getYear() !== new Date().getYear())
       s = (time.getFullYear() + "").slice(-2) + "年";
