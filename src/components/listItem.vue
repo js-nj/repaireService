@@ -94,7 +94,7 @@ export default {
         display: inline-block;
         text-decoration: none;
         font-weight: normal;
-        font-size: 10px;
+        font-size: 16px;
         height: 35px;
         line-height: 35px;
         padding: 0 5px 0px 10px;

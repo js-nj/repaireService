@@ -61,8 +61,12 @@ function validForm() {
   for(var i in this.form) {
     if(this.form[i] == '')
        return errTipsInfo[i];
-    if(i == 'phone' && !this.form[i].match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/))
+    if(i == 'phone' && !this.form[i].match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/)) {
       return errTipsInfo[i];
+    }
+    if(i == 'questioninfo' && this.form[i].length > 100) {
+      return '字数过长'
+    }
   }
   return true;
 }
@@ -202,7 +206,7 @@ export default {
   text-align: left;
   color: #403F44;
   padding-left: 30px;
-  font-size: 28px;
+  font-size: 34px;
   line-height: 100px;
 }
 .item-right {
@@ -237,7 +241,7 @@ export default {
 .picker-show {
   background-color: #fff;
   width: 100%;
-  height: 300px;
+  height: 350px;
   position: absolute;
   bottom: 0;
 }
