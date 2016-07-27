@@ -88,7 +88,7 @@ export default {
     showpicker: function(val) {
       if(val == 'loc' && this.form.area == '') {
         Toast('请先选择报修区域');
-        return
+        return;
       }
       this.isshowpicker = true;
       getPickerData.call(this,val);

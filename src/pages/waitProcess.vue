@@ -9,13 +9,14 @@
 <script>
 import ListItem from '../components/listItem.vue';
 import api from '../api.js';
-import { Loadmore } from 'bh-mint-ui';
+import { Loadmore, Toast } from 'bh-mint-ui';
 export default {
   data() {
     return {
       dataResource: [],
       page: 1,
-      allLoaded: false
+      allLoaded: false,
+      Toast: Toast
     }
   },
   methods: {

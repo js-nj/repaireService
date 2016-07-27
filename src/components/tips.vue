@@ -17,7 +17,6 @@
 <script>
 export default {
   created() {
-    console.log('this.bxcommentpoints',this.bxcommentpoints)
     if(this.bxcommentpoints !== '') {
       var num = []
       for (var i = 0; i < 5; i++) {

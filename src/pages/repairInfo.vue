@@ -50,7 +50,6 @@ import tips from '../components/tips.vue';
 import utils from '../utils.js';
 function changeState(starr) {
   for(var i in this) {
-    console.log(i,starr.indexOf(i))
     if(starr.indexOf(i) > -1) {
       this[i] = true;
     } else {
@@ -87,7 +86,6 @@ export default {
   },
   created() {
     var info = JSON.parse(this.$route.params.info);
-    console.log(info);
     this.title = info.MS;
     this.timezone = info.BXSJ;
     this.bxuser = info.BXRXM;
@@ -118,7 +116,6 @@ export default {
         }
         break;
     }
-    console.log(this.state);
   },
   methods: {
     doComment: function() {
