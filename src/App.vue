@@ -1,5 +1,5 @@
 <template>
-  <mt-header fixed title="我的保修" id="repair-mt-header">
+  <mt-header fixed title="我的报修" id="repair-mt-header">
     <mt-button @click="goManager" icon="back" slot="left"></mt-button>
   </mt-header>
   <div class="nav-header">
