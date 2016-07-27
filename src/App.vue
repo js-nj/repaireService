@@ -1,6 +1,6 @@
 <template>
   <mt-header fixed title="我的保修" id="repair-mt-header">
-    <mt-button v-link="'/'" icon="back" slot="left"></mt-button>
+    <mt-button @click="goManager" icon="back" slot="left"></mt-button>
   </mt-header>
   <div class="nav-header">
     <div class="repair-state">
@@ -95,6 +95,9 @@ export default {
     },
     post: function() {
       this.$router.go('post');
+    },
+    goManager() {
+      TrunPage.goBack()
     }
   }
 }

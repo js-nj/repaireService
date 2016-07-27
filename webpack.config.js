@@ -79,4 +79,14 @@ if (process.env.NODE_ENV === 'production') {
     }),*/
     new webpack.optimize.OccurenceOrderPlugin()
   ])
+} else {
+  module.exports.plugins = (module.exports.plugins || []).concat([
+    new webpack.DefinePlugin({
+      'TrunPage': {
+        goBack: function() {
+          console.log('go to app manage')
+        }
+      }
+    })
+  ])
 }
