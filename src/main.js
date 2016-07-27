@@ -20,7 +20,6 @@ let Init = () => {
 };
 
 if (process.env.NODE_ENV === 'production') {
-  global.HOST = site_url;
   Hybrid.Init(() => {
     global.HOST = site_url;
     Init();
