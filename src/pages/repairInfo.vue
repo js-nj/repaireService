@@ -115,6 +115,8 @@ export default {
           changeState.apply(this.state,[['worker','adminreplytips']]);
         }
         break;
+      default:
+        break;
     }
   },
   methods: {
