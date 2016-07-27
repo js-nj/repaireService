@@ -7,6 +7,7 @@ let packageName = require('../package.json').packageName;
 mkdir(packageName);
 cp('-R', './dist', packageName);
 cp('-R', './static', packageName);
+cp('config.xml', packageName);
 cp('index.html', packageName);
 exec(`zip -r ${packageName}.zip ${packageName}`);
 rm('-rf', `${packageName}`)
