@@ -100,9 +100,19 @@ export default {
         padding: 0 5px 0px 10px;
         border: 1PX solid;
         -webkit-border-radius: 0 5px 5px 0;
-        border-radius: 0 5px 5px 0;
+        border-radius: 5px 5px 5px 5px;
         margin: 5px 9px 5px 8px;
       }
+/*      & .message-tag::before {
+        content:"";
+        position: absolute;
+        width: 0;
+        height: 0;
+        left: 35px;
+        border-top: 17px solid transparent;
+        border-right: 35px solid red;
+        border-bottom: 17px solid transparent;
+      }*/
       & .time-zone {
         display: inline-block;
         height: 35px;

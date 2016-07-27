@@ -176,7 +176,8 @@ export default {
     vertical-align: top;
     width: 100%;
     height: 200px;
-    font-size: 14px;
+    font-size: 32px;
+    border: none;
     padding: 10px 10px;
   }
   & .question-describe-holder {
