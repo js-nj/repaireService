@@ -3,7 +3,7 @@
     <div class="item-main">
       <span class="message-title">{{messagetitle}}</span>
       <div class="item-main-info" v-bind:class="{ 'item-main-img': !!(img)}">
-        <span>
+        <span class="span-info">
           {{info}}
         </span>
         <div class='message-bottom'>
@@ -86,9 +86,12 @@ export default {
       width: 100%;
       float: left;
       & span {
-        font-family: PingFang-SC-Medium;
-        font-size: 26px;
+        /*font-family: PingFang-SC-Medium;*/
+        /*font-size: 16Px;*/
         color: #B4B4B4;
+      }
+      & .span-info {
+        font-size: 22px;
       }
 /*      & .message-tag {
         display: inline-block;
@@ -105,7 +108,6 @@ export default {
       }*/
       & .message-tag {
         position: relative;
-        /*background: #88b7d5;*/
         border: 1PX solid #B4B4B4;
         display: inline-block;
         text-decoration: none;
@@ -113,11 +115,9 @@ export default {
         font-size: 16px;
         height: 20Px;
         line-height: 35px;
-        padding: 0 5px 0px 10px;
-        /*border: 1PX solid;*/
-        /*-webkit-border-radius: 0 5px 5px 0;*/
-        /*border-radius: 5px 5px 5px 5px;*/
+        padding: 0 5px 0px 8px;
         margin: 5px 9px 5px 8px;
+        border-radius: 3Px;
       }
       & .message-tag:after, & .message-tag:before {
         right: 100%;
@@ -133,14 +133,14 @@ export default {
       & .message-tag:after {
         border-color: rgba(136, 183, 213, 0);
         border-right-color: #fff;
-        border-width: 10PX;
-        margin-top: -10PX;
+        border-width: 8PX;
+        margin-top: -8PX;
       }
       & .message-tag:before {
         border-color: rgba(194, 225, 245, 0);
         border-right-color: #B4B4B4;
-        border-width: 11PX;
-        margin-top: -11PX;
+        border-width: 9PX;
+        margin-top: -9PX;
       }
 /*      & .message-tag::before {
         content:"";
