@@ -90,7 +90,7 @@ export default {
         font-size: 26px;
         color: #B4B4B4;
       }
-      & .message-tag {
+/*      & .message-tag {
         display: inline-block;
         text-decoration: none;
         font-weight: normal;
@@ -102,6 +102,45 @@ export default {
         -webkit-border-radius: 0 5px 5px 0;
         border-radius: 5px 5px 5px 5px;
         margin: 5px 9px 5px 8px;
+      }*/
+      & .message-tag {
+        position: relative;
+        /*background: #88b7d5;*/
+        border: 1PX solid #B4B4B4;
+        display: inline-block;
+        text-decoration: none;
+        font-weight: normal;
+        font-size: 16px;
+        height: 20Px;
+        line-height: 35px;
+        padding: 0 5px 0px 10px;
+        /*border: 1PX solid;*/
+        /*-webkit-border-radius: 0 5px 5px 0;*/
+        /*border-radius: 5px 5px 5px 5px;*/
+        margin: 5px 9px 5px 8px;
+      }
+      & .message-tag:after, & .message-tag:before {
+        right: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+      }
+
+      & .message-tag:after {
+        border-color: rgba(136, 183, 213, 0);
+        border-right-color: #fff;
+        border-width: 10PX;
+        margin-top: -10PX;
+      }
+      & .message-tag:before {
+        border-color: rgba(194, 225, 245, 0);
+        border-right-color: #B4B4B4;
+        border-width: 11PX;
+        margin-top: -11PX;
       }
 /*      & .message-tag::before {
         content:"";
