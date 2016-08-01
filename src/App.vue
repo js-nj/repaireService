@@ -163,7 +163,7 @@ export default {
 }
 .icon-bordercolor {
   position: fixed;
-  background: #16162A;
+  background: #2196F3;
   height: 80px;
   width: 80px;
   border: none;

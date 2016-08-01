@@ -65,7 +65,7 @@ function validForm() {
       return errTipsInfo[i];
     }
     if(i == 'questioninfo' && this.form[i].length > 100) {
-      return '字数过长'
+      return '问题描述字数过长'
     }
   }
   return true;
@@ -206,7 +206,7 @@ export default {
   text-align: left;
   color: #403F44;
   padding-left: 30px;
-  font-size: 34px;
+  font-size: 28px;
   line-height: 100px;
 }
 .item-right {
