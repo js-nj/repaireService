@@ -3,16 +3,16 @@
     <mt-button v-link="'/'" icon="back" slot="left"></mt-button>
   </mt-header>
   <div class="main">
-    <div class="title-user-img">
+    <div class="title-user-img" v-if="tps">
       <mt-swipe :auto="4000" class="swipe-view">
-        <mt-swipe-item class="swipe-view-item"><img class="swipe-view-item" src="http://f.named.cn/f/7654a71a2d5b8991973f5bbb2c3c7c7d.jpg"/></mt-swipe-item>
-        <mt-swipe-item class="swipe-view-item"><img class="swipe-view-item" src="http://f.named.cn/f/2a7fd6fd84158d0ec5b99fce2f8d037a.jpg"/></mt-swipe-item>
-        <mt-swipe-item class="swipe-view-item"><img class="swipe-view-item" src="http://f.named.cn/f/b6d4d1dbae3ee52fd164f85ab52a584e.t720x482.jpg"/></mt-swipe-item>
+        <mt-swipe-item class="swipe-view-item" v-for="item in tps">
+          <img class="swipe-view-item" v-bind:src="'http://amptest.wisedu.com'+item.fileUrl"/>
+        </mt-swipe-item>
       </mt-swipe>
       <span class="message-title">{{ title }}</span>
       <div class="user-info">
         <div class="avatar-name">
-          <img class="avatar" src="http://f.named.cn/f/b6d4d1dbae3ee52fd164f85ab52a584e.t720x482.jpg">
+          <img class="avatar" src="http://csres.wisedu.com/scenes/public/images/demo/user1.png">
           <span>
             {{bxuser}}（{{bxuserid}}）
           </span>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { Header, Button, Swipe, SwipeItem, Cell} from 'bh-mint-ui';
+import { Header, Button, Swipe, SwipeItem, Cell, Toast} from 'bh-mint-ui';
 import grade from '../components/grade.vue';
 import tips from '../components/tips.vue';
 import utils from '../utils.js';
@@ -74,6 +74,7 @@ export default {
       bxcommentpoints: '',
       wxperson: '',
       wid:'',
+      tps:false,
       state: {
         adminreply: false,
         showgrade: false,
@@ -85,6 +86,7 @@ export default {
     }
   },
   created() {
+    var _self = this;
     var info = JSON.parse(this.$route.params.info);
     this.title = info.MS;
     this.timezone = info.BXSJ;
@@ -98,6 +100,15 @@ export default {
     this.wxperson = info.WXR_DISPLAY + ' (' + info.WXRSJ + ')';
     this.wxpersonphone = info.WXRSJ;
     this.wid = info.WID;
+    this.tp = info.TP;
+    if(this.tp) {
+      this.$http.post("http://amptest.wisedu.com/ggfw/sys/emapcomponent/file/getUploadedAttachment/"+this.tp+".do",'' ).then(function(data) {
+        _self.tps = data.data.items;
+      }, function(err) {
+        Toast('获取图片错误');
+      });
+      console.log(this.tp);
+    }
     switch (info.DQZT) {
       case '待维修':
         changeState.apply(this.state,[['worker']]);
