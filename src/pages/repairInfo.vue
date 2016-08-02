@@ -34,7 +34,7 @@
       <span>{{bxadminrply}}</span>
       <tips class="comment-tips" v-show="state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
     </div>
-    <mt-cell class="maintenance-worker" v-show="state.worker && !iswork" title="派出维修人员" is-link>
+    <mt-cell class="maintenance-worker" v-show="state.worker && !iswork" title="派出维修人员" is-link href="tel:{{wxpersonphone}}">
       <a href="tel:{{wxpersonphone}}">{{wxperson}}</a>
     </mt-cell>
     <tips class="comment-tips" v-show="state.worker&&state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
