@@ -264,3 +264,8 @@ export default {
   border-radius: 0;
 }
 </style>
+<style>
+  .mint-cell-title {
+    font-size: 28px;
+  }
+</style>
