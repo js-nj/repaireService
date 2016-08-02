@@ -6,7 +6,7 @@
     <div class="title-user-img" v-if="tps">
       <mt-swipe :auto="4000" class="swipe-view">
         <mt-swipe-item class="swipe-view-item" v-for="item in tps">
-          <img class="swipe-view-item" v-bind:src="'http://amptest.wisedu.com'+item.fileUrl"/>
+          <img class="swipe-view-item" v-bind:src="imgurl+item.fileUrl"/>
         </mt-swipe-item>
       </mt-swipe>
       <span class="message-title">{{ title }}</span>
@@ -64,6 +64,7 @@ export default {
   },
   data() {
     return {
+      imgurl:global.HOST,
       title: '',
       timezone: '',
       bxuser: '',
@@ -104,7 +105,7 @@ export default {
     this.wid = info.WID;
     this.tp = info.TP;
     if(this.tp) {
-      this.$http.post("http://amptest.wisedu.com/ggfw/sys/emapcomponent/file/getUploadedAttachment/"+this.tp+".do",'' ).then(function(data) {
+      this.$http.post(global.HOST+"/ggfw/sys/emapcomponent/file/getUploadedAttachment/"+this.tp+".do",'' ).then(function(data) {
         _self.tps = data.data.items;
       }, function(err) {
         Toast('获取图片错误');
@@ -133,7 +134,7 @@ export default {
   },
   methods: {
     doComplete: function() {
-      this.$http.post("http://amptest.wisedu.com/ggfw/sys/hqwxxt/api/finishRepair.do", {
+      this.$http.post(global.HOST+"/ggfw/sys/hqwxxt/api/finishRepair.do", {
         WID: this.wid
       }).then(function(data) {
         Toast('完成');

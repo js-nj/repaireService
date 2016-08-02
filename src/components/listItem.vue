@@ -15,7 +15,7 @@
           </span>
         </div>
       </div>
-      <img class="item-img" v-if="img" :src="'http://amptest.wisedu.com/ggfw/sys/emapcomponent/file/getFileByToken/'+img+'.do'">
+      <img class="item-img" v-if="img" :src="imgurl">
     </div>
   </div>
 </template>
@@ -23,6 +23,11 @@
 <script>
 import utils from '../utils.js';
 export default {
+  data() {
+    return {
+      imgurl: global.HOST + '/ggfw/sys/emapcomponent/file/getFileByToken/' + this.img + '.do'
+    }
+  },
   filters: {
     fixtime: utils.fixTime
   },
