@@ -1,5 +1,10 @@
 import { Toast } from 'bh-mint-ui';
-var foundationUrl = 'http://amptest.wisedu.com/ggfw/sys/hqwxxt/api';
+if (process.env.NODE_ENV === 'production') {
+    global.HOST = site_url;
+} else {
+  global.HOST = 'http://amptest.wisedu.com'
+}
+var foundationUrl = global.HOST+'/ggfw/sys/hqwxxt/api';
 
 function postData(url, options, successCallback, errorCallback) {
     this.$http.post(foundationUrl + url, options, ).then(successCallback, errorCallback);
@@ -21,6 +26,24 @@ function loadData(state, num, app) {
         if(data.rows.length < 10) {
           self.allLoaded = true;
         }
+      }
+    } else {
+      self.allLoaded = true;
+    }
+  },function(err) {
+      Toast('取列表数据失败');
+  });
+}
+function loadRepairData(num) {
+  var self = this;
+  postData.call(self,'/getMyDisrepairList.do',{pageNumber:num,pageSize:10}, function(result) {
+    if(result.data.datas) {
+      var data = result.data.datas.wxryjmbg;
+      if(data.rows.length > 0) {
+        self.dataResource = merge(self.dataResource,data.rows);
+      }
+      if(data.rows.length < 10) {
+        self.allLoaded = true;
       }
     } else {
       self.allLoaded = true;
@@ -89,6 +112,7 @@ function saveRepair(option) {
 }
 module.exports = {
   loadData: loadData,
+  loadRepairData: loadRepairData,
   doComment: doComment,
   getRepairType: getRepairType,
   getRepairLoc: getRepairLoc,

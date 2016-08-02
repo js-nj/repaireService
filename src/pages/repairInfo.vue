@@ -34,11 +34,12 @@
       <span>{{bxadminrply}}</span>
       <tips class="comment-tips" v-show="state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
     </div>
-    <mt-cell class="maintenance-worker" v-show="state.worker" title="派出维修人员" is-link>
+    <mt-cell class="maintenance-worker" v-show="state.worker && !iswork" title="派出维修人员" is-link>
       <a href="tel:{{wxpersonphone}}">{{wxperson}}</a>
     </mt-cell>
     <tips class="comment-tips" v-show="state.worker&&state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
     <mt-button type="primary" class="comment-button" v-show="state.commentbutton" @click="doComment">评价本次报修</mt-button>
+    <mt-button type="primary" class="comment-button" v-show="iswork" @click="doComplete">完工</mt-button>
   </div>
   <grade v-show="state.showgrade" :wid="wid"></grade>
 </template>
@@ -88,6 +89,7 @@ export default {
   created() {
     var _self = this;
     var info = JSON.parse(this.$route.params.info);
+    this.iswork = info.iswork;
     this.title = info.MS;
     this.timezone = info.BXSJ;
     this.bxuser = info.BXRXM;
@@ -107,7 +109,6 @@ export default {
       }, function(err) {
         Toast('获取图片错误');
       });
-      console.log(this.tp);
     }
     switch (info.DQZT) {
       case '待维修':
@@ -131,6 +132,16 @@ export default {
     }
   },
   methods: {
+    doComplete: function() {
+      this.$http.post("http://amptest.wisedu.com/ggfw/sys/hqwxxt/api/finishRepair.do", {
+        WID: this.wid
+      }).then(function(data) {
+        Toast('完成');
+        this.$router.go({name:'waitRepair', params: {iswork:'worker'}});
+      }, function(err) {
+        Toast('失败');
+      });
+    },
     doComment: function() {
       this.state.showgrade = true;
     }

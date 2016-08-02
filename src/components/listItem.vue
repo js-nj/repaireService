@@ -49,9 +49,13 @@ export default {
     },
     all:{
       type: Object
+    },
+    iswork:{
+      type: Boolean
     }
   },
   created() {
+    this.all.iswork = this.iswork;
   }
 }
 </script>

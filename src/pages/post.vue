@@ -6,7 +6,7 @@
     <textarea class="question-describe" placeholder="请描述您遇到的问题" rows="5" v-model="form.questioninfo"></textarea>
     <span class="question-describe-holder">100</span>
     <div class="list-item first-item">
-        <label class="item-left">手机号</label>
+        <label class="item-left" @click="debug">手机号</label>
         <input type="tel" class="item-right text-input" placeholder="请填写手机号" v-model="form.phone">
     </div>
     <mt-cell class="mint-cell-text-fix" title="故障类型" is-link v-on:click="showpicker('breaks')">
@@ -72,6 +72,12 @@ function validForm() {
 }
 export default {
   methods: {
+    debug: function() {
+      this.debugnum +=1;
+      if(this.debugnum == 10) {
+        this.$router.go('debug');
+      }
+    },
     cancel: function() {
       this.isshowpicker = false;
     },
@@ -120,6 +126,7 @@ export default {
 
   data() {
     return {
+      debugnum:0,
       showToolbar: true,
       form: {
         questioninfo:'',

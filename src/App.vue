@@ -1,8 +1,8 @@
 <template>
-  <mt-header fixed title="我的报修" id="repair-mt-header">
+  <mt-header fixed :title="headertitle" id="repair-mt-header">
     <mt-button @click="goManager" icon="back" slot="left"></mt-button>
   </mt-header>
-  <div class="nav-header">
+  <div class="nav-header" v-if="isstudent">
     <div class="repair-state">
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.waitProcess }" v-on:click="chooseProcess('waitProcess')">
         <div>
@@ -37,12 +37,12 @@
       </a>
     </div>
   </div>
-  <div class="main">
+  <div class="main" v-bind:class="{'mainstudent': isstudent}">
     <div id="app">
       <router-view></router-view>
     </div>
-    <i class="icon-bordercolor" v-on:click="post"></i>
   </div>
+  <i class="icon-bordercolor" v-if="isstudent" v-on:click="post"></i>
 </template>
 
 <script>
@@ -59,15 +59,37 @@ function changeState(models, readNumModels, el) {
     }
 }
 function loadView(el) {
-  this.$router.go(el);
+  if(el == 'waitRepair') {
+    this.$router.go({name:'waitRepair', params: {iswork:'student'}});
+  } else {
+    this.$router.go('/'+el);
+  }
 }
 export default {
   created() {
     var self = this;
-    api.loadData.call(this, 'YWX', 1, 'home');
+    this.$http.post("http://amptest.wisedu.com/ggfw/sys/itservicecommon/api/getUserLimit.do", {
+      appName: 'hqwxxt'
+    }).then(function(data) {
+      if(data.data[0] && data.data[0].GNBS == "teacher_student") {
+        this.isstudent = true;
+        this.headertitle = '我的报修';
+        api.loadData.call(this, 'YWX', 1, 'home');
+        this.$router.go('/waitProcess');
+      }
+      if(data.data[0] && data.data[0].GNBS == "repairman") {
+        this.isstudent = false;
+        this.headertitle = '待维修';
+        this.$router.go({name:'waitRepair', params: {iswork:'worker'}});
+      }
+    }, function(err) {
+      Toast('获取权限错误');
+    });
   },
   data () {
     return {
+      isstudent: false,
+      headertitle: '',
       repairState: {
         waitProcess: true,
         waitRepair: false,
@@ -159,6 +181,9 @@ export default {
 }
 .main {
   /*height: 960px;*/
+  margin-top: 40Px;
+}
+.mainstudent {
   margin-top: 125px;
 }
 .icon-bordercolor {
@@ -171,7 +196,8 @@ export default {
   text-align: center;
   line-height: 80px;
   border-radius: 40px;
-  top: 900px;
+  /*top: 900px;*/
+  bottom: 100px;
   right: 50px;
   font-family:"iconfont" !important;
   color: #E8E9EC;

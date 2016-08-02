@@ -1,6 +1,6 @@
 <template>
   <mt-loadmore class="mt-loadmore-div" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false">
-    <list-item v-for="item in dataResource" :messagetitle="item.BXQY_DISPLAY+item.BXDD_DISPLAY" :info="item.MS" :timezone="item.BXSJ" :img="item.TP" :tag="item.tag" :all="item"></list-item>
+    <list-item v-for="item in dataResource" :messagetitle="item.BXQY_DISPLAY+item.BXDD_DISPLAY" :iswork="iswork" :info="item.MS" :timezone="item.BXSJ" :img="item.TP" :tag="item.tag" :all="item"></list-item>
   </mt-loadmore>
 </template>
 
@@ -19,12 +19,23 @@ export default {
   methods: {
     loadBottom(id) {
         this.page = this.page + 1;
-        api.loadData.call(this, 'DWX', this.page);
+        if(iswork) {
+          api.loadRepairData.call(this,1);
+        }else {
+          api.loadData.call(this, 'DWX', this.page);
+        }
         this.$broadcast('onBottomLoaded', id)
     }
   },
   created() {
-    api.loadData.call(this, 'DWX', 1);
+    var work = this.$route.params.iswork;
+    if(work != 'worker') {
+      this.iswork = false;
+      api.loadData.call(this, 'DWX', 1);
+    } else {
+      this.iswork = true;
+      api.loadRepairData.call(this,1);
+    }
   },
   components: {
     ListItem,
