@@ -3,8 +3,8 @@
     <mt-button v-link="'/'" icon="back" slot="left"></mt-button>
   </mt-header>
   <div class="main">
-    <div class="title-user-img" v-if="tps">
-      <mt-swipe :auto="4000" class="swipe-view">
+    <div class="title-user-img">
+      <mt-swipe :auto="4000" class="swipe-view" v-if="tps">
         <mt-swipe-item class="swipe-view-item" v-for="item in tps">
           <img class="swipe-view-item" v-bind:src="imgurl+item.fileUrl"/>
         </mt-swipe-item>

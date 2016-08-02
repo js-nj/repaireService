@@ -7,9 +7,9 @@
           {{info}}
         </span>
         <div class='message-bottom'>
-          <span class="message-tag" v-if="tag">
+         <!--  <span class="message-tag" v-if="tag">
             {{tag}}
-          </span>
+          </span> -->
           <span class="time-zone">
             {{timezone | fixtime}}
           </span>
@@ -100,7 +100,11 @@ export default {
         color: #B4B4B4;
       }
       & .span-info {
+        display: block;
         font-size: 22px;
+        height: 60px;
+        width: 100%;
+        overflow: hidden;
       }
 /*      & .message-tag {
         display: inline-block;
