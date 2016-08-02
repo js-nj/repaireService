@@ -137,7 +137,7 @@ export default {
       this.$http.post(global.HOST+"/ggfw/sys/hqwxxt/api/finishRepair.do", {
         WID: this.wid
       }).then(function(data) {
-        Toast('完成');
+        Toast('已完工');
         this.$router.go({name:'waitRepair', params: {iswork:'worker'}});
       }, function(err) {
         Toast('失败');
@@ -171,7 +171,7 @@ export default {
   /*height: 120px;*/
 }
 .main {
-  margin-top: 65px;
+  margin-top: 40Px;
   & .title-user-img{
     /*height: 670px;*/
     width: 100%;

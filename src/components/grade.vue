@@ -62,6 +62,13 @@ export default {
         }, 2000);
         return;
       }
+      if(this.commentinfo.length > 100) {
+        this.tipsmessage = '评价字数过长';
+        setTimeout(function() {
+          self.tipsmessage = '';
+        }, 2000);
+        return;
+      }
       api.doComment.call(this,{
         PF: this.gradepoints,
         BXRPJ: this.commentinfo,
