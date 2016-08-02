@@ -68,9 +68,7 @@ function loadView(el) {
 export default {
   created() {
     var self = this;
-    this.$http.post(global.HOST+"/ggfw/sys/itservicecommon/api/getUserLimit.do", {
-      appName: 'hqwxxt'
-    }).then(function(data) {
+    this.$http.get(global.HOST+"/ggfw/sys/itservicecommon/api/getUserLimit.do?appName=hqwxxt").then(function(data) {
       if(data.data[0] && data.data[0].GNBS == "teacher_student") {
         this.isstudent = true;
         this.headertitle = '我的报修';
