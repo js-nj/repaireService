@@ -2,7 +2,8 @@
   <mt-loadmore v-show="dataResource.length > 0" class="mt-loadmore-div" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false">
     <list-item v-for="item in dataResource" :messagetitle="item.BXQY_DISPLAY+item.BXDD_DISPLAY" :iswork="iswork" :info="item.MS" :timezone="item.BXSJ" :img="item.TP" :tag="item.tag" :all="item"></list-item>
   </mt-loadmore>
-  <div v-show="dataResource.length < 1" class="search-empty">
+  <!--  v-bind:class="{'isshow': isshow}" -->
+  <div class="search-empty" v-bind:class="{'isshow': isshow}">
     <div>
       <img src="../images/icn_nodata.png" width="100" height="100" style="display: block;">
       暂无相关数据
@@ -19,7 +20,17 @@ export default {
     return {
       dataResource: [],
       page: 1,
+      isshow: false,
       allLoaded: false
+    }
+  },
+  watch: {
+    dataResource: function(val) {
+      if(val.length < 1) {
+        this.isshow = true;
+      } else {
+        this.isshow = false;
+      }
     }
   },
   methods: {
@@ -60,8 +71,11 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
+}
+.isshow {
+  display: flex;
 }
 </style>

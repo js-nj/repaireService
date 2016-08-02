@@ -38,6 +38,9 @@ function loadRepairData(num) {
       if(data.rows.length < 10) {
         self.allLoaded = true;
       }
+      if(self.dataResource.length < 1) {
+        self.isshow = true;
+      }
     } else {
       self.allLoaded = true;
     }
