@@ -152,6 +152,7 @@ export default {
         height: 280px;
         font-size: 26px;
         padding: 10px 10px;
+        border: none;
       }
       & .comment-describe-holder {
         color: #B4B4B4;

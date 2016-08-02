@@ -32,7 +32,7 @@ function loadData(state, num, app) {
 function doComment(option) {
   var self = this;
   postData.call(self,'/commitCommentById.do',option, function(result) {
-    if(result.success) {
+    if(result.data.success) {
       self.$dispatch('grade-close', false);
       self.$router.replace('/waitProcess');
     }

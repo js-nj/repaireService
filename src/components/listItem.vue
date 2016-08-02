@@ -15,7 +15,7 @@
           </span>
         </div>
       </div>
-      <img class="item-img" v-if="img" :src="img">
+      <img class="item-img" v-if="img" :src="'http://amptest.wisedu.com/ggfw/sys/emapcomponent/file/getFileByToken/'+img+'.do'">
     </div>
   </div>
 </template>

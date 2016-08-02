@@ -241,7 +241,7 @@ export default {
     background-color: #fff;
     width: 100%;
     color: #403F44;
-    font-size: 13px;
+    font-size: 20px;
     padding: 20px 20px;
     margin-top: 20px;
     & span {
