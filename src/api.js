@@ -1,13 +1,6 @@
 import { Toast } from 'bh-mint-ui';
-if (process.env.NODE_ENV === 'production') {
-    global.HOST = site_url;
-} else {
-  global.HOST = 'http://amptest.wisedu.com'
-}
-var foundationUrl = global.HOST+'/ggfw/sys/hqwxxt/api';
-
 function postData(url, options, successCallback, errorCallback) {
-    this.$http.post(foundationUrl + url, options, ).then(successCallback, errorCallback);
+    this.$http.post(global.HOST + '/ggfw/sys/hqwxxt/api' + url, options).then(successCallback, errorCallback);
 }
 var merge = function() {
   return Array.prototype.concat.apply([], arguments)
