@@ -105,7 +105,7 @@ export default {
     this.wid = info.WID;
     this.tp = info.TP;
     if(this.tp) {
-      this.$http.post(global.HOST+"/ggfw/sys/emapcomponent/file/getUploadedAttachment/"+this.tp+".do",'' ).then(function(data) {
+      this.$http.post(global.HOST+"/sys/emapcomponent/file/getUploadedAttachment/"+this.tp+".do",'' ).then(function(data) {
         _self.tps = data.data.items;
       }, function(err) {
         Toast('获取图片错误');
@@ -134,7 +134,7 @@ export default {
   },
   methods: {
     doComplete: function() {
-      this.$http.post(global.HOST+"/ggfw/sys/hqwxxt/api/finishRepair.do", {
+      this.$http.post(global.HOST+"/sys/hqwxxt/api/finishRepair.do", {
         WID: this.wid
       }).then(function(data) {
         Toast('已完工');

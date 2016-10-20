@@ -7,10 +7,10 @@ Vue.use(VueRouter);
 Vue.http.options.emulateJSON = true;
 
 const router = new VueRouter({
-	hashbang: true,
-	history: false,
-	saveScrollPosition: true,
-	suppressTransitionError: true
+  hashbang: true,
+  history: false,
+  saveScrollPosition: true,
+  suppressTransitionError: true
 })
 routerconfig(router)
 
@@ -21,10 +21,10 @@ let Init = () => {
 
 if (process.env.NODE_ENV === 'production') {
   Hybrid.Init(() => {
-    global.HOST = site_url;
+    global.HOST = site_url + "/publicapp";
     Init();
   });
 } else {
-  global.HOST = 'http://amptest.wisedu.com'
+  global.HOST = 'http://amptest.wisedu.com/publicapp'
   Init();
 }
