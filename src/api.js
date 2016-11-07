@@ -1,6 +1,6 @@
 import { Toast } from 'bh-mint-ui';
 function postData(url, options, successCallback, errorCallback) {
-    this.$http.post(global.HOST + '/ggfw/sys/hqwxxt/api' + url, options).then(successCallback, errorCallback);
+    this.$http.post(global.HOST + '/sys/hqwxxt/api' + url, options).then(successCallback, errorCallback);
 }
 var merge = function() {
   return Array.prototype.concat.apply([], arguments)
