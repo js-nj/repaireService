@@ -48,7 +48,7 @@
 <script>
 import { Header, Button } from 'bh-mint-ui';
 import api from './api.js';
-
+import SDK from 'bh-mobile-sdk';
 function changeState(models, readNumModels, el) {
     models[el] = true;
     // readNumModels[el] = 0;
@@ -117,7 +117,9 @@ export default {
       this.$router.go('post');
     },
     goManager() {
-      TrunPage.goBack()
+      // TrunPage.goBack()
+      if(SDK() && SDK().UI && SDK().UI.closeWebView)
+        SDK().UI.closeWebView(false);
     }
   }
 }

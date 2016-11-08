@@ -2,6 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import routerconfig from './router'
+import SDK, {
+  init
+} from 'bh-mobile-sdk';
 Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.http.options.emulateJSON = true;
@@ -20,10 +23,14 @@ let Init = () => {
 };
 
 if (process.env.NODE_ENV === 'production') {
-  Hybrid.Init(() => {
-    global.HOST = site_url + "/publicapp";
-    Init();
-  });
+  init(() => {
+    var sdk = SDK();
+    global.HOST = location.origin + "/publicapp";
+    if(sdk.UI && sdk.UI.toggleNavBar) {
+      sdk.UI.toggleNavBar(false);
+    }
+    Init()
+  })
 } else {
   global.HOST = 'http://amptest.wisedu.com/publicapp'
   Init();
