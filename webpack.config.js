@@ -60,7 +60,7 @@ module.exports = {
     noInfo: true,
     host: '0.0.0.0'
   },
-  devtool: '#eval-source-map'
+  devtool: '#source-map'
 }
 
 if (process.env.NODE_ENV === 'production') {
