@@ -5,6 +5,16 @@
   <div class="main">
     <textarea class="question-describe" placeholder="请描述您遇到的问题" rows="5" v-model="form.questioninfo"></textarea>
     <span class="question-describe-holder">100</span>
+    <div class="post__imgs">
+      <!--<div class="post__img" v-for="img in post.imgs">
+        <img :src="img.base64">
+        <span @click="deleteImg($index)" class="post__img-del">x</span>
+      </div>-->
+      <div class="post__img">
+      <!--<div class="post__img" @click="showActions" v-if="post.imgs.length < imgLimit">-->
+        <img src="../components/img/post.png"/>
+      </div>
+    </div>
     <div class="list-item first-item">
         <label class="item-left" @click="debug">手机号</label>
         <input type="tel" class="item-right text-input" placeholder="请填写手机号" v-model="form.phone">
@@ -269,6 +279,46 @@ export default {
   width: 100%;
   top: 20px;
   border-radius: 0;
+}
+.post__imgs {
+  /*padding: 30px;*/
+  background-color: #fff;
+  color: #eee;
+  overflow: hidden;
+  border-bottom: 1px solid #efefef;
+}
+.post__img {
+  position: relative;
+  float: left;
+  width: 20%;
+  box-sizing: border-box;
+  margin: 10px;
+}
+.post__img .post__img-del {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 30px;
+  background-color: #000;
+  opacity: 0.7;
+}
+.post__img:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+.post__img img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
 <style>
