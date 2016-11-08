@@ -25,7 +25,7 @@ import utils from '../utils.js';
 export default {
   data() {
     return {
-      imgurl: global.HOST + '/ggfw/sys/emapcomponent/file/getFileByToken/' + this.img + '.do'
+      imgurl: global.HOST + '/sys/emapcomponent/file/getFileByToken/' + this.img + '.do'
     }
   },
   filters: {
