@@ -6,7 +6,7 @@
     <div class="title-user-img">
       <mt-swipe :auto="4000" class="swipe-view" v-if="tps">
         <mt-swipe-item class="swipe-view-item" v-for="item in tps">
-          <img class="swipe-view-item" v-bind:src="imgurl+item.fileUrl"/>
+          <img class="swipe-view-item" v-bind:src="imgurl+item.fileUrl" />
         </mt-swipe-item>
       </mt-swipe>
       <span class="message-title">{{ title }}</span>
@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      imgurl:global.HOST,
+      imgurl:global.IMGHOST,
       title: '',
       timezone: '',
       bxuser: '',
@@ -165,128 +165,135 @@ export default {
 </script>
 
 <style scoped>
-#repair-mt-header {
-  background-color: #fff;
-  color: #000000;
-  /*height: 120px;*/
-}
-.main {
-  margin-top: 40Px;
-  & .title-user-img{
-    /*height: 670px;*/
-    width: 100%;
+  #repair-mt-header {
     background-color: #fff;
-    & .swipe-view {
-      height: 400px;
+    color: #000000;
+    /*height: 120px;*/
+  }
+  
+  .main {
+    margin-top: 40Px;
+    & .title-user-img {
+      /*height: 670px;*/
       width: 100%;
-      color: #fff;
-      font-size: 30px;
-      text-align: center;
-      vertical-align: middle;
-      margin-bottom: 20px;
-      & .swipe-view-item {
+      background-color: #fff;
+      & .swipe-view {
         height: 400px;
         width: 100%;
-      }
-    }
-    & .message-title {
-      display: block;
-      color: #403F44;
-      font-size: 32px;
-      padding: 4px 16px;
-    }
-    & .user-info {
-      width: 100%;
-      margin-top: 20px;
-      height: 70px;
-      line-height: 50px;
-      color: #B4B4B4;
-      & span, & div {
-        display: inline-block;
-      }
-      & .avatar-name {
-        float: left;
-        margin-left: 20px;
-        & .avatar {
-          width: 50px;
-          height: 50px;
-          margin-right: 10px;
-          border-radius: 25px;
+        color: #fff;
+        font-size: 30px;
+        text-align: center;
+        vertical-align: middle;
+        margin-bottom: 20px;
+        & .swipe-view-item {
+          height: 400px;
+          width: 100%;
         }
       }
-      & .time-zone {
-        float: right;
-        margin-right: 20px;
+      & .message-title {
+        display: block;
+        color: #403F44;
+        font-size: 32px;
+        padding: 4px 16px;
+      }
+      & .user-info {
+        width: 100%;
+        margin-top: 20px;
+        height: 70px;
+        line-height: 50px;
+        color: #B4B4B4;
+        & span,
+        & div {
+          display: inline-block;
+        }
+        & .avatar-name {
+          float: left;
+          margin-left: 20px;
+          & .avatar {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            border-radius: 25px;
+          }
+        }
+        & .time-zone {
+          float: right;
+          margin-right: 20px;
+        }
       }
     }
-  }
-  & .location-phone {
-    width: 100%;
-    height: 200px;
-    margin-top: 20px;
-    color: #403F44;
-    font-size: 28px;
-    background-color: #fff;
-    & span {
-      display: block;
-      height: 100px;
-      line-height: 100px;
-      margin-left: 20px;
-    }
-    & .phone {
-      height: 100px;
-      line-height: 100px;
-      border-bottom: 1px solid #E8E9EC;
-      & .icon-call {
-        margin-right: 10px;
-        font-family:"iconfont" !important;
-        color: #FF8605;
-        font-size:32px;font-style:normal;
-        -webkit-font-smoothing: antialiased;
-        -webkit-text-stroke-width: 0.2px;
-        -moz-osx-font-smoothing: grayscale;
+    & .location-phone {
+      width: 100%;
+      height: 200px;
+      margin-top: 20px;
+      color: #403F44;
+      font-size: 28px;
+      background-color: #fff;
+      & span {
+        display: block;
+        height: 100px;
+        line-height: 100px;
+        margin-left: 20px;
+      }
+      & .phone {
+        height: 100px;
+        line-height: 100px;
+        border-bottom: 1px solid #E8E9EC;
+        & .icon-call {
+          margin-right: 10px;
+          font-family: "iconfont" !important;
+          color: #FF8605;
+          font-size: 32px;
+          font-style: normal;
+          -webkit-font-smoothing: antialiased;
+          -webkit-text-stroke-width: 0.2px;
+          -moz-osx-font-smoothing: grayscale;
+        }
+      }
+      & .location {
+        height: 100px;
+        & .icon-locationon {
+          margin-right: 10px;
+          font-family: "iconfont" !important;
+          color: #FF8605;
+          font-size: 32px;
+          font-style: normal;
+          -webkit-font-smoothing: antialiased;
+          -webkit-text-stroke-width: 0.2px;
+          -moz-osx-font-smoothing: grayscale;
+        }
       }
     }
-    & .location {
-      height: 100px;
-      & .icon-locationon {
-        margin-right: 10px;
-        font-family:"iconfont" !important;
-        color: #FF8605;
-        font-size:32px;font-style:normal;
-        -webkit-font-smoothing: antialiased;
-        -webkit-text-stroke-width: 0.2px;
-        -moz-osx-font-smoothing: grayscale;
+    & .admin-reply {
+      background-color: #fff;
+      width: 100%;
+      color: #403F44;
+      font-size: 20px;
+      padding: 20px 20px;
+      margin-top: 20px;
+      & span {
+        display: block;
+        margin-top: 10px;
+      }
+      & .comment-tips {
+        margin-top: 30px;
       }
     }
-  }
-  & .admin-reply {
-    background-color: #fff;
-    width: 100%;
-    color: #403F44;
-    font-size: 20px;
-    padding: 20px 20px;
-    margin-top: 20px;
-    & span {
-      display: block;
-      margin-top: 10px;
+    & .maintenance-worker {
+      margin-top: 20px;
+      & a:hover,
+      & a:visited,
+      & a:link,
+      & a:active {
+        text-decoration: none;
+        color: #B4B4B4;
+      }
     }
-    & .comment-tips {
-      margin-top: 30px;
-    }
-  }
-  & .maintenance-worker {
-    margin-top: 20px;
-    & a:hover, & a:visited, & a:link, & a:active {
-      text-decoration: none;
-      color:#B4B4B4;
+    & .comment-button {
+      width: 100%;
+      top: 20px;
+      height: 100px;
+      border-radius: 0;
     }
   }
-  & .comment-button {
-    width: 100%;
-    top: 20px;
-    height: 100px;
-    border-radius: 0;
-  }
-}
 </style>
