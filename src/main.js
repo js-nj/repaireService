@@ -8,6 +8,7 @@ import SDK, {
 Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.http.options.emulateJSON = true;
+Vue.http.options.credentials = true;
 
 const router = new VueRouter({
   hashbang: true,
