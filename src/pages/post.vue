@@ -67,6 +67,14 @@ function getPickerData(val) {
       break;
   }
 }
+String.prototype.getTextLen = function() {
+  let len = 0;
+  for (var i = 0; i < this.length; i++) {
+    if (this[i].match(/[^\x00-\xff]/ig) != null) len += 1;
+    else len += 1;
+  }
+  return len
+}
 function validForm() {
   for(var i in this.form) {
     if(this.form[i] == '')
@@ -74,7 +82,7 @@ function validForm() {
     if(i == 'phone' && !this.form[i].match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/)) {
       return errTipsInfo[i];
     }
-    if(i == 'questioninfo' && this.form[i].length > 100) {
+    if(i == 'questioninfo' && this.form[i].getTextLen() > 100) {
       return '问题描述字数过长'
     }
   }
