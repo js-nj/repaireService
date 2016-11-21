@@ -5,16 +5,11 @@
   <div class="main">
     <textarea class="question-describe" placeholder="请描述您遇到的问题" rows="5" v-model="form.questioninfo"></textarea>
     <span class="question-describe-holder">100</span>
-    <div class="post__imgs">
-      <!--<div class="post__img" v-for="img in post.imgs">
-        <img :src="img.base64">
-        <span @click="deleteImg($index)" class="post__img-del">x</span>
-      </div>-->
+<!--     <div class="post__imgs">
       <div class="post__img">
-      <!--<div class="post__img" @click="showActions" v-if="post.imgs.length < imgLimit">-->
         <img src="../components/img/post.png"/>
       </div>
-    </div>
+    </div> -->
     <div class="list-item first-item">
         <label class="item-left" @click="debug">手机号</label>
         <input type="tel" class="item-right text-input" placeholder="请填写手机号" v-model="form.phone">
@@ -49,25 +44,9 @@ var errTipsInfo = {
     phone:'请输入正确的手机号',
     locationinfo:'请输入详细地址',
     breaks: '请输入故障类型',
-    area: '请输入报修区域',
-    loc: '请输入报修地点'
+    area: '请输入报修区域'
 }
 //根据不同的类型取数据
-function getPickerData(val) {
-  var url;
-  this.presentPicker = val;
-  switch (val) {
-    case 'breaks':
-      api.getRepairType.call(this);
-      break;
-    case 'area':
-      api.getRepairLoc.call(this);
-      break;
-    default:
-      api.getRepairlocationinfo.call(this, this.repair.area.val);
-      break;
-  }
-}
 String.prototype.getTextLen = function() {
   let len = 0;
   for (var i = 0; i < this.length; i++) {
@@ -92,6 +71,7 @@ function validForm() {
 export default {
   ready() {
     api.getRepaireAreaInfo.call(this);
+    api.getRepairType.call(this);
   },
   methods: {
     debug: function() {
@@ -100,39 +80,23 @@ export default {
         this.$router.go('debug');
       }
     },
-    cancel: function() {
-      this.isshowpicker = false;
-    },
-    doOk: function() {
-      if(this.changeval == '请选择') {
-        Toast('请先选择');
-        return
-      }
-      this.form[(this.presentPicker)] = this.changeval;
-      for (var i = 0; i < this.repair[this.presentPicker].map.length; i++) {
-        if(((this.presentPicker == 'loc')?this.repair[this.presentPicker].map[i].label : this.repair[this.presentPicker].map[i].name) == this.form[this.presentPicker]) {
-          this.repair[this.presentPicker].val = (this.presentPicker == 'loc') ? this.repair[this.presentPicker].map[i].value : this.repair[this.presentPicker].map[i].id;
-        }
-      }
-      this.changeval = '请选择';
-      this.isshowpicker = false;
-    },
     showpicker: function(val) {
-      if(val == 'loc' && this.form.area == '') {
-        Toast('请先选择报修区域');
-        return;
-      }
-      var multiPicker = SDK().UI && SDK().UI.multiPicker;
       var _self = this;
-      multiPicker(this.returnArr, function(data) {
-        data = data.split(',');
-        this.repair.loc.val = _self.mapArr[String(data[0]) + String(data[1])].id;
-        this.form.area = _self.mapArr[String(data[0]) + String(data[1])].name;
-        this.repair.area.val = _self.QYArr[String(data[0])].id;
-      })
-    },
-    onValuesChange: function(picker, values) {
-      this.changeval = values[0];
+      var multiPicker = SDK().UI && SDK().UI.multiPicker;
+      var singleSelect = SDK().UI && SDK().UI.singleSelect;
+      if(val == 'breaks') {
+        singleSelect(this.GZLX, 0,function(data) {
+          _self.form.breaks = _self.GZLX[data];
+          _self.repair.breaks.val = _self.GZLX[data];
+        })
+      } else {
+        multiPicker(this.returnArr, function(data) {
+          data = data.split(',');
+          _self.repair.loc.val = _self.mapArr[String(data[0]) + String(data[1])].id;
+          _self.form.area = _self.mapArr[String(data[0]) + String(data[1])].name;
+          _self.repair.area.val = _self.QYArr[String(data[0])].id;
+        })
+      }
     },
     save: function() {
       var result = validForm.call(this);
@@ -161,7 +125,6 @@ export default {
         phone:'',
         breaks: '',
         area: '',
-        loc: '',
         locationinfo:''
       },
       repair: {
@@ -192,7 +155,8 @@ export default {
       presentPicker:'',
       returnArr: [],
       mapArr: {},
-      QYArr: []
+      QYArr: [],
+      GZLX: []
     };
   },
   components: {

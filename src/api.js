@@ -62,12 +62,11 @@ function doComment(option) {
 function getRepairType() {
   var self = this;
   postData.call(self,'/dic/8e4fd5c6-8bfc-4157-b5d5-3435c27d48be.do','', function(result) {
-    this.repair[this.presentPicker].map = result.data.datas.code.rows;
     var pickerarr = [];
-    for (var i = 0; i < this.repair[this.presentPicker].map.length; i++) {
-      pickerarr.push(this.repair[this.presentPicker].map[i].name)
+    for (var i = 0; i < result.data.datas.code.rows.length; i++) {
+      pickerarr.push(result.data.datas.code.rows[i].name)
     }
-    this.slots[0].values = merge(['请选择'],pickerarr)
+    self.GZLX = pickerarr;
   },function(err) {
     Toast('获取数据失败！');
   });
