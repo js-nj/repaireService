@@ -1,6 +1,6 @@
 import { Toast } from 'bh-mint-ui';
 function postData(url, options, successCallback, errorCallback) {
-    this.$http.post(global.HOST + '/sys/hqwxxt/api' + url, options).then(successCallback, errorCallback);
+    this.$http.get(global.HOST + '/sys/hqwxxt/api' + url, {params:options}).then(successCallback, errorCallback);
 }
 var merge = function() {
   return Array.prototype.concat.apply([], arguments)
@@ -98,6 +98,35 @@ function getRepairlocationinfo(val) {
     Toast('获取数据失败！');
   });
 }
+function getRepaireAreaInfo() {
+  var self = this;
+  postData.call(self,'/getRepaireAreaInfo.do','', function(result) {
+    if(result.status == 200) {
+      var data = result.data;
+      var returnArr = [];
+      var multiArr = {};
+      var mapArr = {};
+      for (var i = 0; i < data.length; i++) {
+        multiArr = {};
+        multiArr[data[i].name] = [];
+        self.QYArr.push({id:data[i].code,name:data[i].name});
+        if(data[i].areaPlaces) {
+          for (var j = 0; j < data[i].areaPlaces.length; j++) {
+            multiArr[data[i].name].push(data[i].areaPlaces[j].name)
+            mapArr[String(i)+String(j)] = {id:data[i].areaPlaces[j].code, name: data[i].areaPlaces[j].name};
+          }
+        }
+        returnArr.push(multiArr)
+      }
+      self.returnArr = returnArr;
+      self.mapArr = mapArr
+    } else {
+      Toast('获取数据失败！');
+    }
+  },function(err) {
+    Toast('获取数据失败！');
+  });
+}
 function saveRepair(option) {
   var self = this;
   postData.call(self,'/saveMyRepairInfo.do',option, function(result) {
@@ -113,5 +142,6 @@ module.exports = {
   getRepairType: getRepairType,
   getRepairLoc: getRepairLoc,
   getRepairlocationinfo: getRepairlocationinfo,
+  getRepaireAreaInfo: getRepaireAreaInfo,
   saveRepair: saveRepair
 };

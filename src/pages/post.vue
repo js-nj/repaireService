@@ -25,9 +25,9 @@
     <mt-cell class="mint-cell-text-fix" title="报修区域" is-link v-on:click="showpicker('area')">
       <span>{{ form.area ? form.area : '请选择' }}</span>
     </mt-cell>
-    <mt-cell class="mint-cell-text-fix" title="报修地点" is-link v-on:click="showpicker('loc')">
+<!--     <mt-cell class="mint-cell-text-fix" title="报修地点" is-link v-on:click="showpicker('loc')">
       <span>{{ form.loc ? form.loc : '请选择' }}</span>
-    </mt-cell>
+    </mt-cell> -->
     <div class="list-item first-item" style="margin-top: 0">
         <label class="item-left">详细地址</label>
         <input type="text" class="item-right text-input" placeholder="请填写" v-model="form.locationinfo">
@@ -43,6 +43,7 @@
 <script>
 import { Header, Button, Cell, Picker, MessageBox, Toast } from 'bh-mint-ui';
 import api from '../api.js';
+import SDK from 'bh-mobile-sdk';
 var errTipsInfo = {
     questioninfo:'请描述您遇到的问题',
     phone:'请输入正确的手机号',
@@ -89,6 +90,9 @@ function validForm() {
   return true;
 }
 export default {
+  ready() {
+    api.getRepaireAreaInfo.call(this);
+  },
   methods: {
     debug: function() {
       this.debugnum +=1;
@@ -118,8 +122,14 @@ export default {
         Toast('请先选择报修区域');
         return;
       }
-      this.isshowpicker = true;
-      getPickerData.call(this,val);
+      var multiPicker = SDK().UI && SDK().UI.multiPicker;
+      var _self = this;
+      multiPicker(this.returnArr, function(data) {
+        data = data.split(',');
+        this.repair.loc.val = _self.mapArr[String(data[0]) + String(data[1])].id;
+        this.form.area = _self.mapArr[String(data[0]) + String(data[1])].name;
+        this.repair.area.val = _self.QYArr[String(data[0])].id;
+      })
     },
     onValuesChange: function(picker, values) {
       this.changeval = values[0];
@@ -179,7 +189,10 @@ export default {
       ],
       changeval: '请选择',
       isshowpicker: false,
-      presentPicker:''
+      presentPicker:'',
+      returnArr: [],
+      mapArr: {},
+      QYArr: []
     };
   },
   components: {
