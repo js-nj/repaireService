@@ -333,12 +333,12 @@ export default {
   display: block;
   width: 40px;
   height: 40px;
-  border-radius: 20px;
+  /*border-radius: 20px;*/
   text-align: center;
   line-height: 40px;
   font-size: 30px;
   background-color: #000;
-  opacity: 0.7;
+  /*opacity: 0.7;*/
 }
 .post__img:after {
   content: "";
