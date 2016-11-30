@@ -133,7 +133,7 @@ export default {
     uploadImage() {
       return BH_MOBILE_SDK.wisedu.uploadToEMAP(HOST, this.imgs.map(img => img.url)).then((result) => {
         return result
-      }).catch(() => {
+      }).catch((err) => {
         Toast('上传图片出错啦')
       })
     },
