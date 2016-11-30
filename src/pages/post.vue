@@ -5,11 +5,15 @@
   <div class="main">
     <textarea class="question-describe" placeholder="请描述您遇到的问题" rows="5" v-model="form.questioninfo"></textarea>
     <span class="question-describe-holder">100</span>
-<!--     <div class="post__imgs">
-      <div class="post__img">
+    <div class="post__imgs">
+      <div class="post__img" v-for="img in imgs">
+        <img @click="previewImg($index)" :src="img.base64">
+        <span @click="deleteImg($index)" class="post__img-del"><img src="../components/img/delete.png"/></span>
+      </div>
+      <div class="post__img"  @click="showActions" v-if="imgs.length < imgLimit">
         <img src="../components/img/post.png"/>
       </div>
-    </div> -->
+    </div>
     <div class="list-item first-item">
         <label class="item-left" @click="debug">手机号</label>
         <input type="tel" class="item-right text-input" placeholder="请填写手机号" v-model="form.phone">
@@ -29,14 +33,14 @@
     </div>
   </div>
   <mt-button type="primary" class="save-button" @click="save">提交</mt-button>
-  <mt-picker v-show="isshowpicker" class="picker-show" :slots="slots" @change="onValuesChange" :show-toolbar="showToolbar" rotate-effect :visible-item-count="3">
+  <!-- <mt-picker v-show="isshowpicker" class="picker-show" :slots="slots" @change="onValuesChange" :show-toolbar="showToolbar" rotate-effect :visible-item-count="3">
     <slot><span class="toolbar-btn" @click="cancel">取消</span></slot>
     <slot><span class="toolbar-btn" style="float: right" @click="doOk">确定</span></slot>
-  </mt-picker>
+  </mt-picker> -->
 </template>
 
 <script>
-import { Header, Button, Cell, Picker, MessageBox, Toast } from 'bh-mint-ui';
+import { Header, Button, Cell, MessageBox, Toast } from 'bh-mint-ui';
 import api from '../api.js';
 import SDK from 'bh-mobile-sdk';
 var errTipsInfo = {
@@ -80,6 +84,34 @@ export default {
         this.$router.go('debug');
       }
     },
+    showActions() {
+      let {UI: {actionSheet}} = SDK()
+      actionSheet('上传图片', this.actions.map((action) => {
+        return action.title
+      }), (index) => {
+        this.actions[index].action()
+      })
+    },
+    takeCamera() {
+      let takeCamera = BH_MOBILE_SDK.systemAbility.takeCamera
+      takeCamera((ret) => {
+        this.imgs = this.imgs.concat(ret)
+      })
+      this.uploadImgType = '拍照';
+    },
+    takePhoto() {
+      let takePhoto = BH_MOBILE_SDK.systemAbility.takePhoto
+      takePhoto((ret) => {
+        this.imgs = this.imgs.concat(ret);
+      }, this.imgLimit - this.imgs.length)
+      this.uploadImgType = '相册';
+    },
+    deleteImg(index) {
+      this.imgs.splice(index, 1)
+    },
+    previewImg(index) {
+      BH_MOBILE_SDK.UI.preViewImages(this.imgs, index);
+    },
     showpicker: function(val) {
       var _self = this;
       var multiPicker = SDK().UI && SDK().UI.multiPicker;
@@ -98,6 +130,13 @@ export default {
         })
       }
     },
+    uploadImage() {
+      return BH_MOBILE_SDK.wisedu.uploadToEMAP(HOST, this.imgs.map(img => img.url)).then((result) => {
+        return result
+      }).catch(() => {
+        console.log('tijiaoshibai')
+      })
+    },
     save: function() {
       var result = validForm.call(this);
       if(result === true) {
@@ -109,6 +148,9 @@ export default {
           XXDD:this.form.locationinfo,
           MS:this.form.questioninfo
         }
+        this.uploadImage().then((result) => {
+          console.log(result.token)
+        })
         api.saveRepair.call(this,options)
       }else {
         MessageBox('提示', result);
@@ -141,29 +183,28 @@ export default {
           val: ''
         }
       },
-      slots: [
-        {
-          flex: 1,
-          defaultIndex:0,
-          values: ['请选择',1,2,3,4,5],
-          className: 'slot1',
-          textAlign: 'center'
-        }
-      ],
       changeval: '请选择',
       isshowpicker: false,
       presentPicker:'',
       returnArr: [],
       mapArr: {},
       QYArr: [],
-      GZLX: []
+      GZLX: [],
+      imgs: [],
+      actions: [{
+        title: '拍照',
+        action: this.takeCamera
+      }, {
+        title: '从相册选择',
+        action: this.takePhoto
+      }],
+      imgLimit: 3,
     };
   },
   components: {
     [Header.name]: Header,
     [Button.name]: Button,
-    [Cell.name]: Cell,
-    [Picker.name]: Picker
+    [Cell.name]: Cell
   }
 }
 </script>
