@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { Header, Button, Cell, MessageBox, Toast } from 'bh-mint-ui';
+import { Header, Indicator, Toast , Button, Cell, MessageBox } from 'bh-mint-ui';
 import api from '../api.js';
 import SDK from 'bh-mobile-sdk';
 var errTipsInfo = {
@@ -134,7 +134,7 @@ export default {
       return BH_MOBILE_SDK.wisedu.uploadToEMAP(HOST, this.imgs.map(img => img.url)).then((result) => {
         return result
       }).catch(() => {
-        console.log('tijiaoshibai')
+        Toast('上传图片出错啦')
       })
     },
     save: function() {
@@ -148,10 +148,16 @@ export default {
           XXDD:this.form.locationinfo,
           MS:this.form.questioninfo
         }
-        this.uploadImage().then((result) => {
-          console.log(result.token)
-        })
-        api.saveRepair.call(this,options)
+        if(this.imgs.length > 0) {
+          Indicator.open();
+          this.uploadImage().then((result) => {
+            options.TP = result.token;
+            Indicator.close();
+            api.saveRepair.call(this,options)
+          });
+        } else {
+          api.saveRepair.call(this,options)
+        }
       }else {
         MessageBox('提示', result);
       }

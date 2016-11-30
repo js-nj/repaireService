@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'production') {
   init(() => {
     var sdk = SDK();
     global.HOST = location.origin + "/publicapp";
-    global.IMGHOST = 'http://amptest.wisedu.com'
+    global.IMGHOST = location.origin;
     if(sdk.UI && sdk.UI.toggleNavBar) {
       sdk.UI.toggleNavBar(false);
     }

@@ -105,7 +105,7 @@ export default {
     this.wid = info.WID;
     this.tp = info.TP;
     if(this.tp) {
-      this.$http.post(global.HOST+"/sys/emapcomponent/file/getUploadedAttachment/"+this.tp+".do",'' ).then(function(data) {
+      this.$http.get(global.HOST+"/sys/emapcomponent/file/getUploadedAttachment/"+this.tp+".do",'' ).then(function(data) {
         _self.tps = data.data.items;
       }, function(err) {
         Toast('获取图片错误');
@@ -170,7 +170,7 @@ export default {
     color: #000000;
     /*height: 120px;*/
   }
-  
+
   .main {
     margin-top: 40Px;
     & .title-user-img {
