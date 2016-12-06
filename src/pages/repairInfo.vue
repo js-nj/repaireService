@@ -104,7 +104,6 @@ export default {
     this.wxpersonphone = info.WXRSJ;
     this.wid = info.WID;
     this.tp = info.TP;
-    console.log(info);
     if(this.tp) {
       this.$http.get(global.HOST+"/sys/emapcomponent/file/getUploadedAttachment/"+this.tp+".do",'' ).then(function(data) {
         _self.tps = data.data.items;
@@ -112,7 +111,6 @@ export default {
         Toast('获取图片错误');
       });
     }
-    console.log(info)
     switch (info.ZT) {
       case 'DWX':
         changeState.apply(this.state,[['worker']]);

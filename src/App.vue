@@ -12,7 +12,7 @@
       </a>
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.waitRepair }" v-on:click="chooseProcess('waitRepair')">
         <div>
-          待维修
+          维修中
         </div>
         <!-- <span v-bind:class="{ 'item-tips': (!repairState.waitRepair)&&unreadNum.waitRepair }">{{unreadNum.waitRepair?unreadNum.waitRepair:''}}</span> -->
       </a>
@@ -25,7 +25,7 @@
       </a>
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.rejected }" v-on:click="chooseProcess('rejected')">
         <div>
-          已驳回
+          已退回
         </div>
         <!-- <span v-bind:class="{ 'item-tips': (!repairState.rejected)&&unreadNum.rejected }">{{unreadNum.rejected?unreadNum.rejected:''}}</span> -->
       </a>
@@ -69,13 +69,13 @@ export default {
   created() {
     var self = this;
     this.$http.get(global.HOST+"/sys/itservicecommon/api/getUserLimit.do?appName=hqwxxt").then(function(data) {
-      if(data.data[0] && data.data[0].GNBS == "teacher_student") {
+      if(data.data[0] && data.data[0].GNBS == "teacher_student" || data.data.length == 2) {
         this.isstudent = true;
         this.headertitle = '我的报修';
         api.loadData.call(this, 'YWX', 1, 'home');
         this.$router.go('/waitProcess');
       }
-      if(data.data[0] && data.data[0].GNBS == "repairman") {
+      if(data.data.length == 1 && data.data[0] && data.data[0].GNBS == "repairman") {
         this.isstudent = false;
         this.headertitle = '待维修';
         this.$router.go({name:'waitRepair', params: {iswork:'worker'}});
@@ -114,7 +114,7 @@ export default {
       changeState(this.repairState, this.unreadNum, elName);
     },
     post: function() {
-      this.$router.go('post');
+      this.$router.go({name: 'post'});
     },
     goManager() {
       // TrunPage.goBack()
