@@ -26,7 +26,7 @@
         <span><i class="icon-call"></i>{{bxuserphone}}</span>
       </div>
       <div class="location">
-        <span><i class="icon-locationon"></i>{{bxlocation}}</span>
+        <span class="locationauto"><i class="icon-locationon"></i>{{bxlocation}}</span>
       </div>
     </div>
     <div class="admin-reply" v-show="state.adminreply">
@@ -96,7 +96,7 @@ export default {
     this.bxuser = info.BXRXM;
     this.bxuserid = info.BXRGH;
     this.bxuserphone = info.BXRSJ;
-    this.bxlocation = info.BXQY_DISPLAY+info.BXDD_DISPLAY;
+    this.bxlocation = info.BXQY_DISPLAY+info.BXDD_DISPLAY+info.XXDD;
     this.bxadminrply = info.BHYJ;
     this.bxcomment = info.BXRPJ;
     this.bxcommentpoints = info.PF;
@@ -104,6 +104,7 @@ export default {
     this.wxpersonphone = info.WXRSJ;
     this.wid = info.WID;
     this.tp = info.TP;
+    console.log(info);
     if(this.tp) {
       this.$http.get(global.HOST+"/sys/emapcomponent/file/getUploadedAttachment/"+this.tp+".do",'' ).then(function(data) {
         _self.tps = data.data.items;
@@ -111,17 +112,18 @@ export default {
         Toast('获取图片错误');
       });
     }
-    switch (info.DQZT) {
-      case '待维修':
+    console.log(info)
+    switch (info.ZT) {
+      case 'DWX':
         changeState.apply(this.state,[['worker']]);
         break;
-      case '已维修':
+      case 'YWX':
         changeState.apply(this.state,[['worker','commentbutton']]);
         break;
-      case '已驳回':
+      case 'YBH':
         changeState.apply(this.state,[['adminreply','commentbutton']]);
         break;
-      case '已评价':
+      case 'YPJ':
         if(this.bxadminrply){
           changeState.apply(this.state,[['adminreply','adminreplytips']]);
         } else {
@@ -224,18 +226,18 @@ export default {
     }
     & .location-phone {
       width: 100%;
-      height: 200px;
+      /*height: 200px;*/
       margin-top: 20px;
       color: #403F44;
       font-size: 28px;
       background-color: #fff;
-      & span {
-        display: block;
-        height: 100px;
-        line-height: 100px;
-        margin-left: 20px;
-      }
       & .phone {
+        & span {
+          display: block;
+          height: 100px;
+          line-height: 100px;
+          margin-left: 20px;
+        }
         height: 100px;
         line-height: 100px;
         border-bottom: 1px solid #E8E9EC;
@@ -251,7 +253,13 @@ export default {
         }
       }
       & .location {
-        height: 100px;
+        & span {
+          display: block;
+          line-height: 1.2;
+          margin-left: 20px;
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
         & .icon-locationon {
           margin-right: 10px;
           font-family: "iconfont" !important;
@@ -295,5 +303,8 @@ export default {
       height: 100px;
       border-radius: 0;
     }
+  }
+  .maintenance-worker:hover,.maintenance-worker:visited,.maintenance-worker:link,.maintenance-worker:active {
+    text-decoration: none!important;
   }
 </style>

@@ -29,7 +29,8 @@
     </mt-cell> -->
     <div class="list-item first-item" style="margin-top: 0">
         <label class="item-left">详细地址</label>
-        <input type="text" class="item-right text-input" placeholder="请填写" v-model="form.locationinfo">
+        <!-- <input type="text" class="item-right text-input" placeholder="请填写" v-model="form.locationinfo"> -->
+        <textarea class="item-right text-textarea" placeholder="请填写" v-model="form.locationinfo"></textarea>
     </div>
   </div>
   <mt-button type="primary" class="save-button" @click="save">提交</mt-button>
@@ -351,6 +352,16 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+}
+.text-textarea {
+  overflow: auto;
+  resize: none;
+  vertical-align: top;
+  height: 100px;
+  line-height: 1.2;
+  font-size: 28px;
+  border: none;
+  padding: 25px 10px;
 }
 </style>
 <style>
