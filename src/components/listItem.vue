@@ -80,8 +80,8 @@ export default {
       color: #403F44;
       font-family: PingFang-SC-Bold;
       font-size: 30px;
-      line-height: 30px;
-      height: 30px;
+      line-height: 35px;
+      height: 35px;
     }
     & .message-title {
       overflow: hidden;

@@ -232,7 +232,7 @@ export default {
     height: 200px;
     font-size: 32px;
     border: none;
-    padding: 10px 10px;
+    padding: 15px 10px;
   }
   & .question-describe-holder {
     color: #B4B4B4;
@@ -270,7 +270,7 @@ export default {
 }
 .text-input {
   padding: 0 50px;
-  font-size: 28px;
+  font-size: 30px;
   text-align: right;
   border: 0;
 }
@@ -359,7 +359,7 @@ export default {
   vertical-align: top;
   height: 100px;
   line-height: 1.2;
-  font-size: 28px;
+  font-size: 32px;
   border: none;
   padding: 25px 10px;
 }
