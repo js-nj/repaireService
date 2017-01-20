@@ -1,7 +1,7 @@
 <template>
-  <mt-header fixed :title="headertitle" id="repair-mt-header">
-    <mt-button @click="goManager" icon="back" slot="left"></mt-button>
-  </mt-header>
+  <!--<mt-header fixed :title="headertitle" id="repair-mt-header">-->
+    <!--<mt-button @click="goManager" icon="back" slot="left"></mt-button>-->
+  <!--</mt-header>-->
   <div class="nav-header" v-if="isstudent">
     <div class="repair-state">
       <a class="repair-state-item" v-bind:class="{ 'item-selected': repairState.waitProcess }" v-on:click="chooseProcess('waitProcess')">
@@ -69,17 +69,17 @@ export default {
   created() {
     var self = this;
     this.$http.get(global.HOST+"/sys/itservicecommon/api/getUserLimit.do?appName=hqwxxt").then(function(data) {
-      if(data.data[0] && data.data[0].GNBS == "teacher_student" || data.data.length == 2) {
+//      if(data.data[0] && data.data[0].GNBS == "teacher_student" || data.data.length == 2) {
         this.isstudent = true;
         this.headertitle = '我的报修';
         api.loadData.call(this, 'YWX', 1, 'home');
         this.$router.go('/waitProcess');
-      }
-      if(data.data.length == 1 && data.data[0] && data.data[0].GNBS == "repairman") {
-        this.isstudent = false;
-        this.headertitle = '待维修';
-        this.$router.go({name:'waitRepair', params: {iswork:'worker'}});
-      }
+//      }
+//      if(data.data.length == 1 && data.data[0] && data.data[0].GNBS == "repairman") {
+//        this.isstudent = false;
+//        this.headertitle = '待维修';
+//        this.$router.go({name:'waitRepair', params: {iswork:'worker'}});
+//      }
     }, function(err) {
       Toast('获取权限错误');
     });
@@ -132,7 +132,6 @@ export default {
   /*height: 120px;*/
 }
 .nav-header {
-  margin-top: 40Px;
   height: 60px;
   top: 0;
   right: 0;
@@ -181,10 +180,10 @@ export default {
 }
 .main {
   /*height: 960px;*/
-  margin-top: 40Px;
+  margin-top: 60px;
 }
 .mainstudent {
-  margin-top: 125px;
+  /*margin-top: 125px;*/
 }
 .icon-bordercolor {
   position: fixed;

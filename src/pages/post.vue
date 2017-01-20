@@ -1,7 +1,7 @@
 <template>
-  <mt-header fixed title="我的报修" id="repair-mt-header">
-    <mt-button v-link="'/'" icon="back" slot="left"></mt-button>
-  </mt-header>
+  <!--<mt-header fixed title="我的报修" id="repair-mt-header">-->
+    <!--<mt-button v-link="'/'" icon="back" slot="left"></mt-button>-->
+  <!--</mt-header>-->
   <div class="main">
     <textarea class="question-describe" placeholder="请描述您遇到的问题" rows="5" v-model="form.questioninfo"></textarea>
     <span class="question-describe-holder">100</span>
@@ -223,7 +223,7 @@ export default {
   /*height: 120px;*/
 }
 .main {
-  margin-top: 65px;
+  /*margin-top: 65px;*/
   & .question-describe {
     overflow: auto;
     resize: none;

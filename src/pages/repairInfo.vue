@@ -1,7 +1,7 @@
 <template>
-  <mt-header fixed title="报修详情" id="repair-mt-header">
-    <mt-button v-link="'/'" icon="back" slot="left"></mt-button>
-  </mt-header>
+  <!--<mt-header fixed title="报修详情" id="repair-mt-header">-->
+    <!--<mt-button v-link="'/'" icon="back" slot="left"></mt-button>-->
+  <!--</mt-header>-->
   <div class="main">
     <div class="title-user-img">
       <mt-swipe :auto="4000" class="swipe-view" v-if="tps">
@@ -172,7 +172,7 @@ export default {
   }
 
   .main {
-    margin-top: 40Px;
+    /*background-color: #fff;*/
     & .title-user-img {
       /*height: 670px;*/
       width: 100%;
