@@ -8,6 +8,7 @@ var merge = function() {
 function loadData(state, num, app) {
   var self = this;
   postData.call(self,'/getMyRepairsPagination.do',{state:state,pageNumber:num,pageSize:10}, function(result) {
+    self.loading = true;
     if(result.data.datas) {
       var data = result.data.datas.bxsscxwdbxjlbg;
       if(app) {
@@ -30,6 +31,7 @@ function loadData(state, num, app) {
 function loadRepairData(num) {
   var self = this;
   postData.call(self,'/getMyDisrepairList.do',{pageNumber:num,pageSize:10}, function(result) {
+    self.loading = true;
     if(result.data.datas) {
       var data = result.data.datas.wxryjmbg;
       if(data.rows.length > 0) {

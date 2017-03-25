@@ -13,10 +13,6 @@ export default function(router) {
       name: 'app',
       component: App,
       subRoutes: {
-        // '/': {
-        //   name: 'waitProcess',
-        //   component: waitProcess
-        // },
         '/waitProcess': {
           name: 'waitProcess',
           component: waitProcess
