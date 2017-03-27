@@ -170,7 +170,11 @@ export default {
     }
   }
 }
-
+.main{
+  height: calc(100vh - 88px);
+  width: 100vw;
+  overflow: auto;
+}
 .post {
   position: fixed;
   background: #06c1ae;

@@ -3,10 +3,10 @@
     <div class="title-user-img">
       <mt-swipe :auto="4000" class="swipe-view" v-if="tps">
         <mt-swipe-item class="swipe-view-item" v-for="item in tps">
-          <img class="swipe-view-item" v-bind:src="imgurl+item.fileUrl" / @click="previewImage($index)">
+          <img class="swipe-view-item" :src="imgurl+item.fileUrl" @click="previewImage($index)">
         </mt-swipe-item>
       </mt-swipe>
-      <div class="message-title">{{ title }}</div>
+      <div class="message-title">{{title}}</div>
       <div class="message-location">
         <i class="iconfont icon-locationon"></i>
         <span>方山校区</span>
@@ -17,21 +17,61 @@
       </div>
     </div>
     <div class="line"></div>
-    <div class="repair-progress" v-for="i in 4">
-      <div class="left">
-        <div>12:01</div>
-        <div>2016.09.09</div>
-      </div>
-      <i class="yellow iconfont icon-shenqingzhuangtaiicon" v-if="$index ===0"></i>
-      <i class="progress-icon iconfont icon-chenggong1" v-if="$index>0"></i>
-      <div class="right">
-        <div>
-          <span>已指派维修人员</span>
-          <span class="btn" v-if="$index===0">
-            <span @click ="comment">去评价</span>
-          </span>
+    <div class="progress">
+      <div class="progress-title">报修进度</div>
+      <div class="repair-progress">
+        <div class="left">
+          <div>12:01</div>
+          <div>2016.09.09</div>
         </div>
-        <div v-if="$index>0">王秋色指派任务给皆允斌</div>
+        <span class="middle-icon">
+          <i class="iconMobile icon-correct"></i>
+        </span>
+        <div class="right">
+          <div>
+            <span>已指派维修人员</span>
+            <span class="btn" v-if="$index===0">
+            <span @click ="popupVisible = true">去评价</span>
+            </span>
+          </div>
+          <div>王秋色指派任务给皆允斌</div>
+        </div>
+      </div>
+      <div class="repair-progress">
+        <div class="left">
+          <div>12:01</div>
+          <div>2016.09.09</div>
+        </div>
+        <span class="middle-icon-yellow">
+          <i class="iconMobile icon-loading"></i>
+        </span>
+        <div class="right">
+          <div>
+            <span>已指派维修人员</span>
+            <span class="btn" v-if="$index===0">
+            <span @click ="popupVisible = true">去评价</span>
+            </span>
+          </div>
+          <div>王秋色指派任务给皆允斌</div>
+        </div>
+      </div>
+      <div class="repair-progress">
+        <div class="left">
+          <div>12:01</div>
+          <div>2016.09.09</div>
+        </div>
+        <span class="middle-icon-error">
+          <i class="iconMobile icon-error"></i>
+        </span>
+        <div class="right">
+          <div>
+            <span>已指派维修人员</span>
+            <span class="btn" v-if="$index===0">
+            <span @click ="popupVisible = true">去评价</span>
+            </span>
+          </div>
+          <div>王秋色指派任务给皆允斌</div>
+        </div>
       </div>
     </div>
     <div class="admin-reply" v-show="state.adminreply">
@@ -46,7 +86,17 @@
     <mt-button type="primary" class="comment-button" v-show="state.commentbutton" @click="doComment">评价本次报修</mt-button>
     <mt-button type="primary" class="comment-button" v-show="iswork" @click="doComplete">完工</mt-button>
   </div>
-  <grade v-show="state.showgrade" :wid="wid"></grade>
+  <!-- <grade v-show="state.showgrade" :wid="wid"></grade> -->
+  <mt-popup :visible.sync="popupVisible" position="bottom">
+    <div class="pop-container">
+      <div class="star">
+        <span v-for="1 in 5"><i class="iconfont icon-wujiaoxing1"></i></span>
+      </div>
+      <textarea v-model.trim()="sugg" rows="7" placeholder="填写你对此次维修服务的感受..."></textarea>
+      <span class="number">{{sugg.length}}/100</span>
+      <mt-button type="primary" class="submit" @click="submit">提交</mt-button>
+    </div>
+  </mt-popup>
 </template>
 <script>
 import {
@@ -55,7 +105,8 @@ import {
   Swipe,
   SwipeItem,
   Cell,
-  Toast
+  Toast,
+  Popup
 } from 'bh-mint-ui';
 import grade from '../components/grade.vue';
 import tips from '../components/tips.vue';
@@ -77,6 +128,7 @@ export default {
   data() {
     return {
       imgurl: global.IMGHOST,
+      popupVisible: false,
       title: '',
       timezone: '',
       bxuser: '',
@@ -88,6 +140,7 @@ export default {
       bxcommentpoints: '',
       wxperson: '',
       wid: '',
+      sugg: '',
       tps: false,
       state: {
         adminreply: false,
@@ -115,13 +168,13 @@ export default {
     this.wxperson = info.WXR_DISPLAY + ' (' + info.WXRSJ + ')';
     this.wxpersonphone = info.WXRSJ;
     this.wid = info.WID;
-    this.tp = info.TP;
-    if (this.tp) {
-      this.$http.get(global.HOST + "/sys/emapcomponent/file/getUploadedAttachment/" + this.tp + ".do", '').then(function(data) {
-        _self.tps = data.data.items;
-      }, function(err) {
+    if (info.TP) {
+      let url = global.HOST + "/sys/emapcomponent/file/getUploadedAttachment/" + info.TP + ".do";
+      this.$http.get(url).then((response) => {
+        this.tps = response.data.items;
+      }).catch((err) => {
         Toast('获取图片错误');
-      });
+      })
     }
     switch (info.ZT) {
       case 'DWX':
@@ -173,8 +226,8 @@ export default {
     doComment: function() {
       this.state.showgrade = true;
     },
-    comment() {
-      alert("======>")
+    submit() {
+      this.popupVisible = false;
     },
     previewImage(index) {
       var preImg = [];
@@ -201,6 +254,7 @@ export default {
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
     [Cell.name]: Cell,
+    [Popup.name]: Popup,
     grade,
     tips
   }
@@ -362,55 +416,155 @@ export default {
 .line {
   height: 30px;
   background-color: #f9f9f9;
+  border-top: 1Px solid #efefef;
+  border-bottom: 1Px solid #efefef;
 }
 
-.repair-progress {
+.progress {
   background-color: #fff;
-  padding: 30px;
-  display: flex;
-  align-items: center;
-  height: 200px;
-  & .left {
-    margin-left: 20px;
-    text-align: right;
-    font-size: 26px;
-  }
-  & i {
+  & .progress-title {
+    font-size: 28px;
+    height: 80px;
+    line-height: 80px;
     margin-left: 30px;
-    margin-right: 30px;
-    font-size: 40px;
-    position: relative;
-    &:after {
-      position: absolute;
-      height: 166px;
-      left: 10Px;
-      right: 10Px;
-      top: 21Px;
-      background: #E8E8E8;
-      content: ''
+    border-bottom: 1Px solid #E8E8E8;
+  }
+  & .repair-progress {
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    height: 200px;
+    & .left {
+      margin-left: 20px;
+      text-align: right;
+      font-size: 26px;
+      color: #BDC0C5;
     }
-  }
-  & .yellow {
-    color: yellow;
-  }
-  & .progress-icon {
-    color: #06c1ae;
-  }
-  & .right {
-    font-size: 26px;
-    & div {
-      word-break: break-all;
-    }
-    & .btn {
-      color: #06C1AE;
-      font-size: 22px;
-      & span {
-        border-radius: 12Px;
-        padding: 4px 12px 6px 12px;
-        display: inline-block;
-        border: 1px solid #BAFFF6;
+    & .middle-icon {
+      display: inline-block;
+      margin-left: 20px;
+      margin-right: 20px;
+      background-color: #06c1ae;
+      width: 24Px;
+      height: 24Px;
+      overflow: hidden;
+      border-radius: 50%;
+      & i {
+        font-size: 40px;
+        position: relative;
+        color: #fff;
+        /* &:after {
+          position: absolute;
+          height: 166px;
+          left: 10Px;
+          right: 10Px;
+          top: 21Px;
+          background: #E8E8E8;
+          content: ''
+        }*/
       }
     }
+    & .middle-icon-yellow {
+      display: inline-block;
+      margin-left: 20px;
+      margin-right: 20px;
+      background-color: #ffb200;
+      width: 24Px;
+      height: 24Px;
+      overflow: hidden;
+      border-radius: 50%;
+      & i {
+        font-size: 35px;
+        position: relative;
+        color: #fff;
+        top: 2px;
+        left: 2px;
+        /* &:after {
+          position: absolute;
+          height: 166px;
+          left: 10Px;
+          right: 10Px;
+          top: 21Px;
+          background: #E8E8E8;
+          content: ''
+        }*/
+      }
+    }
+    & .middle-icon-error{
+      display: inline-block;
+      margin-left: 20px;
+      margin-right: 20px;
+      background-color: #ff571a;
+      width: 24Px;
+      height: 24Px;
+      overflow: hidden;
+      border-radius: 50%;
+      & i {
+        font-size: 35px;
+        position: relative;
+        color: #fff;
+        top: 2px;
+        left: 2px;
+        /* &:after {
+          position: absolute;
+          height: 166px;
+          left: 10Px;
+          right: 10Px;
+          top: 21Px;
+          background: #E8E8E8;
+          content: ''
+        }*/
+      }
+    }
+    & .right {
+      font-size: 26px;
+      color: #BDC0C5;
+      & div {
+        word-break: break-all;
+      }
+      & .btn {
+        color: #06C1AE;
+        font-size: 22px;
+        & span {
+          border-radius: 12Px;
+          padding: 4px 12px 6px 12px;
+          display: inline-block;
+          border: 1px solid #BAFFF6;
+        }
+      }
+    }
+  }
+}
+
+.repair-user {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.pop-container {
+  height: 500px;
+  width: 100vw;
+  padding: 30px;
+  position: relative;
+  & .star {
+    height: 40px;
+  }
+  & textarea {
+    outline: none;
+    resize: none;
+    width: 100%;
+    font-size: 24px;
+    border: 0;
+  }
+  & .number {
+    position: absolute;
+    right: 30px;
+  }
+  & .submit {
+    width: calc(100% - 60px);
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
   }
 }
 

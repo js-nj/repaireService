@@ -5,7 +5,7 @@
         <div class="message-title">{{messagetitle}}</div>
         <div class="item-main-info">
           <span class="span-info">{{info}}</span>
-          <div class="time-zone"><span>报修时间</span>{{timezone}}</div>
+          <div class="time-zone"><span>报修时间 </span>{{timezone |formattime}}</div>
         </div>
       </div>
       <img class="item-img" v-if="img" :src="imgurl">
@@ -14,6 +14,7 @@
 </template>
 <script>
 import utils from '../utils.js';
+import fixTime from 'formattime';
 export default {
   data() {
       return {
@@ -21,7 +22,31 @@ export default {
       }
     },
     filters: {
-      fixtime: utils.fixTime
+      // fixtime: utils.fixTime,
+      formattime(val) {
+        let date = val.split(" ");
+        let yearMonth = date[0].split('-');
+        let time = date[1].split(':');
+        return fixTime(new Date(yearMonth[0], (yearMonth[1] - 1), yearMonth[2], time[0], time[1]).getTime(), [{
+          separate: -60 * 1000,
+          formateStyle: '刚刚'
+        }, {
+          separate: -60 * 60 * 1000,
+          formateStyle: '#{{HH}}:#{{mm}}'
+        }, {
+          separate: -24 * 60 * 60 * 1000,
+          formateStyle: '#{{hour}}小时前'
+        }, {
+          separate: -2 * 24 * 60 * 60 * 1000,
+          formateStyle: '昨天 #{{HH}}:#{{mm}}',
+        }, {
+          separate: -3 * 24 * 60 * 60 * 1000,
+          formateStyle: '前天 #{{HH}}:#{{mm}}',
+        }, {
+          separate: -Infinity,
+          formateStyle: '#{{YYYY}}-#{{MM}}-#{{DD}}',
+        }])
+      },
     },
     methods: {
       messageInfo: function() {
@@ -76,7 +101,7 @@ export default {
         display: -webkit-box;
         overflow: hidden;
         text-overflow: ellipsis;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
       }
       & .item-main-info {
@@ -87,7 +112,7 @@ export default {
           display: -webkit-box;
           overflow: hidden;
           text-overflow: ellipsis;
-          -webkit-line-clamp: 1;
+          -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
         }
         & .time-zone {

@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="title">故障描述</div>
+    <!-- <div class="title">故障描述</div> -->
     <textarea class="question-describe" placeholder="请描述您遇到的问题" rows="5" v-model="form.questioninfo"></textarea>
     <span class="question-describe-holder">{{form.questioninfo.length}}/100</span>
     <div class="post__imgs">
@@ -9,7 +9,7 @@
         <span @click="deleteImg($index)" class="post__img-del"><img src="../components/img/delete.png"/></span>
       </div>
       <div class="post__img" @click="showActions" v-if="imgs.length < imgLimit">
-        <img src="../components/img/post.png" />
+        <img src="../components/img/post1.png" />
       </div>
     </div>
     <div class="list-item first-item">
@@ -18,11 +18,17 @@
     </div>
     <div class="list-item first-item">
       <label class="item-left" @click="debug">故障类型</label>
-      <span class="item-right text-input" @click="showpicker('breaks')">{{ form.breaks ? form.breaks : '请选择类型' }}</span>
+      <span class="item-right text-input" @click="showpicker('breaks')">
+        <span>{{ form.breaks ? form.breaks : '请选择' }}</span>
+        <i class="iconfont icon-keyboardarrowright"></i>
+      </span>
     </div>
     <div class="list-item first-item">
       <label class="item-left" @click="debug">故障区域</label>
-      <span class="item-right text-input" @click="showpicker('area')">{{ form.area ? form.area : '请选择区域' }}</span>
+      <span class="item-right text-input" @click="showpicker('area')">
+        <span>{{ form.area ? form.area : '请选择' }}</span>
+        <i class="iconfont icon-keyboardarrowright"></i>
+      </span>
     </div>
     <!--    <mt-cell class="mint-cell-text-fix" title="故障类型" is-link v-on:click="showpicker('breaks')">
       <span>{{ form.breaks ? form.breaks : '请选择' }}</span>
@@ -145,20 +151,23 @@ export default {
         }
       },
       uploadImage() {
+        alert(JSON.stringify(HOST))
         return BH_MOBILE_SDK.wisedu.uploadToEMAP(HOST, this.imgs.map(img => img.url)).then((result) => {
           return result
         }).catch((err) => {
           Toast('上传图片出错啦')
+          Indicator.close()
         })
       },
       save: function() {
-        var result = validForm.call(this);
+        // var result = validForm.call(this);
+        var result = true
         if (result === true) {
           var options = {
             BXRSJ: this.form.phone,
             GZLX: this.repair.breaks.val,
-            BXQY: this.repair.area.val,
-            BXDD: this.repair.loc.val,
+            BXQY: this.repair.area.val,//TODO
+            BXDD: this.repair.loc.val,//TODO
             XXDD: this.form.locationinfo,
             MS: this.form.questioninfo
           }
@@ -298,6 +307,9 @@ export default {
   font-size: 30px;
   border: 0;
   color: darkgrey;
+  & i {
+    font-size: 30px;
+  }
 }
 
 .mint-cell {
