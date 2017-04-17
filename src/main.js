@@ -22,7 +22,7 @@ let Init = () => {
   var App = Vue.extend({});
   router.start(App, 'body');
 };
-//测试
+
 if (process.env.NODE_ENV === 'production') {
   init(() => {
     var sdk = SDK();

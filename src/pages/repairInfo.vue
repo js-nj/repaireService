@@ -18,28 +18,11 @@
     </div>
     <div v-show="!iswork">
       <div class="line-top"></div>
-    <!--   <div class="maintenance-worker" v-show="state.worker && !iswork">
-        <div class="worker-info">
-          <span class="label">维修人员</span>
-          <span class="name">{{wxperson.name}}</span>
-          <a href="tel:{{wxpersonphone}}">{{wxperson.phone}}</a>
-        </div>
-        <div class="line-bottom"></div>
-      </div> -->
       <div class="progress">
         <div class="progress-title">报修进度</div>
-        <process :status.sync ='status' :visible.sync="popupVisible" :grade.sync="state.showgrade"></process>
+        <process :status.sync='status' :visible.sync="popupVisible" :grade.sync="state.showgrade" :data.sync='processdata'></process>
       </div>
-      <mt-button type="primary" class="comment-button" v-show="state.commentbutton" @click="doComment">评价本次报修</mt-button>
-      <div class="admin-reply" v-show="state.adminreply">
-        <span>管理员回复:</span>
-        <span>{{bxadminrply}}</span>
-        <tips class="comment-tips" v-show="state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
-      </div>
-      <!-- 我的评价 -->
-      <tips class="comment-tips" v-show="state.worker&&state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
     </div>
-    <!-- worker -->
     <div v-show="iswork">
       <div class="repair-info">
         <div class="title">报修人信息</div>
@@ -107,7 +90,7 @@ export default {
       },
       wid: '',
       sugg: '',
-      status:'',
+      status: '',
       tps: false,
       state: {
         adminreply: false,
@@ -115,7 +98,8 @@ export default {
         worker: false,
         commentbutton: false,
         adminreplytips: false,
-      }
+      },
+      processdata: {}
 
     }
   },
@@ -180,6 +164,21 @@ export default {
             break;
           default:
             break;
+        }
+        this.processdata = {
+          BXSJ: info.BXSJ,
+          SLSJ: info.SLSJ,
+          WXSJ: info.WXSJ,
+          PJSJ: info.PJSJ,
+          WXRXM: info.WXRXM,
+          WXRSJ: info.WXRSJ,
+          BXRXM: info.BXRXM,
+          SLRXM: info.SLRXM,
+          BHYJ: info.BHYJ,
+          PF: info.PF,
+          BXRPJ: info.BXRPJ,
+          WXRSJ: info.WXRSJ,
+          BHYJ: info.BHYJ
         }
       } else {
         Toast('获取信息失败，请稍后再试')
@@ -424,7 +423,7 @@ export default {
     margin-left: 30px;
     border-bottom: 1Px solid #E8E8E8;
   }
-  & .repair-progress {
+/*  & .repair-progress {
     padding: 30px;
     display: flex;
     align-items: center;
@@ -527,12 +526,7 @@ export default {
         }
       }
     }
-  }
-}
-
-.repair-user {
-  padding-left: 30px;
-  padding-right: 30px;
+  }*/
 }
 
 .pop-container {
@@ -594,10 +588,4 @@ export default {
   }
 }
 
-.maintenance-worker:hover,
-.maintenance-worker:visited,
-.maintenance-worker:link,
-.maintenance-worker:active {
-  text-decoration: none!important;
-}
 </style>

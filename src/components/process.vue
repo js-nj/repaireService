@@ -17,19 +17,19 @@
           <div></div>
         </div>
       </div>
-      <div class="repair-progress">
+       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.BXSJ.split(' ')[1]}}</div>
+          <div>{{data.BXSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle-icon-green">
-            <i class="last middle iconMobile icon-correct"></i>
+            <i class="last iconMobile icon-correct"></i>
           </span>
         <div class="right">
           <div>
             <span>已提交</span>
           </div>
-          <div>王秋实提交报修</div>
+          <div>{{data.BXRXM}}提交报修</div>
         </div>
       </div>
     </div>
@@ -50,10 +50,10 @@
           <div></div>
         </div>
       </div>
-      <div class="repair-progress">
+       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.SLSJ.split(' ')[1]}}</div>
+          <div>{{data.SLSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle middle-icon-green">
             <i class="iconMobile icon-correct"></i>
@@ -62,15 +62,15 @@
           <div>
             <span>已受理</span>
           </div>
-          <div>贺平清受理报修</div>
-          <div>指派给贺平清</div>
-          <div>15062180721</div>
+          <div>{{data.SLRXM}}受理报修</div>
+          <div>指派给{{data.WXRXM}}</div>
+          <div>{{data.WXRSJ}}</div>
         </div>
       </div>
-      <div class="repair-progress">
+       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.BXSJ.split(' ')[1]}}</div>
+          <div>{{data.BXSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle-icon-green">
             <i class="last iconMobile icon-correct"></i>
@@ -79,7 +79,7 @@
           <div>
             <span>已提交</span>
           </div>
-          <div>王秋实提交报修</div>
+          <div>{{data.BXRXM}}提交报修</div>
         </div>
       </div>
     </div>
@@ -105,8 +105,8 @@
       </div>
       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.WXSJ.split(' ')[1]}}</div>
+          <div>{{data.WXSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle middle-icon-green">
             <i class="iconMobile icon-correct"></i>
@@ -115,13 +115,13 @@
           <div>
             <span>已维修</span>
           </div>
-          <div>王秋实完成报修</div>
+          <div>{{data.WXRXM}}完成报修</div>
         </div>
       </div>
       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.SLSJ.split(' ')[1]}}</div>
+          <div>{{data.SLSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle middle-icon-green">
             <i class="iconMobile icon-correct"></i>
@@ -130,15 +130,15 @@
           <div>
             <span>已受理</span>
           </div>
-          <div>贺平清受理报修</div>
-          <div>指派给贺平清</div>
-          <div>15062180721</div>
+          <div>{{data.SLRXM}}受理报修</div>
+          <div>指派给{{data.WXRXM}}</div>
+          <div>{{data.WXRSJ}}</div>
         </div>
       </div>
       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.BXSJ.split(' ')[1]}}</div>
+          <div>{{data.BXSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle-icon-green">
             <i class="last iconMobile icon-correct"></i>
@@ -147,7 +147,7 @@
           <div>
             <span>已提交</span>
           </div>
-          <div>王秋实提交报修</div>
+          <div>{{data.BXRXM}}提交报修</div>
         </div>
       </div>
     </div>
@@ -155,8 +155,8 @@
     <div class="status" v-if='status==="YBH"'>
       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.SLSJ.split(' ')[1]}}</div>
+          <div>{{data.WXSJ.split(' ')[0]}}</div>
         </div>
         <span class=" middle middle-icon-error">
             <i class="iconMobile icon-error"></i>
@@ -165,14 +165,14 @@
           <div>
             <span>已退回</span>
           </div>
-          <div>王秋实打回</div>
-          <div>退回意见：不存在</div>
+          <div>{{data.SLRXM}}打回</div>
+          <div>退回意见：{{data.BHYJ}}</div>
         </div>
       </div>
       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.SLSJ.split(' ')[1]}}</div>
+          <div>{{data.WXSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle-icon-green">
             <i class="last iconMobile icon-correct"></i>
@@ -181,7 +181,7 @@
           <div>
             <span>已提交</span>
           </div>
-          <div>王秋实提交报修</div>
+          <div>{{data.BXRXM}}提交报修</div>
         </div>
       </div>
     </div>
@@ -189,8 +189,8 @@
     <div class="status" v-if='status==="YPJ"'>
       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.WXSJ.split(' ')[1]}}</div>
+          <div>{{data.WXSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle middle-icon-green">
             <i class="iconMobile icon-correct"></i>
@@ -199,14 +199,17 @@
           <div>
             <span>已评价</span>
           </div>
-          <div>评分5星</div>
-          <div>评论内容：很满意</div>
+          <div>
+            <span>评分</span>
+            <tips class="comment-tips" :bxcommentpoints="data.PF"></tips>
+          </div>
+          <div>评论内容：{{data.BXRPJ}}</div>
         </div>
       </div>
       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.WXSJ.split(' ')[1]}}</div>
+          <div>{{data.WXSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle middle-icon-green">
             <i class="iconMobile icon-correct"></i>
@@ -215,13 +218,13 @@
           <div>
             <span>已维修</span>
           </div>
-          <div>王秋实完成报修</div>
+          <div>{{data.WXRXM}}完成报修</div>
         </div>
       </div>
       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.SLSJ.split(' ')[1]}}</div>
+          <div>{{data.SLSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle middle-icon-green">
             <i class="iconMobile icon-correct"></i>
@@ -230,15 +233,15 @@
           <div>
             <span>已受理</span>
           </div>
-          <div>贺平清受理报修</div>
-          <div>指派给贺平清</div>
-          <div>15062180721</div>
+          <div>{{data.SLRXM}}受理报修</div>
+          <div>指派给{{data.WXRXM}}</div>
+          <div>{{data.WXRSJ}}</div>
         </div>
       </div>
       <div class="repair-progress">
         <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+          <div>{{data.BXSJ.split(' ')[1]}}</div>
+          <div>{{data.BXSJ.split(' ')[0]}}</div>
         </div>
         <span class=" middle-icon-green">
             <i class="last iconMobile icon-correct"></i>
@@ -247,13 +250,14 @@
           <div>
             <span>已提交</span>
           </div>
-          <div>王秋实提交报修</div>
+          <div>{{data.BXRXM}}提交报修</div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import tips from './tips.vue';
 export default {
   props: {
     status: {
@@ -264,6 +268,9 @@ export default {
     },
     grade:{
       type: Boolean
+    },
+    data:{
+      type: Object
     }
   },
   data() {
@@ -307,31 +314,27 @@ export default {
     }
   },
   components: {
-
+    tips
   }
 }
 </script>
 <style scoped>
 .progress {
   background-color: #fff;
-  & .progress-title {
-    font-size: 28px;
-    height: 80px;
-    line-height: 80px;
-    margin-left: 30px;
-    border-bottom: 1Px solid #E8E8E8;
-  }
   & .repair-progress {
     padding: 30px;
     display: flex;
     align-items: center;
-    height: 200px;
+    min-height: 200px;
     & .left {
       margin-left: 20px;
       text-align: right;
       font-size: 26px;
       color: #BDC0C5;
-      width: 120px;
+      width: 160px;
+      & div{
+        width: 100%;
+      }
     }
     & .middle-icon-green {
       display: inline-block;
@@ -390,6 +393,7 @@ export default {
       height: 24Px;
       overflow: hidden;
       border-radius: 50%;
+      flex: 0 0 auto;
       & i {
         font-size: 35px;
         position: relative;
@@ -410,6 +414,7 @@ export default {
     & .right {
       font-size: 26px;
       color: #BDC0C5;
+      width: 50%;
       & div {
         word-break: break-all;
       }
@@ -432,13 +437,13 @@ export default {
   position: relative;
   color: #fff;
   &:after {
+    content: '';
     position: absolute;
     height: 0px!important;
     left: 19px;
     right: 18px;
     top: 23Px;
     background: #e8e8e8;
-    content: ''
   }
 }
 </style>

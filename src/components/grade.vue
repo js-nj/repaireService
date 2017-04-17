@@ -8,7 +8,7 @@
       <i class="iconfont icon-wujiaoxing1" :class="{'grade-choosen':gradeChoosen[4]}" @click="gradeFunc(4)"></i>
     </div>
     <div class="comment-textarea">
-      <textarea class="comment-describe" placeholder="填写你对此次维修服务的感受..." rows="7"  v-model.trim="commentinfo"></textarea>
+      <textarea class="comment-describe" placeholder="填写你对此次维修服务的感受..." rows="7" v-model.trim="commentinfo"></textarea>
       <div class="tips">
         <span class="number">{{commentinfo.length}}/100</span>
       </div>
@@ -42,8 +42,8 @@ export default {
       [Button.name]: Button,
       [Popup.name]: Popup
     },
-    watch:{
-      'commentinfo':function(val,oldval){
+    watch: {
+      'commentinfo': function(val, oldval) {
         this.commentinfo = this.commentinfo.trim();
       }
     },
@@ -52,17 +52,17 @@ export default {
         this.$dispatch('grade-close', false)
       },
       save: function() {
-        if(this.gradepoints==0){
+        if (this.gradepoints == 0) {
           Toast('请选择星级');
-          return ;
+          return;
         }
-        if(this.commentinfo.length===0){
+        if (this.commentinfo.length === 0) {
           Toast('请填写评价');
-          return ;
+          return;
         }
-        if(this.commentinfo.length>100){
+        if (this.commentinfo.length > 100) {
           Toast('评价字数过长');
-          return ;
+          return;
         }
         api.doComment.call(this, {
           PF: this.gradepoints,
@@ -129,11 +129,13 @@ export default {
     border-radius: 0;
   }
 }
-.tips{
+
+.tips {
   height: 30px;
 }
- .number {
-    position: absolute;
-    right: 30px;
-  }
+
+.number {
+  position: absolute;
+  right: 30px;
+}
 </style>
