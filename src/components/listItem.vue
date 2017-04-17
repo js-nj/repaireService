@@ -22,7 +22,6 @@ export default {
       }
     },
     filters: {
-      // fixtime: utils.fixTime,
       formattime(val) {
         let date = val.split(" ");
         let yearMonth = date[0].split('-');
@@ -50,10 +49,14 @@ export default {
     },
     methods: {
       messageInfo: function() {
+        let options = {
+          wid:this.all.WID,
+          iswork:this.all.iswork
+        }
         this.$router.go({
           name: 'repairInfo',
           params: {
-            info: JSON.stringify(this.all)
+            info: JSON.stringify(options)
           }
         })
       }
@@ -99,6 +102,7 @@ export default {
         color: #403F44;
         font-size: 30px;
         display: -webkit-box;
+        word-break: break-all;
         overflow: hidden;
         text-overflow: ellipsis;
         -webkit-line-clamp: 1;
@@ -106,9 +110,10 @@ export default {
       }
       & .item-main-info {
         padding: 10px 0;
-        color: #B4B4B4;
         & .span-info {
+          color: #B4B4B4;
           font-size: 22px;
+          word-break: break-all;
           display: -webkit-box;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -116,6 +121,7 @@ export default {
           -webkit-box-orient: vertical;
         }
         & .time-zone {
+          color: #BDC0C5;
           font-size: 20px;
           padding: 20px 0 0 0;
         }

@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <!-- <div class="title">故障描述</div> -->
     <textarea class="question-describe" placeholder="请描述您遇到的问题" rows="5" v-model="form.questioninfo"></textarea>
     <span class="question-describe-holder">{{form.questioninfo.length}}/100</span>
     <div class="post__imgs">
@@ -17,17 +16,17 @@
       <input type="tel" class="phone-number" placeholder="请填写手机号" v-model="form.phone">
     </div>
     <div class="list-item first-item">
-      <label class="item-left" @click="debug">故障类型</label>
+      <label class="item-left">故障类型</label>
       <span class="item-right text-input" @click="showpicker('breaks')">
         <span>{{ form.breaks ? form.breaks : '请选择' }}</span>
-        <i class="iconfont icon-keyboardarrowright"></i>
+      <i class="iconfont icon-keyboardarrowright"></i>
       </span>
     </div>
     <div class="list-item first-item">
-      <label class="item-left" @click="debug">故障区域</label>
+      <label class="item-left">故障区域</label>
       <span class="item-right text-input" @click="showpicker('area')">
         <span>{{ form.area ? form.area : '请选择' }}</span>
-        <i class="iconfont icon-keyboardarrowright"></i>
+      <i class="iconfont icon-keyboardarrowright"></i>
       </span>
     </div>
     <!--    <mt-cell class="mint-cell-text-fix" title="故障类型" is-link v-on:click="showpicker('breaks')">
@@ -91,7 +90,7 @@ function validForm() {
 export default {
   ready() {
       api.getRepaireAreaInfo.call(this);
-      api.getRepairType.call(this);
+      // api.getRepairType.call(this);
     },
     methods: {
       debug: function() {
@@ -135,39 +134,40 @@ export default {
       showpicker: function(val) {
         var _self = this;
         var multiPicker = SDK().UI && SDK().UI.multiPicker;
-        var singleSelect = SDK().UI && SDK().UI.singleSelect;
         if (val == 'breaks') {
-          singleSelect(this.GZLX, 0, function(data) {
-            _self.form.breaks = _self.GZLX[data];
-            _self.repair.breaks.val = _self.GZLX[data];
+          multiPicker(this.returnTypeArr, function(data) {
+            data = data.split(',');
+            _self.type.loc.val = _self.mapTypeArr[String(data[0]) + String(data[1])].id;
+            _self.form.breaks = _self.mapTypeArr[String(data[0]) + String(data[1])].name;
+            _self.type.area.val = _self.GZLX[String(data[0])].id;
           })
         } else {
           multiPicker(this.returnArr, function(data) {
             data = data.split(',');
-            _self.repair.loc.val = _self.mapArr[String(data[0]) + String(data[1])].id;
-            _self.form.area = _self.mapArr[String(data[0]) + String(data[1])].name;
-            _self.repair.area.val = _self.QYArr[String(data[0])].id;
+            _self.repair.loc.val = _self.mapArr[String(data[0]) + String(data[1])].id; //code
+            _self.form.area = _self.mapArr[String(data[0]) + String(data[1])].name; //name
+            _self.repair.area.val = _self.QYArr[String(data[0])].id; //parent code
           })
         }
       },
       uploadImage() {
-        alert(JSON.stringify(HOST))
+        // TODO
         return BH_MOBILE_SDK.wisedu.uploadToEMAP(HOST, this.imgs.map(img => img.url)).then((result) => {
           return result
         }).catch((err) => {
           Toast('上传图片出错啦')
+          Toast(err)
           Indicator.close()
         })
       },
       save: function() {
-        // var result = validForm.call(this);
-        var result = true
+        var result = validForm.call(this);
         if (result === true) {
           var options = {
             BXRSJ: this.form.phone,
-            GZLX: this.repair.breaks.val,
-            BXQY: this.repair.area.val,//TODO
-            BXDD: this.repair.loc.val,//TODO
+            GZLX: this.type.loc.val,
+            BXQY: this.repair.area.val, //TODO
+            BXDD: this.repair.loc.val, //TODO
             XXDD: this.form.locationinfo,
             MS: this.form.questioninfo
           }
@@ -212,11 +212,27 @@ export default {
             val: ''
           }
         },
+        type: {
+          breaks: {
+            map: '',
+            val: ''
+          },
+          area: {
+            map: '',
+            val: ''
+          },
+          loc: {
+            map: '',
+            val: ''
+          }
+        },
         changeval: '请选择',
         isshowpicker: false,
         presentPicker: '',
         returnArr: [],
         mapArr: {},
+        returnTypeArr: [],
+        mapTypeArr: {},
         QYArr: [],
         GZLX: [],
         imgs: [],

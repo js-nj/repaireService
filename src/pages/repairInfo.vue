@@ -9,92 +9,53 @@
       <div class="message-title">{{title}}</div>
       <div class="message-location">
         <i class="iconfont icon-locationon"></i>
-        <span>方山校区</span>
+        <span>{{bxlocation}}</span>
       </div>
       <div class="message-data">
         <i class="iconfont icon-event"></i>
-        <span>2017-09-12</span>
+        <span>{{timezone}}</span>
       </div>
     </div>
-    <div class="line"></div>
-    <div class="progress">
-      <div class="progress-title">报修进度</div>
-      <div class="repair-progress">
-        <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
+    <div v-show="!iswork">
+      <div class="line-top"></div>
+    <!--   <div class="maintenance-worker" v-show="state.worker && !iswork">
+        <div class="worker-info">
+          <span class="label">维修人员</span>
+          <span class="name">{{wxperson.name}}</span>
+          <a href="tel:{{wxpersonphone}}">{{wxperson.phone}}</a>
         </div>
-        <span class="middle-icon">
-          <i class="iconMobile icon-correct"></i>
-        </span>
-        <div class="right">
-          <div>
-            <span>已指派维修人员</span>
-            <span class="btn" v-if="$index===0">
-            <span @click ="popupVisible = true">去评价</span>
-            </span>
-          </div>
-          <div>王秋色指派任务给皆允斌</div>
-        </div>
+        <div class="line-bottom"></div>
+      </div> -->
+      <div class="progress">
+        <div class="progress-title">报修进度</div>
+        <process :status.sync ='status' :visible.sync="popupVisible" :grade.sync="state.showgrade"></process>
       </div>
-      <div class="repair-progress">
-        <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
-        </div>
-        <span class="middle-icon-yellow">
-          <i class="iconMobile icon-loading"></i>
-        </span>
-        <div class="right">
-          <div>
-            <span>已指派维修人员</span>
-            <span class="btn" v-if="$index===0">
-            <span @click ="popupVisible = true">去评价</span>
-            </span>
-          </div>
-          <div>王秋色指派任务给皆允斌</div>
-        </div>
+      <mt-button type="primary" class="comment-button" v-show="state.commentbutton" @click="doComment">评价本次报修</mt-button>
+      <div class="admin-reply" v-show="state.adminreply">
+        <span>管理员回复:</span>
+        <span>{{bxadminrply}}</span>
+        <tips class="comment-tips" v-show="state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
       </div>
-      <div class="repair-progress">
-        <div class="left">
-          <div>12:01</div>
-          <div>2016.09.09</div>
-        </div>
-        <span class="middle-icon-error">
-          <i class="iconMobile icon-error"></i>
-        </span>
-        <div class="right">
-          <div>
-            <span>已指派维修人员</span>
-            <span class="btn" v-if="$index===0">
-            <span @click ="popupVisible = true">去评价</span>
-            </span>
-          </div>
-          <div>王秋色指派任务给皆允斌</div>
-        </div>
-      </div>
+      <!-- 我的评价 -->
+      <tips class="comment-tips" v-show="state.worker&&state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
     </div>
-    <div class="admin-reply" v-show="state.adminreply">
-      <span>管理员回复:</span>
-      <span>{{bxadminrply}}</span>
-      <tips class="comment-tips" v-show="state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
+    <!-- worker -->
+    <div v-show="iswork">
+      <div class="repair-info">
+        <div class="title">报修人信息</div>
+        <div class="name">
+          <span>{{bxuser}}</span>
+          <span>{{bxuserid}}</span>
+        </div>
+        <div class="phone"><i class="iconfont icon-call"></i>{{bxuserphone}}</div>
+      </div>
+      <mt-button type="primary" class="comment-button" @click="doComplete">完工</mt-button>
     </div>
-    <mt-cell class="maintenance-worker" v-show="state.worker && !iswork" title="派出维修人员" is-link href="tel:{{wxpersonphone}}">
-      <a href="tel:{{wxpersonphone}}">{{wxperson}}</a>
-    </mt-cell>
-    <tips class="comment-tips" v-show="state.worker&&state.adminreplytips" :bxcomment="bxcomment" :bxcommentpoints="bxcommentpoints"></tips>
-    <mt-button type="primary" class="comment-button" v-show="state.commentbutton" @click="doComment">评价本次报修</mt-button>
-    <mt-button type="primary" class="comment-button" v-show="iswork" @click="doComplete">完工</mt-button>
   </div>
-  <!-- <grade v-show="state.showgrade" :wid="wid"></grade> -->
+  <!-- 评价 -->
   <mt-popup :visible.sync="popupVisible" position="bottom">
     <div class="pop-container">
-      <div class="star">
-        <span v-for="1 in 5"><i class="iconfont icon-wujiaoxing1"></i></span>
-      </div>
-      <textarea v-model.trim()="sugg" rows="7" placeholder="填写你对此次维修服务的感受..."></textarea>
-      <span class="number">{{sugg.length}}/100</span>
-      <mt-button type="primary" class="submit" @click="submit">提交</mt-button>
+      <grade v-show="state.showgrade" :wid="wid"></grade>
     </div>
   </mt-popup>
 </template>
@@ -109,6 +70,7 @@ import {
   Popup
 } from 'bh-mint-ui';
 import grade from '../components/grade.vue';
+import process from '../components/process.vue';
 import tips from '../components/tips.vue';
 import utils from '../utils.js';
 
@@ -129,6 +91,7 @@ export default {
     return {
       imgurl: global.IMGHOST,
       popupVisible: false,
+      iswork: false,
       title: '',
       timezone: '',
       bxuser: '',
@@ -138,9 +101,13 @@ export default {
       bxadminrply: '',
       bxcomment: '',
       bxcommentpoints: '',
-      wxperson: '',
+      wxperson: {
+        name: '',
+        phone: ''
+      },
       wid: '',
       sugg: '',
+      status:'',
       tps: false,
       state: {
         adminreply: false,
@@ -153,59 +120,72 @@ export default {
     }
   },
   created() {
-    var _self = this;
-    var info = JSON.parse(this.$route.params.info);
-    this.iswork = info.iswork;
-    this.title = info.MS;
-    this.timezone = info.BXSJ;
-    this.bxuser = info.BXRXM;
-    this.bxuserid = info.BXRGH;
-    this.bxuserphone = info.BXRSJ;
-    this.bxlocation = info.BXQY_DISPLAY + info.BXDD_DISPLAY + info.XXDD;
-    this.bxadminrply = info.BHYJ;
-    this.bxcomment = info.BXRPJ;
-    this.bxcommentpoints = info.PF;
-    this.wxperson = info.WXR_DISPLAY + ' (' + info.WXRSJ + ')';
-    this.wxpersonphone = info.WXRSJ;
-    this.wid = info.WID;
-    if (info.TP) {
-      let url = global.HOST + "/sys/emapcomponent/file/getUploadedAttachment/" + info.TP + ".do";
-      this.$http.get(url).then((response) => {
-        this.tps = response.data.items;
-      }).catch((err) => {
-        Toast('获取图片错误');
-      })
-    }
-    switch (info.ZT) {
-      case 'DWX':
-        changeState.apply(this.state, [
-          ['worker']
-        ]);
-        break;
-      case 'YWX':
-        changeState.apply(this.state, [
-          ['worker', 'commentbutton']
-        ]);
-        break;
-      case 'YBH':
-        changeState.apply(this.state, [
-          ['adminreply', 'commentbutton']
-        ]);
-        break;
-      case 'YPJ':
-        if (this.bxadminrply) {
-          changeState.apply(this.state, [
-            ['adminreply', 'adminreplytips']
-          ]);
-        } else {
-          changeState.apply(this.state, [
-            ['worker', 'adminreplytips']
-          ]);
+    let data = JSON.parse(this.$route.params.info);
+    this.iswork = data.iswork;
+    this.wid = data.wid;
+    let url = global.HOST + '/sys/hqwxxt/api/getDetailInfo.do'
+    this.$http.get(url, {
+      params: {
+        wid: this.wid
+      }
+    }).then((response) => {
+      var info = response.data.data;
+      if (response.data.code === 200) {
+        this.title = info.MS;
+        this.timezone = info.BXSJ;
+        this.bxuser = info.BXRXM;
+        this.bxuserid = info.BXRGH;
+        this.bxuserphone = info.BXRSJ;
+        this.bxlocation = info.BXQY + info.BXDD + info.XXDD; //TODO
+        this.bxadminrply = info.BHYJ; // 报修意见
+        this.bxcomment = info.BXRPJ;
+        this.bxcommentpoints = info.PF;
+        this.wxperson.name = info.WXRXM;
+        this.wxperson.phone = info.WXRSJ;
+        this.status = info.ZT;
+        if (info.TP) {
+          let url = global.HOST + "/sys/emapcomponent/file/getUploadedAttachment/" + info.TP + ".do";
+          this.$http.get(url).then((response) => {
+            this.tps = response.data.items;
+          }).catch((err) => {
+            Toast('获取图片错误');
+          })
         }
-        break;
-      default:
-        break;
-    }
+        switch (info.ZT) {
+          case 'DWX':
+            changeState.apply(this.state, [
+              ['worker']
+            ]);
+            break;
+          case 'YWX':
+            changeState.apply(this.state, [
+              ['worker', 'commentbutton']
+            ]);
+            break;
+          case 'YBH':
+            changeState.apply(this.state, [
+              ['adminreply', 'commentbutton']
+            ]);
+            break;
+          case 'YPJ':
+            if (this.bxadminrply) {
+              changeState.apply(this.state, [
+                ['adminreply', 'adminreplytips']
+              ]);
+            } else {
+              changeState.apply(this.state, [
+                ['worker', 'adminreplytips']
+              ]);
+            }
+            break;
+          default:
+            break;
+        }
+      } else {
+        Toast('获取信息失败，请稍后再试')
+      }
+    })
+
   },
   methods: {
     doComplete: function() {
@@ -220,10 +200,11 @@ export default {
           }
         });
       }, function(err) {
-        Toast('失败');
+        Toast('提交失败');
       });
     },
     doComment: function() {
+      this.popupVisible = true;
       this.state.showgrade = true;
     },
     submit() {
@@ -256,6 +237,7 @@ export default {
     [Cell.name]: Cell,
     [Popup.name]: Popup,
     grade,
+    process,
     tips
   }
 }
@@ -396,27 +378,40 @@ export default {
     }
   }
   & .maintenance-worker {
-    margin-top: 20px;
-    & a:hover,
-    & a:visited,
-    & a:link,
-    & a:active {
+    background-color: #fff;
+    font-size: 26px;
+    line-height: 80px;
+    & .worker-info {
+      padding-left: 30px;
+    }
+    & .label {
+      color: #92969c;
+    }
+    & .name {
+      margin-right: 16px;
+      margin-left: 16px;
+    }
+    & a {
       text-decoration: none;
-      color: #B4B4B4;
+      color: #06c1ae;
     }
   }
   & .comment-button {
     width: 100%;
     top: 20px;
-    height: 100px;
     border-radius: 0;
   }
 }
 
-.line {
-  height: 30px;
+.line-top {
+  height: 40px;
   background-color: #f9f9f9;
   border-top: 1Px solid #efefef;
+}
+
+.line-bottom {
+  height: 30px;
+  background-color: #f9f9f9;
   border-bottom: 1Px solid #efefef;
 }
 
@@ -439,29 +434,29 @@ export default {
       text-align: right;
       font-size: 26px;
       color: #BDC0C5;
+      width: 120px;
     }
-    & .middle-icon {
+    & .middle-icon-green {
       display: inline-block;
       margin-left: 20px;
       margin-right: 20px;
       background-color: #06c1ae;
       width: 24Px;
       height: 24Px;
-      overflow: hidden;
       border-radius: 50%;
       & i {
         font-size: 40px;
         position: relative;
         color: #fff;
-        /* &:after {
+        &:after {
           position: absolute;
-          height: 166px;
-          left: 10Px;
-          right: 10Px;
-          top: 21Px;
-          background: #E8E8E8;
+          height: 156px;
+          left: 19px;
+          right: 18px;
+          top: 23Px;
+          background: #e8e8e8;
           content: ''
-        }*/
+        }
       }
     }
     & .middle-icon-yellow {
@@ -471,7 +466,6 @@ export default {
       background-color: #ffb200;
       width: 24Px;
       height: 24Px;
-      overflow: hidden;
       border-radius: 50%;
       & i {
         font-size: 35px;
@@ -479,18 +473,18 @@ export default {
         color: #fff;
         top: 2px;
         left: 2px;
-        /* &:after {
+        &:after {
           position: absolute;
-          height: 166px;
-          left: 10Px;
-          right: 10Px;
-          top: 21Px;
+          height: 155px;
+          left: 17px;
+          right: 15px;
+          top: 22Px;
           background: #E8E8E8;
           content: ''
-        }*/
+        }
       }
     }
-    & .middle-icon-error{
+    & .middle-icon-error {
       display: inline-block;
       margin-left: 20px;
       margin-right: 20px;
@@ -505,15 +499,15 @@ export default {
         color: #fff;
         top: 2px;
         left: 2px;
-        /* &:after {
+        &:after {
           position: absolute;
           height: 166px;
-          left: 10Px;
-          right: 10Px;
+          left: 19px;
+          right: 18px;
           top: 21Px;
           background: #E8E8E8;
           content: ''
-        }*/
+        }
       }
     }
     & .right {
@@ -542,9 +536,9 @@ export default {
 }
 
 .pop-container {
-  height: 500px;
+  height: 540px;
   width: 100vw;
-  padding: 30px;
+  margin: 0 30px;
   position: relative;
   & .star {
     height: 40px;
@@ -565,6 +559,38 @@ export default {
     position: absolute;
     bottom: 30px;
     left: 30px;
+  }
+}
+
+.repair-info {
+  background-color: #fff;
+  padding-left: 30px;
+  & .title {
+    height: 77px;
+    line-height: 77px;
+    background-color: #f9f9f9;
+    color: #92969C;
+    font-size: 28px;
+  }
+  & .name {
+    height: 100px;
+    line-height: 100px;
+    background-color: #fff;
+    font-size: 28px;
+    border-bottom: 1Px solid #E8E8E8;
+    & span {
+      margin-right: 16px;
+    }
+  }
+  & .phone {
+    height: 100px;
+    line-height: 100px;
+    background-color: #fff;
+    color: #06C1AE;
+    font-size: 28px;
+    & i {
+      margin-right: 33px;
+    }
   }
 }
 

@@ -62,14 +62,12 @@ export default {
       this.$http.get(global.HOST + "/sys/itservicecommon/api/getUserLimit.do?appName=hqwxxt").then(function(data) {
         if (data.data[0] && data.data[0].GNBS == "teacher_student" || data.data.length == 2) {
           this.isstudent = true;
-          // this.headertitle = '我的报修';
           BH_MOBILE_SDK.UI.setTitleText('我的报修')
           api.loadData.call(this, 'YWX', 1, 'home');
           this.$router.go('/waitProcess');
         }
         if (data.data.length == 1 && data.data[0] && data.data[0].GNBS == "repairman") {
           this.isstudent = false;
-          // this.headertitle = '待维修';
           BH_MOBILE_SDK.UI.setTitleText('待维修')
           this.$router.go({
             name: 'waitRepair',

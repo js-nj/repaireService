@@ -1,7 +1,7 @@
 <template>
   <div v-if="dataResource.length>0">
     <mt-loadmore class="mt-loadmore-div" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false">
-      <list-item v-for="item in dataResource" :messagetitle="item.BXQY_DISPLAY+item.BXDD_DISPLAY" :info="item.MS" :timezone="item.BXSJ" :img="item.TP" :tag="item.GZLX_DISPLAY" :all="item"></list-item>
+      <list-item v-for="item in dataResource" :messagetitle="item.BXQY_DISPLAY+item.BXDD+item.XXDD" :info="item.MS" :timezone="item.BXSJ" :img="item.TP" :tag="item.GZLX_DISPLAY" :all="item"></list-item>
     </mt-loadmore>
   </div>
   <div v-if="dataResource.length===0&&loading===true" class="no-data">
