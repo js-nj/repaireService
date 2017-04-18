@@ -8,7 +8,7 @@
           <div class="time-zone"><span>报修时间 </span>{{timezone |formattime}}</div>
         </div>
       </div>
-      <img class="item-img" v-if="img" :src="imgurl">
+      <div class="item-img" v-if="img" :style="{backgroundImage: 'url('+imgurl+')'}"></div>
     </div>
   </div>
 </template>
@@ -50,8 +50,8 @@ export default {
     methods: {
       messageInfo: function() {
         let options = {
-          wid:this.all.WID,
-          iswork:this.all.iswork
+          wid: this.all.WID,
+          iswork: this.all.iswork
         }
         this.$router.go({
           name: 'repairInfo',
@@ -132,6 +132,9 @@ export default {
       height: 140px;
       flex: 0 0 auto;
       margin-left: 30px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
     }
   }
 }

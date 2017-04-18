@@ -1,11 +1,14 @@
 <template>
-  <div class="main">
-    <div class="title-user-img">
-      <mt-swipe :auto="4000" class="swipe-view" v-if="tps">
-        <mt-swipe-item class="swipe-view-item" v-for="item in tps">
-          <img class="swipe-view-item" :src="imgurl+item.fileUrl" @click="previewImage($index)">
+  <div class="detail">
+    <div v-if="tps.length">
+      <mt-swipe :auto="200000" class="swipe-view">
+        <mt-swipe-item v-for="item in tps">
+          <div class="swipe-view-item" @click="previewImage($index)" :style="{backgroundImage: 'url(' + imgurl + item.fileUrl + ')'}">
+          </div>
         </mt-swipe-item>
       </mt-swipe>
+    </div>
+    <div class="info">
       <div class="message-title">{{title}}</div>
       <div class="message-location">
         <i class="iconfont icon-locationon"></i>
@@ -15,32 +18,31 @@
         <i class="iconfont icon-event"></i>
         <span>{{timezone}}</span>
       </div>
-    </div>
-    <div v-show="!iswork">
-      <div class="line-top"></div>
-      <div class="progress">
-        <div class="progress-title">报修进度</div>
-        <process :status.sync='status' :visible.sync="popupVisible" :grade.sync="state.showgrade" :data.sync='processdata'></process>
-      </div>
-    </div>
-    <div v-show="iswork">
-      <div class="repair-info">
-        <div class="title">报修人信息</div>
-        <div class="name">
-          <span>{{bxuser}}</span>
-          <span>{{bxuserid}}</span>
+      <div v-show="!iswork">
+        <div class="line-top"></div>
+        <div class="progress">
+          <div class="progress-title">报修进度</div>
+          <process :status.sync='status' :visible.sync="popupVisible" :grade.sync="state.showgrade" :data.sync='processdata'></process>
         </div>
-        <div class="phone"><i class="iconfont icon-call"></i>{{bxuserphone}}</div>
       </div>
-      <mt-button type="primary" class="comment-button" @click="doComplete">完工</mt-button>
+      <div v-show="iswork">
+        <div class="repair-info">
+          <div class="title">报修人信息</div>
+          <div class="name">
+            <span>{{bxuser}}</span>
+            <span>{{bxuserid}}</span>
+          </div>
+          <div class="phone"><i class="iconfont icon-call"></i>{{bxuserphone}}</div>
+        </div>
+        <mt-button type="primary" class="comment-button" @click="doComplete">完工</mt-button>
+      </div>
+      <mt-popup :visible.sync="popupVisible" position="bottom">
+        <div class="pop-container">
+          <grade v-show="state.showgrade" :wid="wid"></grade>
+        </div>
+      </mt-popup>
     </div>
   </div>
-  <!-- 评价 -->
-  <mt-popup :visible.sync="popupVisible" position="bottom">
-    <div class="pop-container">
-      <grade v-show="state.showgrade" :wid="wid"></grade>
-    </div>
-  </mt-popup>
 </template>
 <script>
 import {
@@ -260,23 +262,24 @@ export default {
   color: #000000;
 }
 
-.main {
-  & .title-user-img {
+.detail {
+  width: 100%;
+  & .swipe-view {
+    height: 400px;
     width: 100%;
-    /*height: 100vh;*/
-    background-color: #fff;
-    & .swipe-view {
+    text-align: center;
+    vertical-align: middle;
+    & .swipe-view-item {
       height: 400px;
       width: 100%;
-      color: #fff;
-      font-size: 30px;
-      text-align: center;
-      vertical-align: middle;
-      & .swipe-view-item {
-        height: 400px;
-        width: 100%;
-      }
+      overflow: hidden;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
     }
+  }
+  & .info {
+      background-color: #fff;
     & .message-title {
       color: #403F44;
       font-size: 32px;
@@ -288,6 +291,7 @@ export default {
     & .message-location {
       padding-top: 20px;
       font-size: 26px;
+      background-color: #fff;
       line-height: 50px;
       padding-left: 30px;
       padding-right: 30px;
@@ -297,12 +301,13 @@ export default {
         margin-right: 20px;
         flex: 0 0 auto;
       }
-      & span{
+      & span {
         word-break: break-all;
       }
     }
     & .message-data {
       padding-bottom: 20px;
+      background-color: #fff;
       font-size: 26px;
       line-height: 50px;
       padding-left: 30px;
@@ -310,35 +315,41 @@ export default {
         color: #06c1ae;
         margin-right: 20px;
       }
-      & span{
+      & span {
         position: relative;
         right: 8px;
       }
     }
-    & .user-info {
-      width: 100%;
-      margin-top: 20px;
-      height: 70px;
-      line-height: 50px;
-      color: #B4B4B4;
-      & span,
-      & div {
-        display: inline-block;
+  }
+}
+/*TODO*/
+.main {
+  width: 100%;
+  background-color: #fff;
+  & .info {}
+  & .user-info {
+    width: 100%;
+    margin-top: 20px;
+    height: 70px;
+    line-height: 50px;
+    color: #B4B4B4;
+    & span,
+    & div {
+      display: inline-block;
+    }
+    & .avatar-name {
+      float: left;
+      margin-left: 20px;
+      & .avatar {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        border-radius: 25px;
       }
-      & .avatar-name {
-        float: left;
-        margin-left: 20px;
-        & .avatar {
-          width: 50px;
-          height: 50px;
-          margin-right: 10px;
-          border-radius: 25px;
-        }
-      }
-      & .time-zone {
-        float: right;
-        margin-right: 20px;
-      }
+    }
+    & .time-zone {
+      float: right;
+      margin-right: 20px;
     }
   }
   & .location-phone {
@@ -432,26 +443,9 @@ export default {
 
 .line-top {
   height: 40px;
+  background-color: #f9f9f9;
   border-top: 1Px solid #E8E8E8;
   border-bottom: 1Px solid #E8E8E8;
-}
-
-.line-bottom {
-  height: 30px;
-  background-color: #f9f9f9;
-  border-bottom: 1Px solid #efefef;
-}
-
-.progress {
-  background-color: #fff;
-  border-bottom: 1px solid #E8E8E8;
-  & .progress-title {
-    font-size: 28px;
-    height: 80px;
-    line-height: 80px;
-    margin-left: 30px;
-    border-bottom: 1Px solid #E8E8E8;
-  }
 }
 
 .pop-container {
@@ -512,9 +506,21 @@ export default {
     }
   }
 }
+
+.progress {
+  background-color: #fff;
+  border-bottom: 1px solid #E8E8E8;
+  & .progress-title {
+    font-size: 28px;
+    height: 80px;
+    line-height: 80px;
+    margin-left: 30px;
+    border-bottom: 1Px solid #E8E8E8;
+  }
+}
 </style>
 <style>
-  body{
+body {
   background-color: #f9f9f9;
 }
 </style>

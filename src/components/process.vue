@@ -7,8 +7,8 @@
           <div></div>
           <div></div>
         </div>
-        <span class=" middle-icon-yellow">
-            <i class="middle iconMobile icon-loading"></i>
+        <span class="middle middle-icon-yellow">
+            <i class="iconMobile icon-loading"></i>
           </span>
         <div class="right">
           <div>
@@ -17,12 +17,12 @@
           <div></div>
         </div>
       </div>
-       <div class="repair-progress">
+      <div class="repair-progress">
         <div class="left">
           <div>{{data.BXSJ.split(' ')[1]}}</div>
           <div>{{data.BXSJ.split(' ')[0]}}</div>
         </div>
-        <span class="middle-icon-green">
+        <span class="middle middle-icon-green">
             <i class="last iconMobile icon-correct"></i>
           </span>
         <div class="right">
@@ -50,7 +50,7 @@
           <div></div>
         </div>
       </div>
-       <div class="repair-progress">
+      <div class="repair-progress">
         <div class="left">
           <div>{{data.SLSJ.split(' ')[1]}}</div>
           <div>{{data.SLSJ.split(' ')[0]}}</div>
@@ -67,12 +67,12 @@
           <div>{{data.WXRSJ}}</div>
         </div>
       </div>
-       <div class="repair-progress">
+      <div class="repair-progress">
         <div class="left">
           <div>{{data.BXSJ.split(' ')[1]}}</div>
           <div>{{data.BXSJ.split(' ')[0]}}</div>
         </div>
-        <span class="middle-icon-green">
+        <span class="middle middle-icon-green">
             <i class="last iconMobile icon-correct"></i>
           </span>
         <div class="right">
@@ -90,7 +90,7 @@
           <div></div>
           <div></div>
         </div>
-        <span class="middle-icon-yellow">
+        <span class="middle middle-icon-yellow">
             <i class="iconMobile icon-loading"></i>
           </span>
         <div class="right">
@@ -140,7 +140,7 @@
           <div>{{data.BXSJ.split(' ')[1]}}</div>
           <div>{{data.BXSJ.split(' ')[0]}}</div>
         </div>
-        <span class="middle-icon-green">
+        <span class="middle middle-icon-green">
             <i class="last iconMobile icon-correct"></i>
           </span>
         <div class="right">
@@ -158,7 +158,7 @@
           <div>{{data.SLSJ.split(' ')[1]}}</div>
           <div>{{data.SLSJ.split(' ')[0]}}</div>
         </div>
-        <span class=" middle middle-icon-error">
+        <span class="middle middle-icon-error">
             <i class="iconMobile icon-error"></i>
           </span>
         <div class="right">
@@ -174,7 +174,7 @@
           <div>{{data.BXSJ.split(' ')[1]}}</div>
           <div>{{data.BXSJ.split(' ')[0]}}</div>
         </div>
-        <span class="middle-icon-green">
+        <span class="middle middle-icon-green">
             <i class="last iconMobile icon-correct"></i>
           </span>
         <div class="right">
@@ -243,7 +243,7 @@
           <div>{{data.BXSJ.split(' ')[1]}}</div>
           <div>{{data.BXSJ.split(' ')[0]}}</div>
         </div>
-        <span class=" middle-icon-green">
+        <span class="middle middle-icon-green">
             <i class="last iconMobile icon-correct"></i>
           </span>
         <div class="right">
@@ -263,13 +263,13 @@ export default {
     status: {
       type: String
     },
-    visible:{
+    visible: {
       type: Boolean
     },
-    grade:{
+    grade: {
       type: Boolean
     },
-    data:{
+    data: {
       type: Object
     }
   },
@@ -303,12 +303,16 @@ export default {
 
     }
   },
-  created() {
-
-
+  ready() {
+    var progressDiv = document.getElementsByClassName('repair-progress');
+    var icon = document.getElementsByClassName('middle');
+    for (let i = 0 , len = progressDiv.length ; i <len ; i++) {
+      let hight = progressDiv[i].clientHeight;
+      icon[i].style.backgroundColor="black";
+    }
   },
   methods: {
-    showPop(){
+    showPop() {
       this.visible = true;
       this.grade = true;
     }
@@ -325,14 +329,14 @@ export default {
     padding: 30px;
     display: flex;
     align-items: top;
-    min-height: 200px;
+    min-height: 150Px;
     & .left {
       margin-left: 20px;
       text-align: right;
       font-size: 26px;
       color: #BDC0C5;
       width: 160px;
-      & div{
+      & div {
         width: 100%;
       }
     }
@@ -345,13 +349,14 @@ export default {
       width: 24Px;
       height: 24Px;
       border-radius: 50%;
+      text-align: center;
       & i {
         font-size: 40px;
         position: relative;
         color: #fff;
         &:after {
           position: absolute;
-          height: 156px;
+          height: 126Px;
           left: 19px;
           right: 18px;
           top: 23Px;
@@ -374,12 +379,12 @@ export default {
         position: relative;
         color: #fff;
         top: 2px;
-        left: 2px;
+        left: 4px;
         &:after {
           position: absolute;
-          height: 155px;
-          left: 17px;
-          right: 15px;
+          height: 126Px;
+          left: 9Px;
+          right: 9Px;
           top: 22Px;
           background: #E8E8E8;
           content: ''
@@ -405,9 +410,9 @@ export default {
         left: 2px;
         &:after {
           position: absolute;
-          height: 166px;
-          left: 19px;
-          right: 18px;
+          height: 126Px;
+          left: 11px;
+          right: 15px;
           top: 21Px;
           background: #E8E8E8;
           content: ''
@@ -449,7 +454,8 @@ export default {
     background: #e8e8e8;
   }
 }
-.next-step{
+
+.next-step {
   color: #1E2329;
 }
 </style>

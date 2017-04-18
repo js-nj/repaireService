@@ -158,12 +158,10 @@ export default {
         }
       },
       uploadImage() {
-        // TODO
         return BH_MOBILE_SDK.wisedu.uploadToEMAP(HOST, this.imgs.map(img => img.url)).then((result) => {
           return result
         }).catch((err) => {
           Toast('上传图片出错啦')
-          Toast(err)
           Indicator.close()
         })
       },
@@ -173,8 +171,8 @@ export default {
           var options = {
             BXRSJ: this.form.phone,
             GZLX: this.type.loc.val,
-            BXQY: this.repair.area.val, //TODO
-            BXDD: this.repair.loc.val, //TODO
+            BXQY: this.repair.area.val,
+            BXDD: this.repair.loc.val,
             XXDD: this.form.locationinfo,
             MS: this.form.questioninfo
           }
@@ -401,7 +399,6 @@ export default {
   background-color: #fff;
   color: #eee;
   overflow: hidden;
-  /*border-bottom: 1px solid #efefef;*/
 }
 
 .post__img {
