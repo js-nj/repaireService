@@ -1,12 +1,20 @@
-var App = require('./App.vue')
-var waitProcess = require('./pages/waitProcess.vue')
-var waitRepair = require('./pages/waitRepair.vue')
-var repaired = require('./pages/repaired.vue')
-var rejected = require('./pages/rejected.vue')
-var commented = require('./pages/commented.vue')
-var post = require('./pages/post.vue')
-var repairInfo = require('./pages/repairInfo.vue')
-var debug = require('./pages/debug.vue')
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import App from './App.vue';
+import waitProcess from './pages/waitProcess.vue';
+import waitRepair from './pages/waitRepair.vue';
+import repaired from './pages/repaired.vue';
+import rejected from './pages/rejected.vue';
+import commented from './pages/commented.vue';
+import post from './pages/post.vue';
+import repairInfo from './pages/repairInfo.vue';
+import debug from './pages/debug.vue'
+
+Vue.use(VueRouter);
+let router = new VueRouter({
+  history: false
+})
+
 export default function(router) {
   router.map({
     '/': {
@@ -48,4 +56,12 @@ export default function(router) {
       component: debug
     }
   })
+  // router.beforeEach(function(transition) {
+  //   if ((transition.from.name == 'waitProcess' || transition.from.name == 'waitRepair' || transition.from.name == 'repaired' || transition.from.name == 'rejected' || transition.from.name == 'commented') && transition.to.name == 'app') {
+  //     alert("=======>")
+  //     BH_MOBILE_SDK.UI.closeWebView()
+  //   } else {
+  //     transition.next()
+  //   }
+  // })
 }

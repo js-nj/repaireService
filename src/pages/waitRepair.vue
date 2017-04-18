@@ -78,14 +78,15 @@ export default {
 }
 
 .no-data {
+  background-color: #fff;
   display: flex;
   width: 100vw;
   height: 100vh;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   & img {
     width: 200px;
+    margin-top: 240px;
     margin-bottom: 30px;
   }
   & span {

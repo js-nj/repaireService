@@ -104,6 +104,19 @@ export default {
     }
   },
   created() {
+    var config = {
+      left: {
+        left1: {
+          title: '',
+          callFunction: function() {
+            history.back();
+          }
+        }
+      }
+    };
+    BH_MOBILE_SDK.UI.setNavHeader(config);
+    BH_MOBILE_SDK.UI.setTitleText('报修详情');
+
     let data = JSON.parse(this.$route.params.info);
     this.iswork = data.iswork;
     this.wid = data.wid;
@@ -250,6 +263,7 @@ export default {
 .main {
   & .title-user-img {
     width: 100%;
+    /*height: 100vh;*/
     background-color: #fff;
     & .swipe-view {
       height: 400px;
@@ -266,10 +280,29 @@ export default {
     & .message-title {
       color: #403F44;
       font-size: 32px;
-      padding: 30px;
+      padding: 30px 30px 30px 0;
+      margin-left: 30px;
       word-break: break-all;
+      border-bottom: 1Px solid #E8E8E8;
     }
     & .message-location {
+      padding-top: 20px;
+      font-size: 26px;
+      line-height: 50px;
+      padding-left: 30px;
+      padding-right: 30px;
+      display: flex;
+      & i {
+        color: #06c1ae;
+        margin-right: 20px;
+        flex: 0 0 auto;
+      }
+      & span{
+        word-break: break-all;
+      }
+    }
+    & .message-data {
+      padding-bottom: 20px;
       font-size: 26px;
       line-height: 50px;
       padding-left: 30px;
@@ -277,14 +310,9 @@ export default {
         color: #06c1ae;
         margin-right: 20px;
       }
-    }
-    & .message-data {
-      font-size: 26px;
-      line-height: 50px;
-      padding-left: 30px;
-      & i {
-        color: #06c1ae;
-        margin-right: 20px;
+      & span{
+        position: relative;
+        right: 8px;
       }
     }
     & .user-info {
@@ -404,8 +432,8 @@ export default {
 
 .line-top {
   height: 40px;
-  background-color: #f9f9f9;
-  border-top: 1Px solid #efefef;
+  border-top: 1Px solid #E8E8E8;
+  border-bottom: 1Px solid #E8E8E8;
 }
 
 .line-bottom {
@@ -416,6 +444,7 @@ export default {
 
 .progress {
   background-color: #fff;
+  border-bottom: 1px solid #E8E8E8;
   & .progress-title {
     font-size: 28px;
     height: 80px;
@@ -423,110 +452,6 @@ export default {
     margin-left: 30px;
     border-bottom: 1Px solid #E8E8E8;
   }
-/*  & .repair-progress {
-    padding: 30px;
-    display: flex;
-    align-items: center;
-    height: 200px;
-    & .left {
-      margin-left: 20px;
-      text-align: right;
-      font-size: 26px;
-      color: #BDC0C5;
-      width: 120px;
-    }
-    & .middle-icon-green {
-      display: inline-block;
-      margin-left: 20px;
-      margin-right: 20px;
-      background-color: #06c1ae;
-      width: 24Px;
-      height: 24Px;
-      border-radius: 50%;
-      & i {
-        font-size: 40px;
-        position: relative;
-        color: #fff;
-        &:after {
-          position: absolute;
-          height: 156px;
-          left: 19px;
-          right: 18px;
-          top: 23Px;
-          background: #e8e8e8;
-          content: ''
-        }
-      }
-    }
-    & .middle-icon-yellow {
-      display: inline-block;
-      margin-left: 20px;
-      margin-right: 20px;
-      background-color: #ffb200;
-      width: 24Px;
-      height: 24Px;
-      border-radius: 50%;
-      & i {
-        font-size: 35px;
-        position: relative;
-        color: #fff;
-        top: 2px;
-        left: 2px;
-        &:after {
-          position: absolute;
-          height: 155px;
-          left: 17px;
-          right: 15px;
-          top: 22Px;
-          background: #E8E8E8;
-          content: ''
-        }
-      }
-    }
-    & .middle-icon-error {
-      display: inline-block;
-      margin-left: 20px;
-      margin-right: 20px;
-      background-color: #ff571a;
-      width: 24Px;
-      height: 24Px;
-      overflow: hidden;
-      border-radius: 50%;
-      & i {
-        font-size: 35px;
-        position: relative;
-        color: #fff;
-        top: 2px;
-        left: 2px;
-        &:after {
-          position: absolute;
-          height: 166px;
-          left: 19px;
-          right: 18px;
-          top: 21Px;
-          background: #E8E8E8;
-          content: ''
-        }
-      }
-    }
-    & .right {
-      font-size: 26px;
-      color: #BDC0C5;
-      & div {
-        word-break: break-all;
-      }
-      & .btn {
-        color: #06C1AE;
-        font-size: 22px;
-        & span {
-          border-radius: 12Px;
-          padding: 4px 12px 6px 12px;
-          display: inline-block;
-          border: 1px solid #BAFFF6;
-        }
-      }
-    }
-  }*/
 }
 
 .pop-container {
@@ -587,5 +512,9 @@ export default {
     }
   }
 }
-
+</style>
+<style>
+  body{
+  background-color: #f9f9f9;
+}
 </style>

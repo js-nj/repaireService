@@ -36,7 +36,6 @@ import SDK from 'bh-mobile-sdk';
 
 function changeState(models, readNumModels, el) {
   models[el] = true;
-  // readNumModels[el] = 0;
   for (var i in models) {
     if (i != el) {
       models[i] = false;
@@ -62,9 +61,22 @@ export default {
       this.$http.get(global.HOST + "/sys/itservicecommon/api/getUserLimit.do?appName=hqwxxt").then(function(data) {
         if (data.data[0] && data.data[0].GNBS == "teacher_student" || data.data.length == 2) {
           this.isstudent = true;
+          var config = {
+            left: {
+              left1: {
+                title: '',
+                callFunction: function() {
+                  BH_MOBILE_SDK.UI.closeWebView();
+                }
+              }
+            }
+          };
+          BH_MOBILE_SDK.UI.setNavHeader(config);
           BH_MOBILE_SDK.UI.setTitleText('我的报修')
-          api.loadData.call(this, 'YWX', 1, 'home');
-          this.$router.go('/waitProcess');
+          this.index = localStorage.getItem('indexData') || "waitProcess";
+
+          changeState(this.repairState, this.unreadNum, this.index)
+          loadView.call(this, this.index);
         }
         if (data.data.length == 1 && data.data[0] && data.data[0].GNBS == "repairman") {
           this.isstudent = false;
@@ -82,10 +94,12 @@ export default {
     },
     data() {
       return {
+        index: '',
+        state: '',
         isstudent: false,
         headertitle: '',
         repairState: {
-          waitProcess: true,
+          waitProcess: false,
           waitRepair: false,
           repaired: false,
           rejected: false,
@@ -102,6 +116,7 @@ export default {
     },
     methods: {
       chooseProcess: function(elName) {
+        localStorage.setItem('indexData', elName);
         loadView.call(this, elName);
         changeState(this.repairState, this.unreadNum, elName);
       },
@@ -129,7 +144,7 @@ export default {
     height: 88px;
     line-height: 88px;
     background-color: #fff;
-     border-bottom: 1Px solid #eaeaea;
+    border-bottom: 1Px solid #eaeaea;
     & .repair-state-item {
       font-size: 28px;
       display: block;
@@ -168,11 +183,15 @@ export default {
     }
   }
 }
-.main{
+
+.main {
   height: calc(100vh - 88px);
   width: 100vw;
   overflow: auto;
+  -webkit-overflow-scrolling : touch;
+  background-color: #fff;
 }
+
 .post {
   position: fixed;
   background: #06c1ae;
@@ -193,4 +212,5 @@ export default {
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
+
 </style>

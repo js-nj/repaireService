@@ -22,7 +22,7 @@ export default {
         dataResource: [],
         page: 1,
         allLoaded: false,
-        loading:false,
+        loading: false,
         Toast: Toast
       }
     },
@@ -51,11 +51,12 @@ export default {
   display: flex;
   width: 100vw;
   height: 100vh;
+  background-color: #fff;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   & img {
     width: 200px;
+    margin-top: 240px;
     margin-bottom: 30px;
   }
   & span {

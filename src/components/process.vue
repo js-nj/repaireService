@@ -12,7 +12,7 @@
           </span>
         <div class="right">
           <div>
-            <span>待处理</span>
+            <span class="next-step">待处理</span>
           </div>
           <div></div>
         </div>
@@ -45,7 +45,7 @@
           </span>
         <div class="right">
           <div>
-            <span>维修中</span>
+            <span class="next-step">维修中</span>
           </div>
           <div></div>
         </div>
@@ -95,7 +95,7 @@
           </span>
         <div class="right">
           <div>
-            <span>待评价</span>
+            <span class="next-step">待评价</span>
             <span class="btn">
               <span @click ="showPop">去评价</span>
             </span>
@@ -156,14 +156,14 @@
       <div class="repair-progress">
         <div class="left">
           <div>{{data.SLSJ.split(' ')[1]}}</div>
-          <div>{{data.WXSJ.split(' ')[0]}}</div>
+          <div>{{data.SLSJ.split(' ')[0]}}</div>
         </div>
         <span class=" middle middle-icon-error">
             <i class="iconMobile icon-error"></i>
           </span>
         <div class="right">
           <div>
-            <span>已退回</span>
+            <span class="next-step">已退回</span>
           </div>
           <div>{{data.SLRXM}}打回</div>
           <div>退回意见：{{data.BHYJ}}</div>
@@ -171,8 +171,8 @@
       </div>
       <div class="repair-progress">
         <div class="left">
-          <div>{{data.SLSJ.split(' ')[1]}}</div>
-          <div>{{data.WXSJ.split(' ')[0]}}</div>
+          <div>{{data.BXSJ.split(' ')[1]}}</div>
+          <div>{{data.BXSJ.split(' ')[0]}}</div>
         </div>
         <span class="middle-icon-green">
             <i class="last iconMobile icon-correct"></i>
@@ -197,7 +197,7 @@
           </span>
         <div class="right">
           <div>
-            <span>已评价</span>
+            <span class="next-step">已评价</span>
           </div>
           <div>
             <span>评分</span>
@@ -324,7 +324,7 @@ export default {
   & .repair-progress {
     padding: 30px;
     display: flex;
-    align-items: center;
+    align-items: top;
     min-height: 200px;
     & .left {
       margin-left: 20px;
@@ -337,6 +337,7 @@ export default {
       }
     }
     & .middle-icon-green {
+      flex: 0 0 auto;
       display: inline-block;
       margin-left: 20px;
       margin-right: 20px;
@@ -360,6 +361,7 @@ export default {
       }
     }
     & .middle-icon-yellow {
+      flex: 0 0 auto;
       display: inline-block;
       margin-left: 20px;
       margin-right: 20px;
@@ -385,6 +387,7 @@ export default {
       }
     }
     & .middle-icon-error {
+      flex: 0 0 auto;
       display: inline-block;
       margin-left: 20px;
       margin-right: 20px;
@@ -445,5 +448,8 @@ export default {
     top: 23Px;
     background: #e8e8e8;
   }
+}
+.next-step{
+  color: #1E2329;
 }
 </style>

@@ -112,7 +112,7 @@ export default {
         padding: 10px 0;
         & .span-info {
           color: #B4B4B4;
-          font-size: 22px;
+          font-size: 26px;
           word-break: break-all;
           display: -webkit-box;
           overflow: hidden;
@@ -122,7 +122,7 @@ export default {
         }
         & .time-zone {
           color: #BDC0C5;
-          font-size: 20px;
+          font-size: 22px;
           padding: 20px 0 0 0;
         }
       }

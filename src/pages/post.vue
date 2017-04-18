@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="list-item first-item">
-      <label class="item-left" @click="debug">手机号</label>
+      <label class="item-left phone-label" @click="debug">手机号</label>
       <input type="tel" class="phone-number" placeholder="请填写手机号" v-model="form.phone">
     </div>
     <div class="list-item first-item">
@@ -29,22 +29,15 @@
       <i class="iconfont icon-keyboardarrowright"></i>
       </span>
     </div>
-    <!--    <mt-cell class="mint-cell-text-fix" title="故障类型" is-link v-on:click="showpicker('breaks')">
-      <span>{{ form.breaks ? form.breaks : '请选择' }}</span>
-    </mt-cell>
-    <mt-cell class="mint-cell-text-fix" title="报修区域" is-link v-on:click="showpicker('area')">
-      <span>{{ form.area ? form.area : '请选择' }}</span>
-    </mt-cell> -->
     <div class="list-item first-item" style="margin-top: 0;display:flex">
       <label class="item-left">详细地址</label>
       <textarea class="item-right text-textarea" placeholder="请填写详细地址" v-model="form.locationinfo"></textarea>
     </div>
+    <div class="btn">
+      <mt-button class="save-button cancel" @click="cancel">取消</mt-button>
+      <mt-button type="primary" class="save-button" @click="save">提交</mt-button>
+    </div>
   </div>
-  <mt-button type="primary" class="save-button" @click="save">提交</mt-button>
-  <!-- <mt-picker v-show="isshowpicker" class="picker-show" :slots="slots" @change="onValuesChange" :show-toolbar="showToolbar" rotate-effect :visible-item-count="3">
-    <slot><span class="toolbar-btn" @click="cancel">取消</span></slot>
-    <slot><span class="toolbar-btn" style="float: right" @click="doOk">确定</span></slot>
-  </mt-picker> -->
 </template>
 <script>
 import {
@@ -89,10 +82,24 @@ function validForm() {
 }
 export default {
   ready() {
+      var config = {
+        left: {
+          left1: {
+            title: '',
+            callFunction: function() {
+              history.back();
+            }
+          }
+        }
+      };
+      BH_MOBILE_SDK.UI.setNavHeader(config);
+      BH_MOBILE_SDK.UI.setTitleText('我要报修');
       api.getRepaireAreaInfo.call(this);
-      // api.getRepairType.call(this);
     },
     methods: {
+      cancel() {
+        history.back();
+      },
       debug: function() {
         this.debugnum += 1;
         if (this.debugnum == 10) {
@@ -274,7 +281,7 @@ export default {
     vertical-align: top;
     width: 100%;
     height: 200px;
-    font-size: 24px;
+    font-size: 28px;
     border: none;
     padding: 15px 30px;
   }
@@ -288,7 +295,6 @@ export default {
 }
 
 .first-item {
-  /*margin-top: 8px;*/
   border-top: 1Px solid #eaeaea;
 }
 
@@ -324,7 +330,9 @@ export default {
   border: 0;
   color: darkgrey;
   & i {
-    font-size: 30px;
+    font-size: 40px;
+    float: right;
+    color: #BDC0C5;
   }
 }
 
@@ -368,10 +376,24 @@ export default {
   }
 }
 
-.save-button {
+.btn {
   width: 100%;
+  display: flex;
+  align-items: center;
+  height: 120px;
+  border-top: 1Px solid #E8E8E8;
+}
+
+.save-button {
   top: 20px;
   border-radius: 0;
+  width: calc(50% - 52px);
+  border-radius: 10px;
+}
+
+.cancel {
+  margin-left: 40px;
+  margin-right: 24px;
 }
 
 .post__imgs {
@@ -379,7 +401,7 @@ export default {
   background-color: #fff;
   color: #eee;
   overflow: hidden;
-  border-bottom: 1px solid #efefef;
+  /*border-bottom: 1px solid #efefef;*/
 }
 
 .post__img {
@@ -430,6 +452,11 @@ export default {
   color: darkgrey;
 }
 
+.phone-label {
+  position: relative;
+  top: 4px;
+}
+
 .phone-number {
   display: inline-block;
   width: 62%;
@@ -437,6 +464,7 @@ export default {
   font-size: 30px;
   border: 0;
   color: darkgrey;
+  height: 100px;
 }
 </style>
 <style>
