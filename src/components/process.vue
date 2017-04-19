@@ -64,7 +64,7 @@
           </div>
           <div>{{data.SLRXM}}受理报修</div>
           <div>指派给{{data.WXRXM}}</div>
-          <div>{{data.WXRSJ}}</div>
+          <div><a href="tel:{{data.WXRSJ}}">{{data.WXRSJ}}</a></div>
         </div>
       </div>
       <div class="repair-progress">
@@ -132,7 +132,7 @@
           </div>
           <div>{{data.SLRXM}}受理报修</div>
           <div>指派给{{data.WXRXM}}</div>
-          <div>{{data.WXRSJ}}</div>
+          <div><a href="tel:{{data.WXRSJ}}">{{data.WXRSJ}}</a></div>
         </div>
       </div>
       <div class="repair-progress">
@@ -235,7 +235,7 @@
           </div>
           <div>{{data.SLRXM}}受理报修</div>
           <div>指派给{{data.WXRXM}}</div>
-          <div>{{data.WXRSJ}}</div>
+          <div><a href="tel:{{data.WXRSJ}}">{{data.WXRSJ}}</a></div>
         </div>
       </div>
       <div class="repair-progress">

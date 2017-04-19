@@ -57,7 +57,11 @@ function loadView(el) {
 }
 export default {
   created() {
-      var self = this;
+      //get userInfo
+      let url = global.HOST + '/sys/itservicecommon/api/getUserDetails.do';
+      this.$http.get(url).then((response)=>{
+        this.userPhone = response.data.phone;
+      })
       this.$http.get(global.HOST + "/sys/itservicecommon/api/getUserLimit.do?appName=hqwxxt").then(function(data) {
         if (data.data[0] && data.data[0].GNBS == "teacher_student" || data.data.length == 2) {
           this.isstudent = true;
@@ -96,6 +100,7 @@ export default {
       return {
         index: '',
         state: '',
+        userPhone:'',
         isstudent: false,
         headertitle: '',
         repairState: {
@@ -122,7 +127,10 @@ export default {
       },
       post: function() {
         this.$router.go({
-          name: 'post'
+          name: 'post',
+          query:{
+            userPhone:this.userPhone
+          }
         });
       }
     }

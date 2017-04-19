@@ -35,10 +35,10 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   init(() => {
     var sdk = SDK();
-    // global.HOST = 'http://amptest.wisedu.com/publicapp'
-    // global.IMGHOST = 'http://amptest.wisedu.com'
-        global.HOST = 'http://172.16.6.27/publicapp'
-    global.IMGHOST = 'http://172.16.6.27'
+    global.HOST = 'http://amptest.wisedu.com/publicapp'
+    global.IMGHOST = 'http://amptest.wisedu.com'
+    //     global.HOST = 'http://172.16.6.27/publicapp'
+    // global.IMGHOST = 'http://172.16.6.27'
     Init()
   })
 }

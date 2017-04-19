@@ -82,6 +82,7 @@ function validForm() {
 }
 export default {
   ready() {
+    this.form.phone = this.$route.query.userPhone;
       var config = {
         left: {
           left1: {

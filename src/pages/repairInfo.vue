@@ -274,12 +274,12 @@ export default {
       width: 100%;
       overflow: hidden;
       background-repeat: no-repeat;
-      background-size: cover;
+      background-size: contain;
       background-position: center;
     }
   }
   & .info {
-      background-color: #fff;
+    background-color: #fff;
     & .message-title {
       color: #403F44;
       font-size: 32px;
@@ -322,7 +322,10 @@ export default {
     }
   }
 }
+
+
 /*TODO*/
+
 .main {
   width: 100%;
   background-color: #fff;
@@ -434,11 +437,6 @@ export default {
       color: #06c1ae;
     }
   }
-  & .comment-button {
-    width: 100%;
-    top: 20px;
-    border-radius: 0;
-  }
 }
 
 .line-top {
@@ -499,6 +497,7 @@ export default {
     height: 100px;
     line-height: 100px;
     background-color: #fff;
+    border-bottom: 1Px solid #e8e8e8;
     color: #06C1AE;
     font-size: 28px;
     & i {
@@ -517,6 +516,14 @@ export default {
     margin-left: 30px;
     border-bottom: 1Px solid #E8E8E8;
   }
+}
+
+.comment-button {
+  width: calc(100% - 60px);
+  margin-left: 30px;
+  margin-right: 30px;
+  top: 20px;
+  border-radius: 10px;
 }
 </style>
 <style>
