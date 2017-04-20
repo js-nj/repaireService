@@ -32,7 +32,10 @@
             <span>{{bxuser}}</span>
             <span>{{bxuserid}}</span>
           </div>
-          <div class="phone"><i class="iconfont icon-call"></i>{{bxuserphone}}</div>
+          <div class="phone">
+          <i class="iconfont icon-call"></i>
+            <a href="tel:{{bxuserphone}}">{{bxuserphone}}</a>
+          </div>
         </div>
         <mt-button type="primary" class="comment-button" @click="doComplete">完工</mt-button>
       </div>
@@ -502,6 +505,10 @@ export default {
     font-size: 28px;
     & i {
       margin-right: 33px;
+    }
+    & a{
+      text-decoration: none;
+      color: #06C1AE;
     }
   }
 }

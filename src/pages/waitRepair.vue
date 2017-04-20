@@ -1,7 +1,7 @@
 <template>
   <div v-if="dataResource.length>0">
     <mt-loadmore v-show="dataResource.length > 0" class="mt-loadmore-div" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false">
-      <list-item v-for="item in dataResource" :messagetitle="item.BXQY_DISPLAY+item.BXDD+item.XXDD" :iswork="iswork" :info="item.MS" :timezone="item.BXSJ" :img="item.TP" :tag="item.tag" :all="item"></list-item>
+      <list-item v-for="item in dataResource" :messagetitle="item.BXQY_DISPLAY+item.BXDD_DISPLAY+item.XXDD" :iswork="iswork" :info="item.MS" :timezone="item.BXSJ" :img="item.TP" :tag="item.tag" :all="item"></list-item>
     </mt-loadmore>
   </div>
   <div v-if="dataResource.length===0 && loading===true" class="no-data">
@@ -21,7 +21,7 @@ export default {
         dataResource: [],
         page: 1,
         isshow: false,
-        loading:false,
+        loading: false,
         allLoaded: false
       }
     },
@@ -53,6 +53,18 @@ export default {
       } else {
         this.iswork = true;
         api.loadRepairData.call(this, 1);
+        var config = {
+          left: {
+            left1: {
+              title: '',
+              callFunction: function() {
+                BH_MOBILE_SDK.UI.closeWebView();
+              }
+            }
+          }
+        };
+        BH_MOBILE_SDK.UI.setNavHeader(config);
+        BH_MOBILE_SDK.UI.setTitleText('待维修');
       }
     },
     components: {

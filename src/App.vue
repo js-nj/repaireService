@@ -65,6 +65,7 @@ export default {
       this.$http.get(global.HOST + "/sys/itservicecommon/api/getUserLimit.do?appName=hqwxxt").then(function(data) {
         if (data.data[0] && data.data[0].GNBS == "teacher_student" || data.data.length == 2) {
           this.isstudent = true;
+          api.loadData.call(this, 'YWX', 1, 'home');
           var config = {
             left: {
               left1: {

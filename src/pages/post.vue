@@ -15,16 +15,16 @@
       <label class="item-left phone-label" @click="debug">手机号</label>
       <input type="tel" class="phone-number" placeholder="请填写手机号" v-model="form.phone">
     </div>
-    <div class="list-item first-item">
-      <label class="item-left">故障类型</label>
-      <span class="item-right text-input" @click="showpicker('breaks')">
+    <div class="list-type">
+      <label class="type-label">故障类型</label>
+      <span class="type-right" @click="showpicker('breaks')">
         <span>{{ form.breaks ? form.breaks : '请选择' }}</span>
       <i class="iconfont icon-keyboardarrowright"></i>
       </span>
     </div>
-    <div class="list-item first-item">
-      <label class="item-left">故障区域</label>
-      <span class="item-right text-input" @click="showpicker('area')">
+    <div class="list-type">
+      <label class="type-label">故障区域</label>
+      <span class="type-right" @click="showpicker('area')">
         <span>{{ form.area ? form.area : '请选择' }}</span>
       <i class="iconfont icon-keyboardarrowright"></i>
       </span>
@@ -82,7 +82,7 @@ function validForm() {
 }
 export default {
   ready() {
-    this.form.phone = this.$route.query.userPhone;
+      this.form.phone = this.$route.query.userPhone;
       var config = {
         left: {
           left1: {
@@ -145,16 +145,26 @@ export default {
         if (val == 'breaks') {
           multiPicker(this.returnTypeArr, function(data) {
             data = data.split(',');
+            // 子类型code
             _self.type.loc.val = _self.mapTypeArr[String(data[0]) + String(data[1])].id;
-            _self.form.breaks = _self.mapTypeArr[String(data[0]) + String(data[1])].name;
+            // name
+            let column2 = _self.mapTypeArr[String(data[0]) + String(data[1])].name;
+            let column1 = _self.GZLX[String(data[0])].name;
+            if (column1 == column2) {
+              _self.form.breaks = column1;
+            } else {
+              _self.form.breaks = `${column1}/${column2}`
+            }
+            // 父类型code
             _self.type.area.val = _self.GZLX[String(data[0])].id;
           })
         } else {
           multiPicker(this.returnArr, function(data) {
             data = data.split(',');
-            _self.repair.loc.val = _self.mapArr[String(data[0]) + String(data[1])].id; //code
-            _self.form.area = _self.mapArr[String(data[0]) + String(data[1])].name; //name
-            _self.repair.area.val = _self.QYArr[String(data[0])].id; //parent code
+            //子类型id
+            _self.repair.loc.val = _self.mapArr[String(data[0]) + String(data[1])].id;
+            _self.form.area = `${_self.QYArr[String(data[0])].name}/${_self.mapArr[String(data[0]) + String(data[1])].name}`//name
+            _self.repair.area.val = _self.QYArr[String(data[0])].id;
           })
         }
       },
@@ -177,6 +187,7 @@ export default {
             XXDD: this.form.locationinfo,
             MS: this.form.questioninfo
           }
+          alert(JSON.stringify(options))
           if (this.imgs.length > 0) {
             Indicator.open();
             this.uploadImage().then((result) => {
@@ -463,6 +474,38 @@ export default {
   border: 0;
   color: darkgrey;
   height: 100px;
+}
+
+.list-type {
+  border-top: 1Px solid #eaeaea;
+  background-color: #fff;
+  display: flex;
+  min-height: 100px;
+  align-items: center;
+  color: #403F44;
+  font-size: 28px;
+  & .type-label {
+    padding-left: 30px;
+    flex: 0 0 auto;
+    width: 25%;
+  }
+  & .type-right {
+    width: 70%;
+    position: relative;
+    & span {
+      display: inline-block;
+      color: #BDC0C5;
+      width:90%;
+    }
+    & i {
+      font-size: 2rem;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #BDC0C5;
+    }
+  }
 }
 </style>
 <style>

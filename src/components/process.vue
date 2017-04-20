@@ -303,14 +303,6 @@ export default {
 
     }
   },
-  ready() {
-    var progressDiv = document.getElementsByClassName('repair-progress');
-    var icon = document.getElementsByClassName('middle');
-    for (let i = 0 , len = progressDiv.length ; i <len ; i++) {
-      let hight = progressDiv[i].clientHeight;
-      icon[i].style.backgroundColor="black";
-    }
-  },
   methods: {
     showPop() {
       this.visible = true;
@@ -323,100 +315,59 @@ export default {
 }
 </script>
 <style scoped>
+a {
+  text-decoration: none;
+  color: #06c1ae;
+}
+
 .progress {
   background-color: #fff;
   & .repair-progress {
-    padding: 30px;
+    margin: 30px;
     display: flex;
     align-items: top;
     min-height: 150Px;
+    position: relative;
     & .left {
       margin-left: 20px;
       text-align: right;
       font-size: 26px;
       color: #BDC0C5;
-      width: 160px;
+      width: 30%;
       & div {
         width: 100%;
       }
     }
-    & .middle-icon-green {
+    & .middle {
       flex: 0 0 auto;
-      display: inline-block;
       margin-left: 20px;
       margin-right: 20px;
-      background-color: #06c1ae;
       width: 24Px;
       height: 24Px;
       border-radius: 50%;
       text-align: center;
       & i {
-        font-size: 40px;
-        position: relative;
+        font-size: 36px;
         color: #fff;
-        &:after {
-          position: absolute;
-          height: 126Px;
-          left: 19px;
-          right: 18px;
-          top: 23Px;
-          background: #e8e8e8;
-          content: ''
-        }
       }
     }
+    & .middle-icon-green {
+      background-color: #06c1ae;
+      & i {}
+    }
     & .middle-icon-yellow {
-      flex: 0 0 auto;
-      display: inline-block;
-      margin-left: 20px;
-      margin-right: 20px;
       background-color: #ffb200;
-      width: 24Px;
-      height: 24Px;
-      border-radius: 50%;
       & i {
-        font-size: 35px;
         position: relative;
-        color: #fff;
         top: 2px;
-        left: 4px;
-        &:after {
-          position: absolute;
-          height: 126Px;
-          left: 9Px;
-          right: 9Px;
-          top: 22Px;
-          background: #E8E8E8;
-          content: ''
-        }
       }
     }
     & .middle-icon-error {
-      flex: 0 0 auto;
-      display: inline-block;
-      margin-left: 20px;
-      margin-right: 20px;
       background-color: #ff571a;
-      width: 24Px;
-      height: 24Px;
-      overflow: hidden;
-      border-radius: 50%;
-      flex: 0 0 auto;
       & i {
-        font-size: 35px;
         position: relative;
-        color: #fff;
-        top: 2px;
-        left: 2px;
-        &:after {
-          position: absolute;
-          height: 126Px;
-          left: 11px;
-          right: 15px;
-          top: 21Px;
-          background: #E8E8E8;
-          content: ''
-        }
+        font-size: 32px;
+        top: 4px;
       }
     }
     & .right {
@@ -433,25 +384,28 @@ export default {
           border-radius: 12Px;
           padding: 4px 12px 6px 12px;
           display: inline-block;
-          border: 1px solid #BAFFF6;
+          border: 1Px solid #BAFFF6;
         }
       }
     }
-  }
-}
-
-.last {
-  font-size: 40px;
-  position: relative;
-  color: #fff;
-  &:after {
-    content: '';
-    position: absolute;
-    height: 0px!important;
-    left: 19px;
-    right: 18px;
-    top: 23Px;
-    background: #e8e8e8;
+    &:after {
+      position: absolute;
+      height: 100%;
+      left: calc(30% + 60px);
+      width: 1.5Px;
+      top:24Px;
+      background: #e8e8e8;
+      content: '';
+    }
+    &:last-child:after {
+      position: absolute;
+      height: 100%;
+      left: calc(30% + 60px);
+      width: 0Px;
+      top:24Px;
+      background: red;
+      content: '';
+    }
   }
 }
 
