@@ -345,10 +345,13 @@ a {
       width: 24Px;
       height: 24Px;
       border-radius: 50%;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       & i {
         font-size: 36px;
         color: #fff;
+        flex: 0 0 auto;
       }
     }
     & .middle-icon-green {
@@ -358,16 +361,12 @@ a {
     & .middle-icon-yellow {
       background-color: #ffb200;
       & i {
-        position: relative;
-        top: 2px;
       }
     }
     & .middle-icon-error {
       background-color: #ff571a;
       & i {
-        position: relative;
         font-size: 32px;
-        top: 4px;
       }
     }
     & .right {

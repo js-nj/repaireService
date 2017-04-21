@@ -26,14 +26,14 @@
         </div>
       </div>
       <div v-show="iswork">
+        <div class="title">报修人信息</div>
         <div class="repair-info">
-          <div class="title">报修人信息</div>
           <div class="name">
             <span>{{bxuser}}</span>
             <span>{{bxuserid}}</span>
           </div>
           <div class="phone">
-          <i class="iconfont icon-call"></i>
+            <i class="iconfont icon-call"></i>
             <a href="tel:{{bxuserphone}}">{{bxuserphone}}</a>
           </div>
         </div>
@@ -476,16 +476,18 @@ export default {
   }
 }
 
+.title {
+  height: 77px;
+  line-height: 77px;
+  padding-left: 30px;
+  background-color: #f9f9f9;
+  color: #92969C;
+  font-size: 28px;
+}
+
 .repair-info {
   background-color: #fff;
   padding-left: 30px;
-  & .title {
-    height: 77px;
-    line-height: 77px;
-    background-color: #f9f9f9;
-    color: #92969C;
-    font-size: 28px;
-  }
   & .name {
     height: 100px;
     line-height: 100px;
@@ -506,7 +508,7 @@ export default {
     & i {
       margin-right: 33px;
     }
-    & a{
+    & a {
       text-decoration: none;
       color: #06C1AE;
     }
