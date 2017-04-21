@@ -124,12 +124,17 @@ export default {
     }
   }
   & .save-button {
-    width: 100%;
+    margin-left: 30px;
+    margin-right: 30px;
+    width: calc(100% - 60px);
     top: 20px;
-    border-radius: 0;
+    border-radius: 10px;
   }
 }
-
+.comment-textarea{
+  padding-left: 30px;
+  padding-right: 30px;
+}
 .tips {
   height: 30px;
 }
