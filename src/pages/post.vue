@@ -187,7 +187,6 @@ export default {
             XXDD: this.form.locationinfo,
             MS: this.form.questioninfo
           }
-          alert(JSON.stringify(options))
           if (this.imgs.length > 0) {
             Indicator.open();
             this.uploadImage().then((result) => {
