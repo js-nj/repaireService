@@ -12,37 +12,30 @@ module.exports = {
     root: path.join(__dirname, 'node_modules'),
   },
   module: {
-    loaders: [
-      {
-        test: /\.vue$/,
-        loader: 'vue'
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.json$/,
-        loader: 'json'
-      },
-      {
-        test: /\.html$/,
-        loader: 'vue-html'
-      },
-      {
-        test: /\.css$/,
-        loader: 'style!css'
-      },
-      {
-        test: /\.(png|jpg|gif|svg)$/,
-        loader: 'url',
-        query: {
-          limit: 10000,
-          name: '[name].[ext]?[hash]'
-        }
+    loaders: [{
+      test: /\.vue$/,
+      loader: 'vue'
+    }, {
+      test: /\.js$/,
+      loader: 'babel',
+      exclude: /node_modules/
+    }, {
+      test: /\.json$/,
+      loader: 'json'
+    }, {
+      test: /\.html$/,
+      loader: 'vue-html'
+    }, {
+      test: /\.css$/,
+      loader: 'style!css'
+    }, {
+      test: /\.(png|jpg|gif|svg)$/,
+      loader: 'url',
+      query: {
+        limit: 10000,
+        name: '[name].[ext]?[hash]'
       }
-    ]
+    }]
   },
   vue: {
     postcss: [require('postcss-cssnext')({
@@ -58,8 +51,9 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     noInfo: true,
+    disableHostCheck: true,
     host: '0.0.0.0',
-    port:8080
+    port: 9000
   },
   devtool: '#source-map'
 }

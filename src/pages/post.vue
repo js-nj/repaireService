@@ -21,9 +21,22 @@
     <mt-cell class="mint-cell-text-fix" title="故障类型" is-link v-on:click="showpicker('breaks')">
       <span>{{ form.breaks ? form.breaks : '请选择' }}</span>
     </mt-cell>
+    <mt-popup :visible.sync="popupVisibleBreaks"  position="bottom" style="width:100%;">
+      <mt-picker :slots="slots" @change="onAddressChange" :show-toolbar="showToolbar">
+        <slot><span class="toolbar-btn" @click="cancel">取消</span></slot>
+        <slot><span class="toolbar-btn" style="float: right" @click="doOkBreaks">确定</span></slot>
+      </mt-picker>
+    </mt-popup>
+
     <mt-cell class="mint-cell-text-fix" title="报修区域" is-link v-on:click="showpicker('area')">
       <span>{{ form.area ? form.area : '请选择' }}</span>
     </mt-cell>
+    <mt-popup :visible.sync="popupVisibleArea"  position="bottom" style="width:100%;">
+      <mt-picker :slots="slots" @change="onAddressChange" :show-toolbar="showToolbar">
+        <slot><span class="toolbar-btn" @click="cancel">取消</span></slot>
+        <slot><span class="toolbar-btn" style="float: right" @click="doOkArea">确定</span></slot>
+      </mt-picker>
+    </mt-popup>
 <!--     <mt-cell class="mint-cell-text-fix" title="报修地点" is-link v-on:click="showpicker('loc')">
       <span>{{ form.loc ? form.loc : '请选择' }}</span>
     </mt-cell> -->
@@ -34,6 +47,7 @@
     </div>
   </div>
   <mt-button type="primary" class="save-button" @click="save">提交</mt-button>
+
   <!-- <mt-picker v-show="isshowpicker" class="picker-show" :slots="slots" @change="onValuesChange" :show-toolbar="showToolbar" rotate-effect :visible-item-count="3">
     <slot><span class="toolbar-btn" @click="cancel">取消</span></slot>
     <slot><span class="toolbar-btn" style="float: right" @click="doOk">确定</span></slot>
@@ -41,9 +55,9 @@
 </template>
 
 <script>
-import { Header, Indicator, Toast , Button, Cell, MessageBox } from 'bh-mint-ui';
+import { Header, Indicator, Toast , Button, Cell, MessageBox,Picker,Popup  } from 'bh-mint-ui';
 import api from '../api.js';
-import SDK from 'bh-mobile-sdk';
+//import SDK from 'bh-mobile-sdk';
 var errTipsInfo = {
     questioninfo:'请描述您遇到的问题',
     phone:'请输入正确的手机号',
@@ -73,12 +87,32 @@ function validForm() {
   }
   return true;
 }
+
 export default {
   ready() {
-    api.getRepaireAreaInfo.call(this);
     api.getRepairType.call(this);
+    api.getRepaireAreaInfo.call(this);
   },
   methods: {
+    cancel() {
+      this.popupVisibleBreaks = false;
+      this.popupVisibleArea = false;
+    },
+    doOkBreaks() {
+      this.form.breaks = this.tmpBreaks;
+      this.popupVisibleBreaks = false;
+    },
+    doOkArea() {
+      this.form.area = this.tmpArea;
+      this.popupVisibleArea = false;
+    },
+    onAddressChange(picker, values) {
+      picker.setSlotValues(1, this.address[values[0]]);
+      this.tmpBreaks = picker.getValues();
+      this.tmpArea = picker.getValues();
+      this.typeClass = values[0];
+      this.typeSubClass = values[1];
+    },
     debug: function() {
       this.debugnum +=1;
       if(this.debugnum == 10) {
@@ -86,7 +120,8 @@ export default {
       }
     },
     showActions() {
-      let {UI: {actionSheet}} = SDK()
+      //let {UI: {actionSheet}} = SDK()
+      let actionSheet = BH_MIXIN_SDK.actionSheet
       actionSheet('上传图片', this.actions.map((action) => {
         return action.title
       }), (index) => {
@@ -94,14 +129,14 @@ export default {
       })
     },
     takeCamera() {
-      let takeCamera = BH_MOBILE_SDK.systemAbility.takeCamera
+      let takeCamera = BH_MIXIN_SDK.takeCamera
       takeCamera((ret) => {
         this.imgs = this.imgs.concat(ret)
       })
       this.uploadImgType = '拍照';
     },
     takePhoto() {
-      let takePhoto = BH_MOBILE_SDK.systemAbility.takePhoto
+      let takePhoto = BH_MIXIN_SDK.takePhoto
       takePhoto((ret) => {
         this.imgs = this.imgs.concat(ret);
       }, this.imgLimit - this.imgs.length)
@@ -111,28 +146,30 @@ export default {
       this.imgs.splice(index, 1)
     },
     previewImg(index) {
-      BH_MOBILE_SDK.UI.preViewImages(this.imgs, index);
+      BH_MIXIN_SDK.preViewImages(this.imgs, index);
     },
     showpicker: function(val) {
       var _self = this;
-      var multiPicker = SDK().UI && SDK().UI.multiPicker;
-      var singleSelect = SDK().UI && SDK().UI.singleSelect;
+      //var multiPicker = BH_MIXIN_SDK && BH_MIXIN_SDK.multiPicker;
+      //var singleSelect = BH_MIXIN_SDK && BH_MIXIN_SDK.singleSelect;
       if(val == 'breaks') {
-        singleSelect(this.GZLX, 0,function(data) {
-          _self.form.breaks = _self.GZLX[data];
-          _self.repair.breaks.val = _self.GZLX[data];
-        })
+        this.popupVisibleBreaks = true;
+        // singleSelect(this.GZLX, 0,function(data) {
+        //   _self.form.breaks = _self.GZLX[data];
+        //   _self.repair.breaks.val = _self.GZLX[data];
+        // })
       } else {
-        multiPicker(this.returnArr, function(data) {
-          data = data.split(',');
-          _self.repair.loc.val = _self.mapArr[String(data[0]) + String(data[1])].id;
-          _self.form.area = _self.mapArr[String(data[0]) + String(data[1])].name;
-          _self.repair.area.val = _self.QYArr[String(data[0])].id;
-        })
+        this.popupVisibleArea = true;
+        // multiPicker(this.returnArr, function(data) {
+        //   data = data.split(',');
+        //   _self.repair.loc.val = _self.mapArr[String(data[0]) + String(data[1])].id;
+        //   _self.form.area = _self.mapArr[String(data[0]) + String(data[1])].name;
+        //   _self.repair.area.val = _self.QYArr[String(data[0])].id;
+        // })
       }
     },
     uploadImage() {
-      return BH_MOBILE_SDK.wisedu.uploadToEMAP(HOST, this.imgs.map(img => img.url)).then((result) => {
+      return BH_MIXIN_SDK.uploadToEMAP(HOST, this.imgs.map(img => img.url)).then((result) => {
         return result
       }).catch((err) => {
         Toast('上传图片出错啦')
@@ -167,8 +204,32 @@ export default {
 
   data() {
     return {
+      address:{},
+      showToolbar:true,
+      slots: [
+        {
+          flex: 1,
+          values: [],//Object.keys(address)
+          className: 'slot1',
+          textAlign: 'center'
+        }, {
+          divider: true,
+          content: '-',
+          className: 'slot2'
+        }, {
+          flex: 1,
+          values: [],//address[Object.keys(address)[0]]
+          className: 'slot3',
+          textAlign: 'center'
+        }
+      ],
+      typeClass: '',
+      typeSubClass: '',
+      popupVisibleBreaks:false,
+      popupVisibleArea:false,
       debugnum:0,
-      showToolbar: true,
+      tmpBreaks:'',
+      //showToolbar: true,
       form: {
         questioninfo:'',
         phone:'',
@@ -211,7 +272,9 @@ export default {
   components: {
     [Header.name]: Header,
     [Button.name]: Button,
-    [Cell.name]: Cell
+    [Cell.name]: Cell,
+    [Picker.name]: Picker,
+    [Popup.name]: Popup
   }
 }
 </script>

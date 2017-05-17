@@ -69,6 +69,12 @@ export default {
   created() {
     var self = this;
     this.$http.get(global.HOST+"/sys/itservicecommon/api/getUserLimit.do?appName=hqwxxt").then(function(data) {
+      //mock
+      var data = {
+        data:[{
+          GNBS:'teacher_student'
+        }]
+      };
       if(data.data[0] && data.data[0].GNBS == "teacher_student" || data.data.length == 2) {
         this.isstudent = true;
         this.headertitle = '我的报修';
@@ -81,7 +87,7 @@ export default {
         this.$router.go({name:'waitRepair', params: {iswork:'worker'}});
       }
     }, function(err) {
-      Toast('获取权限错误');
+      BH_MIXIN_SDK.toast('获取权限错误');
     });
   },
   data () {

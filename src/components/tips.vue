@@ -7,7 +7,7 @@
       <i class="icon-grade" v-bind:class="{'grade-show':gradeshow[3]}" @click="gradeShowFunc(3)"></i>
       <i class="icon-grade" v-bind:class="{'grade-show':gradeshow[4]}" @click="gradeShowFunc(4)"></i>
     </div>
-    <span class="points">{{bxcommentpoints}}</span>
+    <span class="points" >{{bxcommentpoints}}</span>
     <div class="my-comment">
       <span class="my-comment-title">我的评价：</span>
       <div style="word-wrap: break-word;word-break: normal;padding-top: 5px;">{{bxcomment}}</div>
@@ -32,6 +32,21 @@ export default {
   data() {
     return {
       gradeshow:[false,false,false,false,false]
+    }
+  },
+  methods:{
+    gradeShowFunc: function(index) {
+      var gradeArr = [];
+      for (var i = 0; i < this.gradeshow.length; i++) {
+        if(i <= index) {
+          gradeArr[i] = true;
+        }
+        else {
+          gradeArr[i] = false;
+        }
+      }
+      this.gradeshow = gradeArr;
+      this.bxcommentpoints = String(1 + Number(index));
     }
   },
   props: {

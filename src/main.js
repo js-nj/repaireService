@@ -2,9 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import routerconfig from './router'
-import SDK, {
-  init
-} from 'bh-mobile-sdk';
+import init from 'bh-mixin-sdk/lib/index.js';
 Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.http.options.emulateJSON = true;
@@ -25,7 +23,7 @@ let Init = () => {
 //测试
 if (process.env.NODE_ENV === 'production') {
   init(() => {
-    var sdk = SDK();
+    //var sdk = SDK();
     global.HOST = location.origin + "/publicapp";
     global.IMGHOST = location.origin;
     // if(sdk.UI && sdk.UI.toggleNavBar) {
@@ -36,14 +34,20 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   global.HOST = 'http://amptest.wisedu.com/publicapp'
   global.IMGHOST = 'http://amptest.wisedu.com'
-  // Init();
+    // Init();
   init(() => {
-    var sdk = SDK();
-    global.HOST = 'http://amptest.wisedu.com/publicapp'
-    global.IMGHOST = 'http://amptest.wisedu.com'
+    //var sdk = SDK();
+    //global.HOST = 'http://amptest.wisedu.com/publicapp'
+    //global.IMGHOST = 'http://amptest.wisedu.com'
     // if(sdk.UI && sdk.UI.toggleNavBar) {
     //   sdk.UI.toggleNavBar(false);
     // }
     Init()
+  }, {
+    wx: {
+      debug: false,
+      url: 'http://res.wisedu.com:8888/checkSign'
+    },
+    dd: 22
   })
 }
