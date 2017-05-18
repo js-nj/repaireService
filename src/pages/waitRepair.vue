@@ -1,70 +1,83 @@
 <template>
-  <mt-loadmore v-show="dataResource.length > 0" class="mt-loadmore-div" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false">
-    <list-item v-for="item in dataResource" :messagetitle="item.BXQY_DISPLAY+item.BXDD_DISPLAY" :iswork="iswork" :info="item.MS" :timezone="item.BXSJ" :img="item.TP" :tag="item.tag" :all="item"></list-item>
-  </mt-loadmore>
-  <!--  v-bind:class="{'isshow': isshow}" -->
-  <div class="search-empty" v-bind:class="{'isshow': isshow}">
-    <div>
-      <img src="../images/icn_nodata.png" width="100" height="100" style="display: block;">
-      暂无相关数据
-    </div>
+  <div v-if="dataResource.length>0">
+    <mt-loadmore v-show="dataResource.length > 0" class="mt-loadmore-div" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false">
+      <list-item v-for="item in dataResource" :messagetitle="item.BXQY_DISPLAY+item.BXDD_DISPLAY+item.XXDD" :iswork="iswork" :info="item.MS" :timezone="item.BXSJ" :img="item.TP" :tag="item.tag" :all="item"></list-item>
+    </mt-loadmore>
+  </div>
+  <div v-if="dataResource.length===0 && loading===true" class="no-data">
+    <img src="../components/img/no_data.png">
+    <span>还没有报修订单呢</span>
   </div>
 </template>
-
 <script>
 import ListItem from '../components/listItem.vue';
 import api from '../api.js';
-import { Loadmore } from 'bh-mint-ui';
+import {
+  Loadmore
+} from 'bh-mint-ui';
 export default {
   data() {
-    return {
-      dataResource: [],
-      page: 1,
-      isshow: false,
-      allLoaded: false
-    }
-  },
-  watch: {
-    dataResource: function(val) {
-      if(val.length < 1) {
-        this.isshow = true;
-      } else {
-        this.isshow = false;
+      return {
+        dataResource: [],
+        page: 1,
+        isshow: false,
+        loading: false,
+        allLoaded: false
       }
-    }
-  },
-  methods: {
-    loadBottom(id) {
+    },
+    watch: {
+      dataResource: function(val) {
+        if (val.length < 1) {
+          this.isshow = true;
+        } else {
+          this.isshow = false;
+        }
+      }
+    },
+    methods: {
+      loadBottom(id) {
         this.page = this.page + 1;
-        if(iswork) {
-          api.loadRepairData.call(this,1);
-        }else {
+        if (iswork) {
+          api.loadRepairData.call(this, 1);
+        } else {
           api.loadData.call(this, 'DWX', this.page);
         }
         this.$broadcast('onBottomLoaded', id)
+      }
+    },
+    created() {
+      var work = this.$route.params.iswork;
+      if (work != 'worker') {
+        this.iswork = false;
+        api.loadData.call(this, 'DWX', 1);
+      } else {
+        this.iswork = true;
+        api.loadRepairData.call(this, 1);
+        var config = {
+          left: {
+            left1: {
+              title: '',
+              callFunction: function() {
+                BH_MOBILE_SDK.UI.closeWebView();
+              }
+            }
+          }
+        };
+        BH_MOBILE_SDK.UI.setNavHeader(config);
+        BH_MOBILE_SDK.UI.setTitleText('待维修');
+      }
+    },
+    components: {
+      ListItem,
+      [Loadmore.name]: Loadmore
     }
-  },
-  created() {
-    var work = this.$route.params.iswork;
-    if(work != 'worker') {
-      this.iswork = false;
-      api.loadData.call(this, 'DWX', 1);
-    } else {
-      this.iswork = true;
-      api.loadRepairData.call(this,1);
-    }
-  },
-  components: {
-    ListItem,
-    [Loadmore.name]:Loadmore
-  }
 }
 </script>
-
 <style scoped>
 .mt-loadmore-div {
   padding-top: 0px;
 }
+
 .search-empty {
   width: 100%;
   height: 100%;
@@ -75,7 +88,21 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.isshow {
+
+.no-data {
+  background-color: #fff;
   display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  & img {
+    width: 200px;
+    margin-top: 240px;
+    margin-bottom: 30px;
+  }
+  & span {
+    font-size: 26px;
+  }
 }
 </style>
