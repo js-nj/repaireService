@@ -158,12 +158,20 @@ function getRepaireAreaInfo() {
         returnArr.push(multiArr)
       }
       self.returnArr = returnArr;
-      self.mapArr = mapArr
+      self.mapArr = mapArr;
     } else {
       Toast('获取数据失败！');
     }
   }, function(err) {
     Toast('获取数据失败！');
+    //mock 数据 接口调不通
+    var typeObj2 = {
+      '东校区': ['金智楼', '图克楼'],
+      '西校区': ['将军楼', '大道楼']
+    };
+    self.addressArea = typeObj2;
+    self.slotsArea['0'].values = Object.keys(typeObj2); //Object.keys(typeObj);
+    self.slotsArea['2'].values = typeObj2[Object.keys(typeObj2)[0]]; //typeObj[Object.keys(typeObj)[0]];
   });
 }
 

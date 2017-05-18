@@ -32,7 +32,7 @@
       <span>{{ form.area ? form.area : '请选择' }}</span>
     </mt-cell>
     <mt-popup :visible.sync="popupVisibleArea"  position="bottom" style="width:100%;">
-      <mt-picker :slots="slots" @change="onAddressChange" :show-toolbar="showToolbar">
+      <mt-picker :slots="slotsArea" @change="onAddressAreaChange" :show-toolbar="showToolbar">
         <slot><span class="toolbar-btn" @click="cancel">取消</span></slot>
         <slot><span class="toolbar-btn" style="float: right" @click="doOkArea">确定</span></slot>
       </mt-picker>
@@ -57,7 +57,7 @@
 <script>
 import { Header, Indicator, Toast , Button, Cell, MessageBox,Picker,Popup  } from 'bh-mint-ui';
 import api from '../api.js';
-//import SDK from 'bh-mobile-sdk';
+import SDK from 'bh-mobile-sdk';
 var errTipsInfo = {
     questioninfo:'请描述您遇到的问题',
     phone:'请输入正确的手机号',
@@ -106,10 +106,15 @@ export default {
       this.form.area = this.tmpArea;
       this.popupVisibleArea = false;
     },
+    onAddressAreaChange(picker, values) {
+      picker.setSlotValues(1, this.addressArea[values[0]]);
+      this.tmpArea = picker.getValues();
+      this.typeAreaClass = values[0];
+      this.typeAreaSubClass = values[1];
+    },
     onAddressChange(picker, values) {
       picker.setSlotValues(1, this.address[values[0]]);
       this.tmpBreaks = picker.getValues();
-      this.tmpArea = picker.getValues();
       this.typeClass = values[0];
       this.typeSubClass = values[1];
     },
@@ -120,17 +125,36 @@ export default {
       }
     },
     showActions() {
-      //let {UI: {actionSheet}} = SDK()
-      let actionSheet = BH_MIXIN_SDK.actionSheet
-      actionSheet('上传图片', this.actions.map((action) => {
-        return action.title
-      }), (index) => {
-        this.actions[index].action()
-      })
+      var self = this;
+      if (BH_MIXIN_SDK.bh) {
+        let {UI: {actionSheet}} = SDK()
+        //let actionSheet = BH_MIXIN_SDK.actionSheet
+        actionSheet('上传图片', this.actions.map((action) => {
+          return action.title
+        }), (index) => {
+          this.actions[index].action()
+        })
+      }else {
+        BH_MIXIN_SDK.wx.chooseImage({
+            count: this.imgLimit - this.imgs.length, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+              var imgs = res.localIds.map(function(item){
+                return {
+                  base64:item,
+                  url:item
+                }
+              });
+                self.imgs.concat(imgs);
+            }
+        });
+      }
     },
     takeCamera() {
       let takeCamera = BH_MIXIN_SDK.takeCamera
       takeCamera((ret) => {
+        console.log(ret);
         this.imgs = this.imgs.concat(ret)
       })
       this.uploadImgType = '拍照';
@@ -227,8 +251,9 @@ export default {
       typeSubClass: '',
       popupVisibleBreaks:false,
       popupVisibleArea:false,
-      debugnum:0,
       tmpBreaks:'',
+      tmpArea:'',
+      debugnum:0,
       //showToolbar: true,
       form: {
         questioninfo:'',
@@ -254,6 +279,26 @@ export default {
       changeval: '请选择',
       isshowpicker: false,
       presentPicker:'',
+      addressArea:{},
+      slotsArea: [
+        {
+          flex: 1,
+          values: [],//Object.keys(address)
+          className: 'slotA1',
+          textAlign: 'center'
+        }, {
+          divider: true,
+          content: '-',
+          className: 'slotA2'
+        }, {
+          flex: 1,
+          values: [],//address[Object.keys(address)[0]]
+          className: 'slotA3',
+          textAlign: 'center'
+        }
+      ],
+      typeAreaSubClass:'',
+      typeAreaClass:'',
       returnArr: [],
       mapArr: {},
       QYArr: [],

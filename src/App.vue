@@ -87,7 +87,7 @@ export default {
         this.$router.go({name:'waitRepair', params: {iswork:'worker'}});
       }
     }, function(err) {
-      BH_MIXIN_SDK.toast('获取权限错误');
+      //BH_MIXIN_SDK.toast('获取权限错误');
     });
   },
   data () {
