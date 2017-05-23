@@ -1,4 +1,5 @@
 <template>
+    <cp-header></cp-header>
   <div class="main">
     <textarea class="question-describe" placeholder="请描述您遇到的问题" rows="5" v-model="form.questioninfo"></textarea>
     <span class="question-describe-holder">{{form.questioninfo.length}}/100</span>
@@ -56,6 +57,7 @@
 <script>
 import { Header, Indicator, Toast , Button, Cell, MessageBox,Picker,Popup  } from 'bh-mint-ui';
 import api from '../api.js';
+import cpHeader from '../components/header.vue';
 //import SDK from 'bh-mobile-sdk';
 var errTipsInfo = {
     questioninfo: '请描述您遇到的问题',
@@ -196,11 +198,24 @@ export default {
       }
     },
     uploadImage() {
-      return BH_MIXIN_SDK.uploadImgsToEmap(HOST, this.imgs.map(img => img.url)).then((result) => {
-        return result
-      }).catch((err) => {
-        Toast('上传图片出错啦')
-      })
+        if (BH_MIXIN_SDK.bh) {
+            return BH_MOBILE_SDK.wisedu.uploadImgsToEmap(HOST, this.imgs.map(img => img.url)).then((result) => {
+                return result
+            }).catch((err) => {
+                Toast('上传图片出错啦')
+            })
+        } else {
+            console.log('上传微信图片');
+            return BH_MIXIN_SDK.uploadImgsToEmap({
+                urls: this.imgs.map(img => img.url)
+            }).then((res) => {
+                if (!res.success) {
+                    Toast(res.msg)
+                }
+            }).catch((err) => {
+                Toast(err.msg)
+            });
+        }
     },
     save() {
       var result = validForm.call(this);
@@ -343,7 +358,8 @@ export default {
       [Button.name]: Button,
       [Cell.name]: Cell,
       [Picker.name]: Picker,
-      [Popup.name]: Popup
+      [Popup.name]: Popup,
+      cpHeader
   }
 }
 </script>

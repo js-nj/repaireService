@@ -53,7 +53,7 @@ module.exports = {
     noInfo: true,
     disableHostCheck: true,
     host: '0.0.0.0',
-    port: 9000
+    port: 8081
   },
   devtool: '#source-map'
 }

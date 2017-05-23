@@ -45,7 +45,7 @@ export default {
         this.$broadcast('onBottomLoaded', id)
       }
     },
-    created() {
+    ready() {
       var work = this.$route.params.iswork;
       if (work != 'worker') {
         this.iswork = false;
@@ -58,13 +58,13 @@ export default {
             left1: {
               title: '',
               callFunction: function() {
-                BH_MOBILE_SDK.UI.closeWebView();
+                BH_MIXIN_SDK.closeWebView();
               }
             }
           }
         };
-        BH_MOBILE_SDK.UI.setNavHeader(config);
-        BH_MOBILE_SDK.UI.setTitleText('待维修');
+        BH_MIXIN_SDK.setNavHeader(config);
+        BH_MIXIN_SDK.setTitleText('待维修');
       }
     },
     components: {
