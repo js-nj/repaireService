@@ -170,10 +170,10 @@ function getRepaireAreaInfo() {
       self.returnArr = returnArr;
       self.mapArr = mapArr;
       //mock 数据 接口调不通
-      var typeObj2 = {
-        '东校区': ['金智楼', '图克楼'],
-        '西校区': ['将军楼', '大道楼']
-      };
+      var typeObj2 = {};
+      data.forEach(function(item){
+          typeObj2[item.name] = item.areaPlaces.map((place)=>place.name);
+      });
       self.addressArea = typeObj2;
       self.slotsArea['0'].values = Object.keys(typeObj2); //Object.keys(typeObj);
       self.slotsArea['2'].values = typeObj2[Object.keys(typeObj2)[0]]; //typeObj[Object.keys(typeObj)[0]];
@@ -218,7 +218,15 @@ function getRepaireAreaInfo() {
         returnArr.push(multiArr)
       }
       self.returnTypeArr = returnArr;
-      self.mapTypeArr = mapArr
+      self.mapTypeArr = mapArr;
+      data.forEach(function(item){
+        self.address[item.name] = item.areaPlaces.map(function(place){
+          return place.name;
+        });
+      });
+      var keys = Object.keys(self.address);
+      self.slots[0].values = keys;
+      self.slots[2].values = self.address[keys[0]];
     } else {
       Toast('获取数据失败！');
     }

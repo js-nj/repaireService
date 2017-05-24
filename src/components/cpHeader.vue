@@ -12,9 +12,6 @@ import {
 } from 'bh-mint-ui';
 
 export default {
-
-    name: 'cp-header',
-
     props: {
         isstudent: {
             default: true

@@ -28,9 +28,8 @@
     <i class="post iconfont icon-jiahao01" v-if="isstudent" @click="post"></i>
 </template>
 <script>
-import cpHeader from './components/header.vue';
+import cpHeader from './components/cpHeader.vue';
 import api from './api.js';
-import SDK from 'bh-mobile-sdk';
 
 function changeState(models, readNumModels, el) {
     models[el] = true;

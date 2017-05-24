@@ -58,7 +58,7 @@ import {
   Toast,
   Popup
 } from 'bh-mint-ui';
-import cpHeader from '../components/header.vue';
+import cpHeader from '../components/cpHeader.vue';
 import grade from '../components/grade.vue';
 import process from '../components/process.vue';
 import tips from '../components/tips.vue';
