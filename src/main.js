@@ -28,8 +28,8 @@ if (process.env.NODE_ENV === 'production') {
         //var sdk = SDK();
         global.HOST = location.origin + "/publicapp";
         global.IMGHOST = location.origin;
-        if (BH_MIXIN_SDK && BH_MIXIN_SDK.toggleNavBar) {
-            BH_MIXIN_SDK.toggleNavBar(false);
+        if (BH_MIXIN_SDK.bh) {
+            BH_MOBILE_SDK.UI.toggleNavBar(true);
         }
         Init()
     }, {
@@ -48,8 +48,8 @@ if (process.env.NODE_ENV === 'production') {
         //var sdk = SDK();
         //global.HOST = 'http://amptest.wisedu.com/publicapp'
         //global.IMGHOST = 'http://amptest.wisedu.com'
-        if (BH_MIXIN_SDK && BH_MIXIN_SDK.toggleNavBar) {
-            BH_MIXIN_SDK.toggleNavBar(false);
+        if (BH_MIXIN_SDK.bh) {
+            BH_MOBILE_SDK.UI.toggleNavBar(true);
         }
         Init()
     }, {
