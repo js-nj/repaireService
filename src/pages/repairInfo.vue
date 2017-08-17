@@ -1,4 +1,5 @@
 <template>
+  <cp-header></cp-header>
   <div class="detail">
     <div v-if="tps.length">
       <mt-swipe :auto="200000" class="swipe-view">
@@ -57,6 +58,7 @@ import {
   Toast,
   Popup
 } from 'bh-mint-ui';
+import cpHeader from '../components/cpHeader.vue';
 import grade from '../components/grade.vue';
 import process from '../components/process.vue';
 import tips from '../components/tips.vue';
@@ -108,7 +110,7 @@ export default {
 
     }
   },
-  created() {
+  ready(){
     var config = {
       left: {
         left1: {
@@ -119,9 +121,10 @@ export default {
         }
       }
     };
-    BH_MOBILE_SDK.UI.setNavHeader(config);
-    BH_MOBILE_SDK.UI.setTitleText('报修详情');
-
+    BH_MIXIN_SDK.setNavHeader(config);
+    BH_MIXIN_SDK.setTitleText('报修详情');
+  },
+  created() {
     let data = JSON.parse(this.$route.params.info);
     this.iswork = data.iswork;
     this.wid = data.wid;
@@ -238,7 +241,7 @@ export default {
         }
         preImg.push(obj)
       }
-      BH_MOBILE_SDK.UI.preViewImages(preImg, index);
+      BH_MIXIN_SDK.preViewImages(preImg, index);
     }
   },
   events: {
@@ -255,7 +258,8 @@ export default {
     [Popup.name]: Popup,
     grade,
     process,
-    tips
+    tips,
+    cpHeader
   }
 }
 </script>

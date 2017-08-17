@@ -1,7 +1,12 @@
-import { Toast } from 'bh-mint-ui';
+import {
+  Toast
+} from 'bh-mint-ui';
 
 function postData(url, options, successCallback, errorCallback) {
-  this.$http.get(global.HOST + '/sys/hqwxxt/api' + url, { params: options }).then(successCallback, errorCallback);
+  this.$http.get(global.HOST + '/sys/hqwxxt/api' + url, {
+    params: options
+  }).then(successCallback, errorCallback);
+
 }
 var merge = function() {
   return Array.prototype.concat.apply([], arguments)
@@ -9,7 +14,12 @@ var merge = function() {
 
 function loadData(state, num, app) {
   var self = this;
-  postData.call(self, '/getMyRepairsPagination.do', { state: state, pageNumber: num, pageSize: 10 }, function(result) {
+
+  postData.call(self, '/getMyRepairsPagination.do', {
+    state: state,
+    pageNumber: num,
+    pageSize: 10
+  }, function(result) {
     self.loading = true;
     if (result.data.datas) {
       var data = result.data.datas.bxsscxwdbxjlbg;
@@ -33,7 +43,10 @@ function loadData(state, num, app) {
 
 function loadRepairData(num) {
   var self = this;
-  postData.call(self, '/getMyDisrepairList.do', { pageNumber: num, pageSize: 10 }, function(result) {
+  postData.call(self, '/getMyDisrepairList.do', {
+    pageNumber: num,
+    pageSize: 10
+  }, function(result) {
     self.loading = true;
     if (result.data.datas) {
       var data = result.data.datas.wxryjmbg;
@@ -69,11 +82,26 @@ function doComment(option) {
 function getRepairType() {
   var self = this;
   postData.call(self, '/dic/8e4fd5c6-8bfc-4157-b5d5-3435c27d48be.do', '', function(result) {
-    var pickerarr = [];
+    //var pickerarr = [];
+    var typeObj = {};
+    var targetArr = '';
+
     for (var i = 0; i < result.data.datas.code.rows.length; i++) {
-      pickerarr.push(result.data.datas.code.rows[i].name)
+      var itemName = result.data.datas.code.rows[i].name;
+      //pickerarr.push(itemName)
+      //new picker
+      if (itemName.indexOf('类') > -1) {
+        typeObj[itemName] = [];
+        targetArr = itemName;
+      } else {
+        typeObj[targetArr].push(itemName);
+      }
     }
-    self.GZLX = pickerarr;
+    //self.slots[0].values = pickerarr;
+    self.address = typeObj;
+    self.slots['0'].values = Object.keys(typeObj); //Object.keys(typeObj);
+    self.slots['2'].values = typeObj[Object.keys(typeObj)[0]]; //typeObj[Object.keys(typeObj)[0]];
+
   }, function(err) {
     Toast('获取数据失败！');
   });
@@ -82,12 +110,14 @@ function getRepairType() {
 function getRepairLoc() {
   var self = this;
   postData.call(self, '/dic/bb89c7e0-d3f9-4f64-978a-ee4eb21ae9e3.do', '', function(result) {
-    this.repair[this.presentPicker].map = result.data.datas.code.rows;
+
+    self.repair[self.presentPicker].map = result.data.datas.code.rows;
+
     var pickerarr = [];
-    for (var i = 0; i < this.repair[this.presentPicker].map.length; i++) {
-      pickerarr.push(this.repair[this.presentPicker].map[i].name)
+    for (var i = 0; i < self.repair[self.presentPicker].map.length; i++) {
+      pickerarr.push(self.repair[self.presentPicker].map[i].name)
     }
-    this.slots[0].values = merge(['请选择'], pickerarr)
+    self.slots[0].values = merge(['请选择'], pickerarr)
   }, function(err) {
     Toast('获取数据失败！');
   });
@@ -95,13 +125,17 @@ function getRepairLoc() {
 
 function getRepairlocationinfo(val) {
   var self = this;
-  postData.call(self, '/getRepairAreaByZone.do', { QYDM: val }, function(result) {
+
+  postData.call(self, '/getRepairAreaByZone.do', {
+    QYDM: val
+  }, function(result) {
     this.repair[this.presentPicker].map = result.data.data;
+
     var pickerarr = [];
-    for (var i = 0; i < this.repair[this.presentPicker].map.length; i++) {
-      pickerarr.push(this.repair[this.presentPicker].map[i].label)
+    for (var i = 0; i < self.repair[self.presentPicker].map.length; i++) {
+      pickerarr.push(self.repair[self.presentPicker].map[i].label)
     }
-    this.slots[0].values = pickerarr
+    self.slots[0].values = pickerarr
   }, function(err) {
     Toast('获取数据失败！');
   });
@@ -118,19 +152,31 @@ function getRepaireAreaInfo() {
       for (let i = 0; i < data.length; i++) {
         multiArr = {};
         multiArr[data[i].name] = [];
-        self.QYArr.push({ id: data[i].code, name: data[i].name });
+        self.QYArr.push({
+          id: data[i].code,
+          name: data[i].name
+        });
         if (data[i].areaPlaces) {
           for (let j = 0; j < data[i].areaPlaces.length; j++) {
             multiArr[data[i].name].push(data[i].areaPlaces[j].name)
-            mapArr[String(i) + String(j)] = { id: data[i].areaPlaces[j].code, name: data[i].areaPlaces[j].name };
+            mapArr[String(i) + String(j)] = {
+              id: data[i].areaPlaces[j].code,
+              name: data[i].areaPlaces[j].name
+            };
           }
         }
         returnArr.push(multiArr)
       }
       self.returnArr = returnArr;
-
-      self.mapArr = mapArr
-
+      self.mapArr = mapArr;
+      //mock 数据 接口调不通
+      var typeObj2 = {};
+      data.forEach(function(item){
+          typeObj2[item.name] = item.areaPlaces.map((place)=>place.name);
+      });
+      self.addressArea = typeObj2;
+      self.slotsArea['0'].values = Object.keys(typeObj2); //Object.keys(typeObj);
+      self.slotsArea['2'].values = typeObj2[Object.keys(typeObj2)[0]]; //typeObj[Object.keys(typeObj)[0]];
     } else {
       Toast('获取数据失败！');
     }
@@ -139,9 +185,9 @@ function getRepaireAreaInfo() {
   });
   //type=1表示保修类型
   let type = {
-    type:1
+    type: 1
   }
-  postData.call(self, '/getRepaireInfo.do',type, function(result) {
+  postData.call(self, '/getRepaireInfo.do', type, function(result) {
     if (result.status == 200) {
       let data = result.data;
       let returnArr = [];
@@ -150,20 +196,37 @@ function getRepaireAreaInfo() {
       for (let i = 0; i < data.length; i++) {
         multiArr = {};
         multiArr[data[i].name] = [];
-        self.GZLX.push({ id: data[i].code, name: data[i].name });
+        self.GZLX.push({
+          id: data[i].code,
+          name: data[i].name
+        });
         if (data[i].areaPlaces.length) {
           for (let j = 0; j < data[i].areaPlaces.length; j++) {
             multiArr[data[i].name].push(data[i].areaPlaces[j].name)
-            mapArr[String(i) + String(j)] = { id: data[i].areaPlaces[j].code, name: data[i].areaPlaces[j].name };
+            mapArr[String(i) + String(j)] = {
+              id: data[i].areaPlaces[j].code,
+              name: data[i].areaPlaces[j].name
+            };
           }
-        }else{
+        } else {
           multiArr[data[i].name].push(data[i].name);
-           mapArr[String(i) +'0'] = { id: data[i].code, name: data[i].name };
+          mapArr[String(i) + '0'] = {
+            id: data[i].code,
+            name: data[i].name
+          };
         }
         returnArr.push(multiArr)
       }
       self.returnTypeArr = returnArr;
-      self.mapTypeArr = mapArr
+      self.mapTypeArr = mapArr;
+      data.forEach(function(item){
+        self.address[item.name] = item.areaPlaces.map(function(place){
+          return place.name;
+        });
+      });
+      var keys = Object.keys(self.address);
+      self.slots[0].values = keys;
+      self.slots[2].values = self.address[keys[0]];
     } else {
       Toast('获取数据失败！');
     }

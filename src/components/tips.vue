@@ -1,4 +1,5 @@
 <template>
+
   <span class="grade-list">
       <i class="iconfont icon-wujiaoxing1" :class="{'grade-show':gradeshow[0]}"></i>
       <i class="iconfont icon-wujiaoxing1" :class="{'grade-show':gradeshow[1]}"></i>
@@ -6,6 +7,7 @@
       <i class="iconfont icon-wujiaoxing1" :class="{'grade-show':gradeshow[3]}"></i>
       <i class="iconfont icon-wujiaoxing1" :class="{'grade-show':gradeshow[4]}"></i>
     </span>
+
 </template>
 <script>
 export default {
