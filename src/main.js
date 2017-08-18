@@ -35,7 +35,8 @@ if (process.env.NODE_ENV === 'production') {
   }, {
     wx: {
       debug: false,
-      url: 'http://res.wisedu.com:9090/checkSign',
+      url: 'http://res.wisedu.com:8888/checkSign',
+      corp: 'sustc',
       uploadImgsToEmapUrl: global.IMGHOST + '/uploadWxImgsToEmap',
       emapPrefixPath: global.HOST
     }
@@ -55,7 +56,8 @@ if (process.env.NODE_ENV === 'production') {
   }, {
     wx: {
       debug: false,
-      url: 'http://res.wisedu.com:9090/checkSign',
+      url: 'http://res.wisedu.com:8888/checkSign',
+      corp: 'sustc',
       uploadImgsToEmapUrl: global.IMGHOST + '/uploadWxImgsToEmap',
       emapPrefixPath: global.HOST
     }
