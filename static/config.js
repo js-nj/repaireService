@@ -1,12 +1,12 @@
-module.exports = {
-  config: {
-    wx: {
-      debug: false,
-      url: 'http://res.wisedu.com:8888/checkSign',
-      corp: 'sustc',
-      uploadImgsToEmapUrl: global.IMGHOST + '/uploadWxImgsToEmap',
-      emapPrefixPath: global.HOST
-    },
-    dd: 22
-  }
-}
+window.HOST = location.origin + '/publicapp';
+window.IMGHOST = location.origin;
+window.config = {
+  wx: {
+    debug: false,
+    url: 'http://auth.sustc.edu.cn/checkSign',
+    corp: 'sustc',
+    uploadImgsToEmapUrl: window.IMGHOST + '/uploadWxImgsToEmap',
+    emapPrefixPath: window.HOST
+  },
+  dd: 22
+};

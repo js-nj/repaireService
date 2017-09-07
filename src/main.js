@@ -3,9 +3,9 @@ import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import routerconfig from './router'
 import init from 'bh-mixin-sdk/lib/index.js';
-var config = require('../static/config.js');
-console.log('config-------------------')
-console.log(config)
+// var config = require('../static/config.js');
+// console.log('config-------------------')
+// console.log(config)
 Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.http.options.emulateJSON = true;
@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === 'production') {
       BH_MOBILE_SDK.UI.toggleNavBar(true);
     }
     Init()
-  }, config.config)
+  }, window.config)
 } else {
   global.HOST = 'http://amptest.wisedu.com/publicapp'
   global.IMGHOST = 'http://amptest.wisedu.com'
@@ -48,5 +48,5 @@ if (process.env.NODE_ENV === 'production') {
       BH_MOBILE_SDK.UI.toggleNavBar(true);
     }
     Init()
-  }, config.config)
+  }, window.config)
 }
