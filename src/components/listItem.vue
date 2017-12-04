@@ -18,7 +18,8 @@ import fixTime from 'formattime';
 export default {
   data() {
       return {
-        imgurl: global.HOST + '/sys/emapcomponent/file/getFileByToken/' + this.img + '.do'
+        imgurl: global.HOST + '/sys/emapcomponent/file/getFileByToken/' + this.img + '.do',
+        //imgurl: global.HOST + '/sys/itservicecommon/api/frontImg/' + this.img + '.do',
       }
     },
     filters: {
