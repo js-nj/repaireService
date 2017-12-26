@@ -1,0 +1,84 @@
+body {
+    height: 100vh;
+    background-color: #f9f9f9;
+    font-family: ZhiFont, ".SFNSText-Regular", "Helvetica Neue", Roboto, "Segoe UI", sans-serif;;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+body.preventScroll {
+}
+.preventScroll .main__content {
+    height: calc(100vh - 44Px);
+    overflow: hidden;
+}
+
+.bh-checkbox, .bh-radio {
+    padding-top: 4px;
+    position: relative;
+}
+.bh-checkbox label {
+    font-weight: 400;
+    padding: 0 12px 0 24px;
+    position: relative;
+}
+.bh-checkbox input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 0!important;
+    z-index: 2;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    margin-top: 0;
+}
+.bh-checkbox .bh-choice-helper:before {
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    left: 0;
+    border: 1px solid #bbb;
+    background-color: #fff;
+    -webkit-transition: all;
+    transition: all;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+    content: "";
+    z-index: 1;
+}
+.bh-checkbox .bh-choice-helper:after {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transform: scale(0) rotate(80deg);
+    -ms-transform: scale(0) rotate(80deg);
+    transform: scale(0) rotate(80deg);
+    width: 16px;
+    height: 8px;
+    border-bottom: 2px solid #60BE29;
+    border-left: 2px solid #60BE29;
+    border-bottom-left-radius: 2px;
+    left: -1px;
+    top: 4px;
+    -webkit-transition: all;
+    transition: all;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+    content: "";
+    z-index: 1;
+}
+.bh-checkbox input[type=checkbox]:checked+.bh-choice-helper:after {
+    -webkit-transform: scale(1) rotate(-50deg);
+    -ms-transform: scale(1) rotate(-50deg);
+    transform: scale(1) rotate(-50deg);
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+.bh-checkbox input[type=checkbox]:checked+.bh-choice-helper:before {
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+}
