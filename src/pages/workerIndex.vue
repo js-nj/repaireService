@@ -13,7 +13,7 @@
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
         <div class="wi-tabContainer-item" :class="{'wi-tabContainer-item-edit':!isShowNavbar}">
-          <div v-for="n in data1"  :key="n.WID" @click="messageInfo(n)">
+          <!-- <div v-for="n in data1"  :key="n.WID" @click="messageInfo(n)">
               <mt-cell-swipe
               :left="[
                 {
@@ -37,6 +37,19 @@
                     <img class="wi-item-img" :src="returnImgUrl(n.TP)" />
                   </div>
               </mt-cell-swipe>
+          </div> -->
+          <div v-for="n in data1" :key="n.WID" @click="messageInfo(n)" >
+              <mt-cell  class="wi-item">
+                <div slot='title' class="wi-item-head">
+                      <mt-badge size="normal">{{n.GZLX_DISPLAY}}</mt-badge>
+                      <div class="wi-item-title">{{n.BXDD_DISPLAY}}-{{n.BXQY_DISPLAY}}-{{n.XXDD}}</div>
+                      <div class="wi-item-des">{{n.BXSJ}}</div>
+                      <div class="wi-item-des">{{n.MS}}</div>
+                </div>
+                <div slot="icon" style="float:right;">
+                  <img class="wi-item-img" :src="returnImgUrl(n.TP)" />
+                </div>
+            </mt-cell>
           </div>
           <div v-if="data1.length===0" class="no-data">
             <img src="../components/img/no_data.png">
@@ -112,7 +125,7 @@
       </mt-tab-container-item>
       <mt-tab-container-item id="3">
         <div class="wi-tabContainer-item" :class="{'wi-tabContainer-item-edit':!isShowNavbar}">
-          <div v-for="n in data3" :key="n.WID" @click="messageInfo(n)">
+          <!-- <div v-for="n in data3" :key="n.WID" @click="messageInfo(n)">
               <mt-cell-swipe
               :left="[
                 {
@@ -136,6 +149,19 @@
                     <img class="wi-item-img" :src="returnImgUrl(n.TP)" />
                   </div>
               </mt-cell-swipe>
+          </div> -->
+          <div v-for="n in data3" :key="n.WID" @click="messageInfo(n)" >
+              <mt-cell  class="wi-item">
+                <div slot='title' class="wi-item-head">
+                      <mt-badge size="normal">{{n.GZLX_DISPLAY}}</mt-badge>
+                      <div class="wi-item-title">{{n.BXDD_DISPLAY}}-{{n.BXQY_DISPLAY}}-{{n.XXDD}}</div>
+                      <div class="wi-item-des">{{n.BXSJ}}</div>
+                      <div class="wi-item-des">{{n.MS}}</div>
+                </div>
+                <div slot="icon" style="float:right;">
+                  <img class="wi-item-img" :src="returnImgUrl(n.TP)" />
+                </div>
+            </mt-cell>
           </div>
           <div v-if="data3.length===0" class="no-data">
             <img src="../components/img/no_data.png">
@@ -170,7 +196,7 @@
     </mt-tab-container>
     <!-- <i class="wi-edit-icon iconfont icon-edit"  v-show="isShowNavbar" @click="edit"></i> -->
     <div v-if="returnDataLength()">
-      <div  class="wi-edit-icon" v-if="isShowNavbar" @click="edit">
+      <div  class="wi-edit-icon" v-if="isShowNavbar && selected == '2'" @click="edit">
           <img class="wi-edit-img" :src="'static/assets/edit.png'" />
           <span class="wi-edit-span" style="">编辑</span>
       </div>
@@ -231,18 +257,18 @@ export default {
       var that = this;
       console.log('当前tab页：'+n)
       if(n == '4'){
-        setTimeout(function(){
-          if (document.querySelector('.wi-edit-icon')) {
-            document.querySelector('.wi-edit-icon').style='display:none;';
-          }
-        },100);
-        that.getMyDisrepairYbList(); 
+        // setTimeout(function(){
+        //   if (document.querySelector('.wi-edit-icon')) {
+        //     document.querySelector('.wi-edit-icon').style='display:none;';
+        //   }
+        // },100);
+        that.getMyDisrepairYbList(n);
       }else {
-        setTimeout(function(){
-          if (document.querySelector('.wi-edit-icon')) {
-            document.querySelector('.wi-edit-icon').style='display:block;';
-          }
-        },100);
+        // setTimeout(function(){
+        //   if (document.querySelector('.wi-edit-icon')) {
+        //     document.querySelector('.wi-edit-icon').style='display:block;';
+        //   }
+        // },100);
         that.getMyDisrepairList(n);//前三个tab页是同一个接口，待接单，待维修，挂起维修
       }
     },
@@ -454,14 +480,19 @@ export default {
     batchUpDwx:function(cb){
       var that= this;
       if (that.selectedItems.length>0) {
+        var options = {
+          BZ:that.introduction2,
+          WIDS:that.selectedItems.join(','),
+          USERID:window.USERID,
+          FLAG:'multi'
+        };
+        if (that.selectedItems.length == 1) {
+          options.FLAG = 'single';
+        }
         axios({
           method:'POST',
           url:API.batchUpDwx,
-          params: {
-            BZ:that.selected == '1'?that.introduction:that.introduction2,
-            WID:that.selectedItems.join(','),
-            USERID:window.USERID
-          }
+          params: options
         }).then(function(data){
           if (data.data.success == true) {
             Toast('已挂起维修单！');
@@ -477,23 +508,33 @@ export default {
     },
     completeOrders:function(){
       var that = this;
-      axios({
-        method:'POST',
-        url:API.completeOrders,
-        params: {
-          WID:that.selectedItems.join(','),
-          USERID:window.USERID
-        }}).then(function(data) {
-          if (data.data.success == true) {
-            Toast('已完工');
-            that.cancel();
-            that.getMyDisrepairList(that.selected);
-          } else {
-            Toast('完工失败');
-          }
-        }, function(err) {
-          Toast('完工维修单失败');
-        });
+      if (that.selectedItems.length>0) {
+        var options = {
+          WIDS:that.selectedItems.join(','),
+          USERID:window.USERID,
+          FLAG:'multi'
+        };
+        if (that.selectedItems.length == 1) {
+          options.FLAG = 'single';
+        }
+        axios({
+          method:'POST',
+          url:API.completeOrders,
+          params: options}).then(function(data) {
+            if (data.data.success == true) {
+              Toast('已完工');
+              that.cancel();
+              that.getMyDisrepairList(that.selected);
+            } else {
+              Toast('完工失败');
+            }
+          }, function(err) {
+            Toast('完工维修单失败');
+          });
+      }else {
+        Toast('请至少选择一个单子奥~');
+      }
+      
     },
     returnImgUrl:function(url){
       return WEBPACK_CONIFG_HOST + '/sys/emapcomponent/file/getFileByToken/' + url + '.do'

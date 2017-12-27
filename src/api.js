@@ -263,7 +263,7 @@ export default {
     saveTd: WEBPACK_CONIFG_HOST + 'sys/hqwxxt/hqwx/saveTd.do',
     saveJxwxUrl:WEBPACK_CONIFG_HOST +'sys/hqwxxt/hqwx/saveJxwx.do',
     batchUpDwx: WEBPACK_CONIFG_HOST + 'sys/hqwxxt/hqwx/batchUpDwx.do',
-    completeOrders:WEBPACK_CONIFG_HOST + "sys/hqwxxt/api/finishRepair.do",
+    completeOrders:WEBPACK_CONIFG_HOST + "sys/hqwxxt/api/batchFinishRepair.do",
     queryCommentsByWid:WEBPACK_CONIFG_HOST + '/sys/hqwxxt/modelpage/yyglyhqbxbgjm/T_IT_HQWX_BBS_QUERY.do',
     addComment:WEBPACK_CONIFG_HOST + 'sys/hqwxxt/hqwx/saveHf.do',
     getMyDisrepairYbList:WEBPACK_CONIFG_HOST + 'sys/hqwxxt/api/getMyDisrepairYbList.do',

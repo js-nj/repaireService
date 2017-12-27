@@ -10,7 +10,7 @@ import post from './pages/post.vue';
 import repairInfo from './pages/repairInfo.vue';
 import workerIndex from './pages/workerIndex.vue';
 import comment from './pages/comment.vue';
-import debug from './pages/debug.vue';
+//import debug from './pages/debug.vue';
 
 // Vue.use(VueRouter);
 // let router = new VueRouter({

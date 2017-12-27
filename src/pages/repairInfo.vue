@@ -57,11 +57,24 @@
           <mt-button type="primary" class="wi-button wi-button-12" size="large" @click="saveJxwxUrl">继续维修</mt-button>
         </div>
         <div v-else></div>
-
+        <mt-actionsheet
+          :actions="iconActions"
+          v-model="sheetVisible">
+        </mt-actionsheet>
         <mt-popup :visible.sync="popupVisible" position="bottom">
           <div class="pop-container">
             <grade v-show="state.showgrade" :wid="wid"></grade>
           </div>
+        </mt-popup>
+        <mt-popup
+          v-model="popupVisible1"
+          position="bottom"
+          popup-transition="popup-fade">
+          <div style="overflow:auto;">
+            <span class="pop-button" style="float:left;" @click="cancelPop">取消</span>
+            <span class="pop-button" :class="{'pop-button-ok':isPopButtonOk}" style="float:right;" @click="submitPop(selected)">提交</span>
+          </div>
+          <mt-field label="" placeholder="请填写理由" type="textarea" rows="6" v-model="introduction"></mt-field>
         </mt-popup>
         <mt-popup
           v-model="popupVisible2"
@@ -144,7 +157,7 @@ export default {
       sheetVisible:false,
       iconActions:[{name:'挂起',method:this.actionHandUp},{name:'拒绝',method:this.actionReject}],
       introduction:'',
-      popupVisible:false,
+      popupVisible1:false,
       popAction:'',
       isPopButtonOk:false,
       commentsList:[],
@@ -194,7 +207,7 @@ export default {
     this.detail = data.detail;
     if (this.detail && this.detail.ZT) {
       switch (this.detail.ZT) {
-        case 'DCL':
+        case 'DFP':
           this.fromTab = '1';
           break;
         case 'DWX':
@@ -292,6 +305,13 @@ export default {
       }else {
         this.isPopButtonOk = false;
       }
+    },
+    introduction:function(n){
+      if(n && n.length && n.length>0){
+        this.isPopButtonOk = true;
+      }else {
+        this.isPopButtonOk = false;
+      }
     }
   },
   methods: {
@@ -318,12 +338,6 @@ export default {
       }}).then(function(data) {
         Toast('已完工');
         history.go(-1);
-        // this.$route.push({
-        //   name: 'waitRepair',
-        //   params: {
-        //     iswork: 'worker'
-        //   }
-        // });
       }, function(err) {
         Toast('完工失败');
       });
@@ -352,19 +366,19 @@ export default {
       this.sheetVisible = true;
     },
     actionHandUp:function(){
-      this.popupVisible = true;
+      this.popupVisible1 = true;
       this.popAction = "handup";
     },
     actionReject:function(){
-      this.popupVisible = true;
+      this.popupVisible1 = true;
       this.popAction = "reject";
     },
     cancelPop:function(){
-      this.popupVisible = false;
+      this.popupVisible1 = false;
       this.introduction = '';
     },
     submitPop:function(tab){
-      this.popupVisible = false;
+      this.popupVisible1 = false;
       if (this.popAction == 'reject') {
         this.saveTd();
       } else if (this.popAction == 'handup'){
@@ -451,7 +465,8 @@ export default {
         url:API.batchUpDwx,
         params: {
           BZ:that.introduction2,
-          WID:that.wid,
+          WIDS:that.wid,
+          FLAG:'single',
           USERID:window.USERID
         }
       }).then(function(data){
@@ -470,12 +485,14 @@ export default {
         method:'POST',
         url:API.completeOrders,
         params: {
-          WID:that.wid,
+          WIDS:that.wid,
+          FLAG:'single',
           USERID:window.USERID,
           BZ:that.introduction2
         }}).then(function(data) {
           if (data.data.success == true) {
             Toast('已完工');
+            history.go(-1);
           } else {
             Toast('完工失败');
           }
