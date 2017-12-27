@@ -91,4 +91,11 @@ export const _fixTime = function(time, flag, noYear) {
   } else {
       return (time.getMonth() + 1) + "月" + time.getDate() + "日 " + _n2(time.getHours()) + ":" + _n2(time.getMinutes());
   }
+<<<<<<< HEAD
 }
+=======
+}
+module.exports = {
+    fixTime: _fixTime
+};
+>>>>>>> 99d62e6ab630028832d8c41476f09a54e251827d
