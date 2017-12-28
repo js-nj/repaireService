@@ -221,7 +221,7 @@ export default {
           break;
       }
     }
-    let url = WEBPACK_CONIFG_HOST + '/sys/hqwxxt/api/getDetailInfo.do';
+    let url = WEBPACK_CONIFG_HOST + 'sys/hqwxxt/api/getDetailInfo.do';
     axios({method:'GET',url:url,params: {
         wid: this.wid
       }}).then((response) => {
@@ -240,7 +240,7 @@ export default {
         this.wxperson.phone = info.WXRSJ;
         this.status = info.ZT;
         if (info.TP) {
-          let url = WEBPACK_CONIFG_HOST + "/sys/emapcomponent/file/getUploadedAttachment/" + info.TP + ".do";
+          let url = WEBPACK_CONIFG_HOST + "sys/emapcomponent/file/getUploadedAttachment/" + info.TP + ".do";
           axios({method:'GET',url:url}).then((response) => {
             this.tps = response.data.items;
           }).catch((err) => {
@@ -333,7 +333,7 @@ export default {
       });
     },
     doComplete: function() {
-      axios({method:'POST',url:WEBPACK_CONIFG_HOST + "/sys/hqwxxt/api/finishRepair.do",params: {
+      axios({method:'POST',url:WEBPACK_CONIFG_HOST + "sys/hqwxxt/api/finishRepair.do",params: {
         wid: this.wid
       }}).then(function(data) {
         Toast('已完工');

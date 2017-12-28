@@ -1,7 +1,10 @@
 <template>
     <div class="appvue">
         <div v-if="isChoose" class="rs-choose-role">
-            <mt-button type="primary" style="display:block;width:80%;margin:8px auto;" class="wi-button wi-button-12" size="large" v-for="item in roleDatas" :key="item.GNBS" @click="goPages(item)">{{item.GNMC}}</mt-button>
+            <!-- <template v-for="item in roleDatas" :key="item.id">
+              <mt-button  v-if="item.active == true" @click="goPages(item)" type="primary" class="wi-role-button wi-button wi-button-12" size="large">{{item.text}}</mt-button>
+            </template> -->
+            <mt-button  v-for="item in roleDatas" :key="item.route" @click="goPages(item)" type="primary" class="wi-role-button wi-button wi-button-12" size="large">{{item.title}}</mt-button>
         </div>
         <div v-else>
             <div v-if="isstudent">
@@ -87,70 +90,60 @@ export default {
     });
     axios({
       method:'GET',
-      url:WEBPACK_CONIFG_HOST + "sys/itservicecommon/api/getUserLimit.do?appName=hqwxxt",
+      url:WEBPACK_CONIFG_HOST + "sys/funauthapp/api/getAppConfig/hqwxxt-4695290815807818.do?GNFW=MOBILE",
       params:{}
-      }).then(function(data) {
-          if(data.data && data.data.length>1){
-            that.roleDatas = data.data;
-            that.isChoose = true;
-          }else {
-            if (data.data[0] && data.data[0].GNBS == "teacher_student") {
-              that.initTeacherStudent();
-            } else if(data.data[0] && data.data[0].GNBS == "repairman") {
-              that.isChoose = false;
-              that.isstudent = false;
-              BH_MIXIN_SDK.setTitleText("待维修");
-              that.$router.push({
-                name: "workerIndex",
-                params: {
-                  //iswork: "worker"
-                }
-              });
-            }
+    }).then(function(data) {
+        if(data.data.MODULES && data.data.MODULES.length>1){
+          that.roleDatas = data.data.MODULES;
+          that.isChoose = true;
+        }else {
+          //Toast('角色数组为空数组！');
+          if (data.data.MODULES[0] && data.data.MODULES[0].route == "repairman") {
+            that.isChoose = false;
+            that.isstudent = false;
+            BH_MIXIN_SDK.setTitleText("待维修");
+            that.$router.push({
+              name: "workerIndex",
+              params: {}
+            });
+            
+          } else if (data.data.MODULES[0]){
+            that.initTeacherStudent();
+          } else {
+            Toast('获取角色权限为空！');
           }
-          // if (
-          //   (data.data[0] && data.data[0].GNBS == "teacher_student") ||
-          //   data.data.length == 2
-          // ) {
-          //   that.isstudent = true;
-          //   api.loadData.call(that, "YWX", 1, "home");
-          //   var config = {
-          //     left: {
-          //       left1: {
-          //         title: "",
-          //         callFunction: function() {
-          //           BH_MIXIN_SDK.closeWebView();
-          //         }
-          //       }
-          //     }
-          //   };
-          //   BH_MIXIN_SDK.setNavHeader(config);
-          //   BH_MIXIN_SDK.setTitleText("我的报修");
-          //   that.index = localStorage.getItem("indexData") || "waitProcess";
-          //   changeState(that.repairState, that.unreadNum, that.index);
-          //   loadView.call(that, that.index);
-          // }
-          // if (
-          //   data.data.length == 1 &&
-          //   data.data[0] &&
-          //   data.data[0].GNBS == "repairman"
-          // ) {
-          //   //debugger
-          //   //if (data.data.length == 2 && data.data[1] && data.data[1].GNBS == "repairman") {
-          //   that.isstudent = false;
-          //   BH_MIXIN_SDK.setTitleText("待维修");
-          //   that.$router.push({
-          //     name: "workerIndex",
-          //     params: {
-          //       //iswork: "worker"
-          //     }
-          //   });
-          // }
-        },
-        function(err) {
-          Toast("获取权限错误");
         }
-      );
+      },
+      function(err) {
+        Toast("获取权限错误");
+      }
+    );
+    // axios({
+    //   method:'GET',
+    //   url:WEBPACK_CONIFG_HOST + "sys/itservicecommon/api/getUserLimit.do?appName=hqwxxt",
+    //   params:{}
+    // }).then(function(data) {
+    //     if(data.data && data.data.length>1){
+    //       that.roleDatas = data.data;
+    //       that.isChoose = true;
+    //     }else {
+    //       if (data.data[0] && data.data[0].GNBS == "teacher_student") {
+    //         that.initTeacherStudent();
+    //       } else if(data.data[0] && data.data[0].GNBS == "repairman") {
+    //         that.isChoose = false;
+    //         that.isstudent = false;
+    //         BH_MIXIN_SDK.setTitleText("待维修");
+    //         that.$router.push({
+    //           name: "workerIndex",
+    //           params: {}
+    //         });
+    //       }
+    //     }
+    //   },
+    //   function(err) {
+    //     Toast("获取权限错误");
+    //   }
+    // );
   },
   data() {
     return {
@@ -225,15 +218,15 @@ export default {
       });
     },
     goPages:function(item){
-      if (item.GNBS == 'teacher_student') {
-        this.initTeacherStudent();
-      } else if (item.GNBS == 'repairman'){
+      if (item.route == 'repairman'){
         this.isstudent = false;
         this.isChoose = false;
         this.$router.push({
           name: 'workerIndex',
           params: {}
         })
+      } else {
+        this.initTeacherStudent();
       }
     },
     postData: function (url, options, successCallback, errorCallback) {
@@ -364,5 +357,8 @@ export default {
   position: absolute;
   top:calc(50% - 56px);
   width: 100%;
+}
+.wi-role-button {
+  display:block;width:80%;margin:8px auto;
 }
 </style>
