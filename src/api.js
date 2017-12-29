@@ -172,8 +172,13 @@
             typeObj2[item.name] = item.areaPlaces.map((place)=>place.name);
         });
         self.addressArea = typeObj2;
-        self.slotsArea['0'].values = Object.keys(typeObj2); //Object.keys(typeObj);
-        self.slotsArea['2'].values = typeObj2[Object.keys(typeObj2)[0]]; //typeObj[Object.keys(typeObj)[0]];
+        //self.slotsArea['0'].values = Object.keys(typeObj2); //Object.keys(typeObj);
+        //self.slotsArea['2'].values = typeObj2[Object.keys(typeObj2)[0]]; //typeObj[Object.keys(typeObj)[0]];
+
+        self.slotsArea=[];
+        self.slotsArea.push({values:Object.keys(typeObj2)});
+        self.slotsArea.push({values:typeObj2[Object.keys(typeObj2)[0]]});
+        //alert(JSON.stringify(self.slotsArea))
       } else {
         Toast('获取数据失败！');
       }
@@ -222,8 +227,15 @@
           });
         });
         var keys = Object.keys(self.address);
-        self.slots[0].values = keys;
-        self.slots[2].values = self.address[keys[0]];
+        //alert(JSON.stringify(self.slots));
+        //Vue.set(self.slots[0],'values',keys);
+        //Vue.set(self.slots[1],'values',self.address[keys[0]]);
+        // self.slots[0].values = keys;
+        // self.slots[1].values = self.address[keys[0]];
+        self.slots=[];
+        self.slots.push({values:keys});
+        self.slots.push({values:self.address[keys[0]]});
+        //alert(JSON.stringify(self.slots));
       } else {
         Toast('获取数据失败！');
       }

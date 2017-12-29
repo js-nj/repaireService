@@ -39,19 +39,31 @@
             <mt-button size="large" type="primary" class="save-button" @click="save">提交</mt-button>
         </div>
     </div>
-    <mt-popup :visible.sync="popupVisibleBreaks" position="bottom" style="width:100%;">
-        <mt-picker :slots="slots" @change="onBreakChange" :show-toolbar="true">
+    <mt-popup v-model="popupVisibleBreaks" position="bottom" style="width:100%;">
+        <!-- <mt-picker :slots="slots" @change="onBreakChange" :show-toolbar="true">
             <slot><span class="toolbar-btn" @click="cancelPopup">取消</span></slot>
             <slot><span class="toolbar-btn" style="float: right" @click="doOkBreaks">确定</span></slot>
-        </mt-picker>
+        </mt-picker> -->
+        <mt-picker
+        showToolbar
+        :columns="slots"
+        @change="onBreakChange"
+        @cancel="cancelPopup"
+        @confirm="doOkBreaks" />
     </mt-popup>
-    <mt-popup :visible.sync="popupVisibleArea" position="bottom" style="width:100%;">
-        <mt-picker :slots="slotsArea" @change="onAreaChange" :show-toolbar="true">
+    <mt-popup v-model="popupVisibleArea" position="bottom" style="width:100%;">
+        <!-- <mt-picker :columns="slotsArea" @change="onAreaChange" :show-toolbar="true">
             <slot><span class="toolbar-btn" @click="cancelPopup">取消</span></slot>
             <slot><span class="toolbar-btn" style="float: right" @click="doOkArea">确定</span></slot>
-        </mt-picker>
+        </mt-picker> -->
+        <mt-picker
+        showToolbar
+        :columns="slotsArea"
+        @change="onAreaChange"
+        @cancel="cancelPopup"
+        @confirm="doOkArea" />
     </mt-popup>
-    <mt-actionsheet :actions="sheetActions" :visible.sync="sheetVisible"></mt-actionsheet>
+    <mt-actionsheet :actions="sheetActions" v-model="sheetVisible"></mt-actionsheet>
     </div>
     
 </template>
@@ -69,6 +81,10 @@ import {
 } from 'bh-mint-ui2';
 import api from '../api.js';
 import cpHeader from '../components/cpHeader.vue';
+var citys = {
+  '浙江': ['杭州', '宁波', '温州', '嘉兴', '湖州'],
+  '福建': ['福州', '厦门', '莆田', '三明', '泉州']
+};
 var errTipsInfo = {
         questioninfo: '请描述您遇到的问题',
         phone: '请输入正确的手机号',
@@ -128,6 +144,7 @@ export default {
             this.popupVisibleArea = false;
         },
         doOkBreaks() {
+            //alert('doOkBreaks')
             var keys = Object.keys(this.address);
             var index0 = keys.indexOf(this.tempBreak[0]);
             var index1 = this.address[this.tempBreak[0]].indexOf(this.tempBreak[1]);
@@ -147,7 +164,7 @@ export default {
             this.popupVisibleBreaks = false;
         },
         onBreakChange(picker, values) {
-            picker.setSlotValues(1, this.address[values[0]]);
+            picker.setColumnValues(1, this.address[values[0]]);
             this.tempBreak = values;
         },
         doOkArea() {
@@ -162,7 +179,7 @@ export default {
             this.popupVisibleArea = false;
         },
         onAreaChange(picker, values) {
-            picker.setSlotValues(1, this.addressArea[values[0]]);
+            picker.setColumnValues(1, this.addressArea[values[0]]);
             this.tempArea = values;
         },
         cancel() {
@@ -185,6 +202,8 @@ export default {
             this.uploadImgType = '拍照';
         },
         takePhoto() {
+            console.log('BH_MIXIN_SDK---')
+            //(JSON.stringify(SDK))
             let takePhoto = BH_MIXIN_SDK.takePhoto
             takePhoto((ret) => {
                 this.imgs = this.imgs.concat(ret);
@@ -218,6 +237,7 @@ export default {
                 }).then((result) => {
                     return result
                 }).catch((err) => {
+                    alert(JSON.stringify(err));
                     Toast('上传图片出错啦')
                     Indicator.close()
                 })
@@ -319,20 +339,31 @@ export default {
             addressArea: {},
             popupVisibleBreaks: false,
             popupVisibleArea: false,
+            // slots: [{
+            //     flex: 1,
+            //     values: [], //Object.keys(address)
+            //     className: 'slot1',
+            //     textAlign: 'center'
+            // }, {
+            //     divider: true,
+            //     content: '-',
+            //     className: 'slot2'
+            // }, {
+            //     flex: 1,
+            //     values: [], //address[Object.keys(address)[0]]
+            //     className: 'slot3',
+            //     textAlign: 'center'
+            // }],
             slots: [{
-                flex: 1,
-                values: [], //Object.keys(address)
-                className: 'slot1',
-                textAlign: 'center'
+                //flex: 1,
+                values: Object.keys(citys), //Object.keys(address)
+                className: 'column1',
+                //textAlign: 'center'
             }, {
-                divider: true,
-                content: '-',
-                className: 'slot2'
-            }, {
-                flex: 1,
-                values: [], //address[Object.keys(address)[0]]
-                className: 'slot3',
-                textAlign: 'center'
+                //flex: 1,
+                values: citys['浙江'], //address[Object.keys(address)[0]]
+                className: 'column2',
+                //textAlign: 'center'
             }],
             slotsArea: [{
                 flex: 1,
@@ -348,7 +379,9 @@ export default {
                 values: [], //address[Object.keys(address)[0]]
                 className: 'slot3',
                 textAlign: 'center'
-            }]
+            }],
+            tempBreak:[],
+            tempArea:[]
         };
     },
     components: {

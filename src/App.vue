@@ -82,6 +82,7 @@ export default {
     }
   },
   created() {
+    BH_MIXIN_SDK.setTitleText('后勤维修');
     var that = this;
     let url = WEBPACK_CONIFG_HOST + "sys/itservicecommon/api/getUserDetails.do";
     axios({method:'GET',url:url,params:{}}).then(response => {

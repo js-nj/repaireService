@@ -41,7 +41,7 @@
 //          * 微信端上传图片的流程是：
 //          * 1、选取文件通过微信jsdk上传到微信服务器后获取文件的serverId
 //          * 2、将serverId发送到应用服务端，服务端接收请求后根据serverId，将文件从微信服务拉取到应用服务
-//          * 
+//          *
 //          * uploadImgsToEmapUrl 参数 就是步骤2中 将serverId发送到应用服务的请求接口
 //          */
 //         // TODO: 上传接口
@@ -110,12 +110,13 @@
 
 
 
-
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from './App.vue';
 import Mint from 'bh-mint-ui2';
-import { Toast } from 'bh-mint-ui2';
+import {
+  Toast
+} from 'bh-mint-ui2';
 import route from './router';
 import * as utils from './utils'
 import api from './api'
@@ -127,7 +128,7 @@ if (window.smile) {
   window.Vue = Vue
   window.axios = axios
   if (WEBPACK_CONIFG_HOST) {
-      window.WEBPACK_CONIFG_HOST = WEBPACK_CONIFG_HOST
+    window.WEBPACK_CONIFG_HOST = WEBPACK_CONIFG_HOST
   }
   // 初始化eventBus
   window.smile.eventBus = new Vue()
@@ -140,30 +141,30 @@ const router = new VueRouter(route);
 router.beforeEach((to, from, next) => {
   // 加载页面smile依赖
   if (window.smile) {
-      var require = []
-      var promiseArr = []
-      // 拉取require配置中的表单
-      if (to.meta.require && to.meta.require.length > 0) {
-          require = require.concat(to.meta.require)
+    var require = []
+    var promiseArr = []
+    // 拉取require配置中的表单
+    if (to.meta.require && to.meta.require.length > 0) {
+      require = require.concat(to.meta.require)
+    }
+    // 拉取传参中的表单
+    if (to.query.smileForm) {
+      require.push(to.query.smileForm)
+    }
+    require.map(function(item) {
+      if (!window.smile.components[item]) {
+        promiseArr.push(window.smile.loadPage(item))
       }
-      // 拉取传参中的表单
-      if (to.query.smileForm) {
-          require.push(to.query.smileForm)
-      }
-      require.map(function(item) {
-          if (!window.smile.components[item]) {
-              promiseArr.push(window.smile.loadPage(item))
-          }
+    })
+    if (promiseArr.length > 0) {
+      Promise.all(promiseArr).then(function() {
+        next()
       })
-      if (promiseArr.length > 0) {
-          Promise.all(promiseArr).then(function() {
-              next()
-          })
-      } else {
-          next()
-      }
-  } else {
+    } else {
       next()
+    }
+  } else {
+    next()
   }
 })
 
@@ -178,11 +179,16 @@ function getSDKConfig() {
          * 微信端上传图片的流程是：
          * 1、选取文件通过微信jsdk上传到微信服务器后获取文件的serverId
          * 2、将serverId发送到应用服务端，服务端接收请求后根据serverId，将文件从微信服务拉取到应用服务
-         * 
+         *
          * uploadImgsToEmapUrl 参数 就是步骤2中 将serverId发送到应用服务的请求接口
          */
         // TODO: 上传接口
-        uploadImgsToEmapUrl: WEBPACK_CONIFG_HOST + '/sys/yxapp/WechatServiceStu/saveFileFromWechat.do' //TODO: 上传接口
+        debug: true,
+        url: location.origin + '/wxjssdk/checkSign',
+        corp: 'sustc',
+        uploadImgsToEmapUrl: location.origin + '/wxjssdk/uploadWxImgsToEmap',
+        emapPrefixPath: location.origin + '/publicapp'
+        //uploadImgsToEmapUrl: WEBPACK_CONIFG_HOST + '/sys/yxapp/WechatServiceStu/saveFileFromWechat.do' //TODO: 上传接口
       },
       dd: {}, //钉钉jdk初始化参数
     }
@@ -195,15 +201,19 @@ function getSDKConfig() {
        * signature - 签名
        */
       // TODO: 发请求获取微信签名
-      config.wx.url = "http://res.wisedu.com:9090/checkSign";
-      utils.Get(api.getWechatSign, { configurl: window.location.href.replace(/#(\S+)?/, '') }).then(({
+      //config.wx.url = "http://res.wisedu.com:9090/checkSign";
+      utils.Post(config.wx.url, {
+        url: window.location.href.replace(/#(\S+)?/, ''),
+        corp:'sustc'
+      }).then(({
         data: resp
       }) => {
         if (resp.code == "0") {
           let signData = resp.data
-          signData.corpId = signData.corpid
-          signData.nonceStr = signData.noncestr
+          signData.corpId = signData.corpId
+          signData.nonceStr = signData.nonceStr
           config.wx.signData = signData
+          console.log('config --12-18--')
           resolve(config)
         } else {
           Toast('微信jsdk初始化失败 ' + resp.code);
@@ -214,7 +224,7 @@ function getSDKConfig() {
         reject()
       })
     } else {
-      setTimeout(function () {
+      setTimeout(function() {
         resolve(config)
       }, 0)
     }
@@ -223,7 +233,9 @@ function getSDKConfig() {
 }
 
 getSDKConfig().then((config) => {
+  console.log('then --12-18--')
   init((res) => {
+    console.log('init --12-18--')
     if (res.type === 'success') {
       global.SDK = res.sdk;
 
