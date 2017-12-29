@@ -17,6 +17,8 @@ md "%name%\config"
 md "%name%\web"
 md "%name%\web\dist"
 md "%name%\web\static"
+md "%name%\controller"
+echo "package com.wisedu.emap.%name%.controller;import org.springframework.stereotype.Controller;import org.springframework.web.bind.annotation.RequestMapping;@Controller;public class IndexController {@RequestMapping('/index.do');public String index(){return 'redirect:index.html';}}" > "%name%\controller\IndexController.java"
 XCOPY ".\dist" "%name%\web\dist" /e
 XCOPY ".\static" "%name%\web\static" /e
 copy ".\EMAP_APP" "%name%"

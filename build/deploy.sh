@@ -21,6 +21,20 @@ mkdir ${packageName}/lib
 mkdir ${packageName}/web
 mkdir ${packageName}/config
 
+#新增controller目录和IndexController.java文件，平台上新建应用是入口地址就可写index.do了
+echo 'package com.wisedu.emap.'${packageName}'.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class IndexController {
+    @RequestMapping("/index.do")
+    public String index(){
+        return "redirect:index.html";
+    }
+}' > ${packageName}/controller/IndexController.java
+    
 #判断根目录下的 permission.xml是否存在，若存在就放入打包中
 if [ -f './permission.xml' ]
 then 
