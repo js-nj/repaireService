@@ -39,10 +39,15 @@
               <a :href="'tel:'+bxuserphone">{{bxuserphone}}</a>
             </div>
           </div>
-          <!-- <mt-button type="primary" size="large" class="comment-button" @click="doComplete">完工</mt-button> -->
         </div>
-        <div class="ri-comment-area" style="" @click="goCommentPage">
-            留言区 （<span>{{commentsList.length}}</span>）
+        <div class="ri-comment-area" style="">
+            <label  @click="goCommentPage">
+              留言区 （<span>{{commentsList.length}}</span>）
+            </label>
+            <mt-button type="primary" v-if="commentsList.length == 0 || showCommentsList" size="small" @click="showCommentPop">添加留言</mt-button>
+        </div>
+        <div v-show="showCommentsList" style="padding-left:16px;">
+          <comment-item v-for="item in commentsList" :key="item.WID" :option="item"></comment-item>
         </div>
         <!-- 四个tab页面对应不同的按钮组操作 -->
         <div v-if="fromTab == '1'" class="wi-buttons">
@@ -57,16 +62,16 @@
           <mt-button type="primary" class="wi-button wi-button-12" size="large" @click="saveJxwxUrl">继续维修</mt-button>
         </div>
         <div v-else></div>
-        <mt-actionsheet
+        <!-- <mt-actionsheet
           :actions="iconActions"
           v-model="sheetVisible">
-        </mt-actionsheet>
+        </mt-actionsheet> -->
         <mt-popup :visible.sync="popupVisible" position="bottom">
           <div class="pop-container">
             <grade v-show="state.showgrade" :wid="wid"></grade>
           </div>
         </mt-popup>
-        <mt-popup
+        <!-- <mt-popup
           v-model="popupVisible1"
           position="bottom"
           popup-transition="popup-fade">
@@ -75,12 +80,12 @@
             <span class="pop-button" :class="{'pop-button-ok':isPopButtonOk}" style="float:right;" @click="submitPop(selected)">提交</span>
           </div>
           <mt-field label="" placeholder="请填写理由" type="textarea" rows="6" v-model="introduction"></mt-field>
-        </mt-popup>
+        </mt-popup> -->
         <mt-popup
           v-model="popupVisible2"
           position="bottom"
           popup-transition="popup-fade">
-          <div style="overflow:auto;">
+          <div style="overflow:auto;padding: 4px;">
             <span class="pop-button" style="float:left;" @click="cancelPop2">取消</span>
             <span class="pop-button" :class="{'pop-button-ok':isPopButtonOk}" style="float:right;" @click="submitPop2(selected)">提交</span>
           </div>
@@ -105,7 +110,9 @@ import cpHeader from '../components/cpHeader.vue';
 import grade from '../components/grade.vue';
 import process from '../components/process.vue';
 import tips from '../components/tips.vue';
+import commentItem from '../components/CommentItem.vue';
 import * as utils from '../utils';
+import moment from 'moment';
 import API from "../api.js";
 import axios from 'axios';
 
@@ -154,32 +161,19 @@ export default {
       processdata: {},
       detail:{},
       fromTab:'4',
-      sheetVisible:false,
-      iconActions:[{name:'挂起',method:this.actionHandUp},{name:'拒绝',method:this.actionReject}],
-      introduction:'',
-      popupVisible1:false,
+      //sheetVisible:false,
+      //iconActions:[{name:'挂起',method:this.actionHandUp},{name:'拒绝',method:this.actionReject}],
+      //introduction:'',
+      //popupVisible1:false,
       popAction:'',
       isPopButtonOk:false,
       commentsList:[],
       introduction2:'',
       popupVisible2:false,
-      isPopButtonOk:false
+      isPopButtonOk:false,
+      showCommentsList:''
     }
   },
-  // ready(){
-  //   var config = {
-  //     left: {
-  //       left1: {
-  //         title: '',
-  //         callFunction: function() {
-  //           history.back();
-  //         }
-  //       }
-  //     }
-  //   };
-  //   BH_MIXIN_SDK.setNavHeader(config);
-  //   BH_MIXIN_SDK.setTitleText('报修详情');
-  // },
   created() {
     this.imgurl = WEBPACK_CONIFG_HOST.split('/publicapp')[0];
     console.log('xxx:'+this.imgurl)
@@ -221,8 +215,8 @@ export default {
           break;
       }
     }
-    let url = WEBPACK_CONIFG_HOST + 'sys/hqwxxt/api/getDetailInfo.do';
-    axios({method:'GET',url:url,params: {
+    //let url = WEBPACK_CONIFG_HOST + 'sys/hqwxxt/api/getDetailInfo.do';
+    axios({method:'GET',url:API.getDetailInfo,params: {
         wid: this.wid
       }}).then((response) => {
       var info = response.data.data;
@@ -306,13 +300,13 @@ export default {
         this.isPopButtonOk = false;
       }
     },
-    introduction:function(n){
-      if(n && n.length && n.length>0){
-        this.isPopButtonOk = true;
-      }else {
-        this.isPopButtonOk = false;
-      }
-    }
+    // introduction:function(n){
+    //   if(n && n.length && n.length>0){
+    //     this.isPopButtonOk = true;
+    //   }else {
+    //     this.isPopButtonOk = false;
+    //   }
+    // }
   },
   methods: {
     queryCommentsByWid:function(){
@@ -331,20 +325,6 @@ export default {
           Toast('查询评论失败！');
         }
       });
-    },
-    doComplete: function() {
-      axios({method:'POST',url:WEBPACK_CONIFG_HOST + "sys/hqwxxt/api/finishRepair.do",params: {
-        wid: this.wid
-      }}).then(function(data) {
-        Toast('已完工');
-        history.go(-1);
-      }, function(err) {
-        Toast('完工失败');
-      });
-    },
-    doComment: function() {
-      this.popupVisible = true;
-      this.state.showgrade = true;
     },
     submit: function() {
       this.popupVisible = false;
@@ -365,39 +345,51 @@ export default {
     showActionSheet:function(){
       this.sheetVisible = true;
     },
-    actionHandUp:function(){
-      this.popupVisible1 = true;
-      this.popAction = "handup";
+    // actionHandUp:function(){
+    //   this.introduction = '';
+    //   this.popupVisible1 = true;
+    //   this.popAction = "handup";
+    // },
+    // actionReject:function(){
+    //   this.introduction = '';
+    //   this.popupVisible1 = true;
+    //   this.popAction = "reject";
+    // },
+    showCommentPop:function(){
+      this.introduction2 = '';
+      this.popupVisible2 = true;
+      this.popAction = "comment";
     },
-    actionReject:function(){
-      this.popupVisible1 = true;
-      this.popAction = "reject";
-    },
-    cancelPop:function(){
-      this.popupVisible1 = false;
-      this.introduction = '';
-    },
-    submitPop:function(tab){
-      this.popupVisible1 = false;
-      if (this.popAction == 'reject') {
-        this.saveTd();
-      } else if (this.popAction == 'handup'){
-        this.batchUpDwx();
-      }
-      //alert('发送请求,重新请求上个页面数据');
-      this.cancel();
-    },
+    // cancelPop:function(){
+    //   this.popupVisible1 = false;
+    // },
+    // submitPop:function(tab){
+    //   this.popupVisible1 = false;
+    //   if (this.popAction == 'reject') {
+    //     this.saveTd();
+    //   } else if (this.popAction == 'handup'){
+    //     this.batchUpDwx();
+    //   } else if (this.popAction == 'comment'){
+    //     this.addComment();
+    //   }
+    //   this.cancelPop();
+    // },
     goCommentPage:function(){
-        let options = {
-          wid: this.wid,
-          comments:this.commentsList
+        if (this.showCommentsList) {
+          this.showCommentsList = false;
+        }else {
+          this.showCommentsList = true;
         }
-        this.$router.push({
-          name: 'comment',
-          params: {
-            info: JSON.stringify(options)
-          }
-        })
+        // let options = {
+        //   wid: this.wid,
+        //   comments:this.commentsList
+        // }
+        // this.$router.push({
+        //   name: 'comment',
+        //   params: {
+        //     info: JSON.stringify(options)
+        //   }
+        // })
     },
     saveJd:function(){
       var that= this;
@@ -519,9 +511,35 @@ export default {
         //this.saveTd(this.getMyDisrepairList);
       } else if (this.popAction == 'handup'){
         this.batchUpDwx();
+      }else if (this.popAction == 'comment'){
+        if (this.isPopButtonOk) {
+          this.addComment();
+        }else {
+          Toast('请填写评论');
+        }
       }
       //this.cancel2();
       //this.getMyDisrepairList(1);
+    },
+    addComment:function(){
+      var that = this;
+      axios({
+        method:'GET',
+        url:API.addComment,
+        params: {
+          HFNR:this.introduction2,
+          BXBH:this.wid,
+          HFRY:window.USERID,
+          HFSJ:moment().format('YYYY-MM-DD HH:MM:SS')
+        }
+      }).then(function(data){
+        if (data.data.success == true) {
+          Toast('添加评论成功');
+          that.queryCommentsByWid();
+        }else {
+          Toast('添加评论失败');
+        }
+      });
     }
   },
   events: {
@@ -540,7 +558,8 @@ export default {
     grade,
     process,
     tips,
-    cpHeader
+    cpHeader,
+    commentItem
   }
 }
 </script>
@@ -824,6 +843,9 @@ body {
 }
 .ri-comment-area {
   color:#26a2ff;
-  padding:8px 16px;
+  padding:8PX 16PX;
+}
+.pop-button-ok {
+  color:#06c1ae;
 }
 </style>

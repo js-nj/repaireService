@@ -91,7 +91,7 @@ export default {
     });
     axios({
       method:'GET',
-      url:WEBPACK_CONIFG_HOST + "sys/funauthapp/api/getAppConfig/hqwxxt-4695290815807818.do?GNFW=MOBILE",
+      url:WEBPACK_CONIFG_HOST + "sys/funauthapp/api/getAppConfig/pubmhqbxapp-5145321778322346.do?GNFW=MOBILE",//hqwxxt-4695290815807818.do//pubmhqbxapp-5145321778322346
       params:{}
     }).then(function(data) {
         if(data.data.MODULES && data.data.MODULES.length>1){
@@ -185,8 +185,8 @@ export default {
       that.isChoose = false;
       that.isstudent = true;
       console.log('api.loadData')
-      //api.loadData.call(that, "YWX", 1, "home");
-      that.loadData('YWX',1,"home");
+      api.loadData.call(that, "YWX", 1, "home");
+      //that.loadData('YWX',1,"home");
       var config = {
         left: {
           left1: {
@@ -230,43 +230,43 @@ export default {
         this.initTeacherStudent();
       }
     },
-    postData: function (url, options, successCallback, errorCallback) {
-      axios({
-        method:'GET',
-        url:url,
-        params: options
-        }).then(successCallback, errorCallback);
-    },
-    merge:function() {
-      return Array.prototype.concat.apply([], arguments)
-    },
-    loadData:function(state, num, app) {
-      var self = this;
-      self.postData(api.getMyRepairsPagination, {
-        state: state,
-        pageNumber: num,
-        pageSize: 10
-      }, function(result) {
-        self.loading = true;
-        if (result.data.datas) {
-          var data = result.data.datas.bxsscxwdbxjlbg;
-          if (app) {
-            self.unreadNum.repaired = data.totalSize;
-          } else {
-            if (data.rows.length > 0) {
-              self.dataResource = self.merge(self.dataResource, data.rows);
-            }
-            if (data.rows.length < 10) {
-              self.allLoaded = true;
-            }
-          }
-        } else {
-          self.allLoaded = true;
-        }
-      }, function(err) {
-        Toast('取列表数据失败');
-      });
-    }
+    // postData: function (url, options, successCallback, errorCallback) {
+    //   axios({
+    //     method:'GET',
+    //     url:url,
+    //     params: options
+    //     }).then(successCallback, errorCallback);
+    // },
+    // merge:function() {
+    //   return Array.prototype.concat.apply([], arguments)
+    // },
+    // loadData:function(state, num, app) {
+    //   var self = this;
+    //   self.postData(api.getMyRepairsPagination, {
+    //     state: state,
+    //     pageNumber: num,
+    //     pageSize: 10
+    //   }, function(result) {
+    //     self.loading = true;
+    //     if (result.data.datas) {
+    //       var data = result.data.datas.bxsscxwdbxjlbg;
+    //       if (app) {
+    //         self.unreadNum.repaired = data.totalSize;
+    //       } else {
+    //         if (data.rows.length > 0) {
+    //           self.dataResource = self.merge(self.dataResource, data.rows);
+    //         }
+    //         if (data.rows.length < 10) {
+    //           self.allLoaded = true;
+    //         }
+    //       }
+    //     } else {
+    //       self.allLoaded = true;
+    //     }
+    //   }, function(err) {
+    //     Toast('获取getMyRepairsPagination数据失败：'+JSON.stringify(err));
+    //   });
+    // }
   }
 };
 </script>

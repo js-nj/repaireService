@@ -3,7 +3,7 @@
   } from 'bh-mint-ui2';
   
   function postData(url, options, successCallback, errorCallback) {
-    axios({method:'GET',url:WEBPACK_CONIFG_HOST + 'sys/hqwxxt/api' + url,params: options}).then(successCallback, errorCallback);
+    axios({method:'GET',url:WEBPACK_CONIFG_HOST + 'sys/pubhqwxxt/api' + url,params: options}).then(successCallback, errorCallback);
   }
 
   var merge = function() {
@@ -34,7 +34,7 @@
         self.allLoaded = true;
       }
     }, function(err) {
-      Toast('取列表数据失败');
+      Toast('获取列表数据失败：'+JSON.stringify(err));
     });
   }
   
@@ -60,7 +60,7 @@
         self.allLoaded = true;
       }
     }, function(err) {
-      Toast('取列表数据失败');
+      Toast('获取列表数据失败：'+JSON.stringify(err));
     });
   }
   
@@ -72,7 +72,7 @@
         self.$router.replace('/waitProcess');
       }
     }, function(err) {
-      Toast('评价失败！');
+      Toast('评价失败：'+JSON.stringify(err));
     });
   }
   
@@ -100,7 +100,7 @@
       self.slots['2'].values = typeObj[Object.keys(typeObj)[0]]; //typeObj[Object.keys(typeObj)[0]];
   
     }, function(err) {
-      Toast('获取数据失败！');
+      Toast('获取数据失败：'+JSON.stringify(err));
     });
   }
   
@@ -116,7 +116,7 @@
       }
       self.slots[0].values = merge(['请选择'], pickerarr)
     }, function(err) {
-      Toast('获取数据失败！');
+      Toast('获取数据失败：'+JSON.stringify(err));
     });
   }
   
@@ -134,7 +134,7 @@
       }
       self.slots[0].values = pickerarr
     }, function(err) {
-      Toast('获取数据失败！');
+      Toast('获取数据失败：'+JSON.stringify(err));
     });
   }
   
@@ -180,10 +180,10 @@
         self.slotsArea.push({values:typeObj2[Object.keys(typeObj2)[0]]});
         //alert(JSON.stringify(self.slotsArea))
       } else {
-        Toast('获取数据失败！');
+        Toast('获取数据失败：'+JSON.stringify(err));
       }
     }, function(err) {
-      Toast('获取数据失败！');
+      Toast('获取数据失败：'+JSON.stringify(err));
     });
     //type=1表示保修类型
     let type = {
@@ -237,10 +237,10 @@
         self.slots.push({values:self.address[keys[0]]});
         //alert(JSON.stringify(self.slots));
       } else {
-        Toast('获取数据失败！');
+        Toast('获取数据失败：'+JSON.stringify(err));
       }
     }, function(err) {
-      Toast('获取数据失败！');
+      Toast('获取数据失败：'+JSON.stringify(err));
     });
   }
   
@@ -249,7 +249,7 @@
     postData.call(self, '/saveMyRepairInfo.do', option, function(result) {
       self.$router.replace('/waitProcess');
     }, function(err) {
-      Toast('保存数据失败！');
+      Toast('保存数据失败：'+JSON.stringify(err));
     });
   }
 
@@ -270,16 +270,17 @@ export default {
     getRepairlocationinfo: getRepairlocationinfo,
     getRepaireAreaInfo: getRepaireAreaInfo,
     saveRepair: saveRepair,
-    getMyDisrepairList: WEBPACK_CONIFG_HOST + 'sys/hqwxxt/api/getMyDisrepairList.do',
-    saveJd: WEBPACK_CONIFG_HOST + 'sys/hqwxxt/hqwx/saveJd.do',
-    saveTd: WEBPACK_CONIFG_HOST + 'sys/hqwxxt/hqwx/saveTd.do',
-    saveJxwxUrl:WEBPACK_CONIFG_HOST +'sys/hqwxxt/hqwx/saveJxwx.do',
-    batchUpDwx: WEBPACK_CONIFG_HOST + 'sys/hqwxxt/hqwx/batchUpDwx.do',
-    completeOrders:WEBPACK_CONIFG_HOST + "sys/hqwxxt/api/batchFinishRepair.do",
-    queryCommentsByWid:WEBPACK_CONIFG_HOST + 'sys/hqwxxt/modelpage/yyglyhqbxbgjm/T_IT_HQWX_BBS_QUERY.do',
-    addComment:WEBPACK_CONIFG_HOST + 'sys/hqwxxt/hqwx/saveHf.do',
-    getMyDisrepairYbList:WEBPACK_CONIFG_HOST + 'sys/hqwxxt/api/getMyDisrepairYbList.do',
+    getMyDisrepairList: WEBPACK_CONIFG_HOST + 'sys/pubhqwxxt/api/getMyDisrepairList.do',
+    saveJd: WEBPACK_CONIFG_HOST + 'sys/pubhqwxxt/hqwx/saveJd.do',
+    saveTd: WEBPACK_CONIFG_HOST + 'sys/pubhqwxxt/hqwx/saveTd.do',
+    saveJxwxUrl:WEBPACK_CONIFG_HOST +'sys/pubhqwxxt/hqwx/saveJxwx.do',
+    batchUpDwx: WEBPACK_CONIFG_HOST + 'sys/pubhqwxxt/hqwx/batchUpDwx.do',
+    completeOrders:WEBPACK_CONIFG_HOST + "sys/pubhqwxxt/api/batchFinishRepair.do",
+    queryCommentsByWid:WEBPACK_CONIFG_HOST + 'sys/pubhqwxxt/modelpage/yyglyhqbxbgjm/T_IT_HQWX_BBS_QUERY.do',
+    addComment:WEBPACK_CONIFG_HOST + 'sys/pubhqwxxt/hqwx/saveHf.do',
+    getMyDisrepairYbList:WEBPACK_CONIFG_HOST + 'sys/pubhqwxxt/api/getMyDisrepairYbList.do',
+    getDetailInfo:WEBPACK_CONIFG_HOST + 'sys/pubhqwxxt/api/getDetailInfo.do'
     //整理上面的请求函数
-    getMyRepairsPagination:WEBPACK_CONIFG_HOST +'sys/hqwxxt/api/getMyRepairsPagination.do'
+    //getMyRepairsPagination:WEBPACK_CONIFG_HOST +'sys/pubhqwxxt/api/getMyRepairsPagination.do'
     
 }

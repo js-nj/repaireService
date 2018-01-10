@@ -418,6 +418,7 @@ export default {
         font-size: 28px;
         border: none;
         padding: 15px 30px;
+        box-sizing: border-box;
     }
     & .question-describe-holder {
         color: #B4B4B4;
